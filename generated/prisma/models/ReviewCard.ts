@@ -30,6 +30,7 @@ export type ReviewCardMinAggregateOutputType = {
   locationId: string | null
   token: string | null
   name: string | null
+  mode: $Enums.ReviewCardMode | null
   destinationUrl: string | null
   status: $Enums.ReviewCardStatus | null
   createdAt: Date | null
@@ -42,6 +43,7 @@ export type ReviewCardMaxAggregateOutputType = {
   locationId: string | null
   token: string | null
   name: string | null
+  mode: $Enums.ReviewCardMode | null
   destinationUrl: string | null
   status: $Enums.ReviewCardStatus | null
   createdAt: Date | null
@@ -54,6 +56,7 @@ export type ReviewCardCountAggregateOutputType = {
   locationId: number
   token: number
   name: number
+  mode: number
   destinationUrl: number
   status: number
   createdAt: number
@@ -68,6 +71,7 @@ export type ReviewCardMinAggregateInputType = {
   locationId?: true
   token?: true
   name?: true
+  mode?: true
   destinationUrl?: true
   status?: true
   createdAt?: true
@@ -80,6 +84,7 @@ export type ReviewCardMaxAggregateInputType = {
   locationId?: true
   token?: true
   name?: true
+  mode?: true
   destinationUrl?: true
   status?: true
   createdAt?: true
@@ -92,6 +97,7 @@ export type ReviewCardCountAggregateInputType = {
   locationId?: true
   token?: true
   name?: true
+  mode?: true
   destinationUrl?: true
   status?: true
   createdAt?: true
@@ -173,10 +179,11 @@ export type ReviewCardGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type ReviewCardGroupByOutputType = {
   id: string
-  businessId: string
+  businessId: string | null
   locationId: string | null
   token: string
   name: string
+  mode: $Enums.ReviewCardMode
   destinationUrl: string
   status: $Enums.ReviewCardStatus
   createdAt: Date
@@ -206,24 +213,26 @@ export type ReviewCardWhereInput = {
   OR?: Prisma.ReviewCardWhereInput[]
   NOT?: Prisma.ReviewCardWhereInput | Prisma.ReviewCardWhereInput[]
   id?: Prisma.StringFilter<"ReviewCard"> | string
-  businessId?: Prisma.StringFilter<"ReviewCard"> | string
+  businessId?: Prisma.StringNullableFilter<"ReviewCard"> | string | null
   locationId?: Prisma.StringNullableFilter<"ReviewCard"> | string | null
   token?: Prisma.StringFilter<"ReviewCard"> | string
   name?: Prisma.StringFilter<"ReviewCard"> | string
+  mode?: Prisma.EnumReviewCardModeFilter<"ReviewCard"> | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFilter<"ReviewCard"> | string
   status?: Prisma.EnumReviewCardStatusFilter<"ReviewCard"> | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFilter<"ReviewCard"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ReviewCard"> | Date | string
-  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
+  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
   location?: Prisma.XOR<Prisma.LocationNullableScalarRelationFilter, Prisma.LocationWhereInput> | null
 }
 
 export type ReviewCardOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  businessId?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   token?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  mode?: Prisma.SortOrder
   destinationUrl?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -238,23 +247,25 @@ export type ReviewCardWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ReviewCardWhereInput | Prisma.ReviewCardWhereInput[]
   OR?: Prisma.ReviewCardWhereInput[]
   NOT?: Prisma.ReviewCardWhereInput | Prisma.ReviewCardWhereInput[]
-  businessId?: Prisma.StringFilter<"ReviewCard"> | string
+  businessId?: Prisma.StringNullableFilter<"ReviewCard"> | string | null
   locationId?: Prisma.StringNullableFilter<"ReviewCard"> | string | null
   name?: Prisma.StringFilter<"ReviewCard"> | string
+  mode?: Prisma.EnumReviewCardModeFilter<"ReviewCard"> | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFilter<"ReviewCard"> | string
   status?: Prisma.EnumReviewCardStatusFilter<"ReviewCard"> | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFilter<"ReviewCard"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ReviewCard"> | Date | string
-  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
+  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
   location?: Prisma.XOR<Prisma.LocationNullableScalarRelationFilter, Prisma.LocationWhereInput> | null
 }, "id" | "token">
 
 export type ReviewCardOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  businessId?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   token?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  mode?: Prisma.SortOrder
   destinationUrl?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -269,10 +280,11 @@ export type ReviewCardScalarWhereWithAggregatesInput = {
   OR?: Prisma.ReviewCardScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ReviewCardScalarWhereWithAggregatesInput | Prisma.ReviewCardScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ReviewCard"> | string
-  businessId?: Prisma.StringWithAggregatesFilter<"ReviewCard"> | string
+  businessId?: Prisma.StringNullableWithAggregatesFilter<"ReviewCard"> | string | null
   locationId?: Prisma.StringNullableWithAggregatesFilter<"ReviewCard"> | string | null
   token?: Prisma.StringWithAggregatesFilter<"ReviewCard"> | string
   name?: Prisma.StringWithAggregatesFilter<"ReviewCard"> | string
+  mode?: Prisma.EnumReviewCardModeWithAggregatesFilter<"ReviewCard"> | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringWithAggregatesFilter<"ReviewCard"> | string
   status?: Prisma.EnumReviewCardStatusWithAggregatesFilter<"ReviewCard"> | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ReviewCard"> | Date | string
@@ -283,20 +295,22 @@ export type ReviewCardCreateInput = {
   id?: string
   token: string
   name: string
+  mode?: $Enums.ReviewCardMode
   destinationUrl: string
   status?: $Enums.ReviewCardStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  business: Prisma.BusinessCreateNestedOneWithoutReviewCardsInput
+  business?: Prisma.BusinessCreateNestedOneWithoutReviewCardsInput
   location?: Prisma.LocationCreateNestedOneWithoutReviewCardsInput
 }
 
 export type ReviewCardUncheckedCreateInput = {
   id?: string
-  businessId: string
+  businessId?: string | null
   locationId?: string | null
   token: string
   name: string
+  mode?: $Enums.ReviewCardMode
   destinationUrl: string
   status?: $Enums.ReviewCardStatus
   createdAt?: Date | string
@@ -307,20 +321,22 @@ export type ReviewCardUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  mode?: Prisma.EnumReviewCardModeFieldUpdateOperationsInput | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReviewCardStatusFieldUpdateOperationsInput | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  business?: Prisma.BusinessUpdateOneRequiredWithoutReviewCardsNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutReviewCardsNestedInput
   location?: Prisma.LocationUpdateOneWithoutReviewCardsNestedInput
 }
 
 export type ReviewCardUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  businessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   token?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  mode?: Prisma.EnumReviewCardModeFieldUpdateOperationsInput | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReviewCardStatusFieldUpdateOperationsInput | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -329,10 +345,11 @@ export type ReviewCardUncheckedUpdateInput = {
 
 export type ReviewCardCreateManyInput = {
   id?: string
-  businessId: string
+  businessId?: string | null
   locationId?: string | null
   token: string
   name: string
+  mode?: $Enums.ReviewCardMode
   destinationUrl: string
   status?: $Enums.ReviewCardStatus
   createdAt?: Date | string
@@ -343,6 +360,7 @@ export type ReviewCardUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  mode?: Prisma.EnumReviewCardModeFieldUpdateOperationsInput | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReviewCardStatusFieldUpdateOperationsInput | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -351,10 +369,11 @@ export type ReviewCardUpdateManyMutationInput = {
 
 export type ReviewCardUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  businessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   token?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  mode?: Prisma.EnumReviewCardModeFieldUpdateOperationsInput | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReviewCardStatusFieldUpdateOperationsInput | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -377,6 +396,7 @@ export type ReviewCardCountOrderByAggregateInput = {
   locationId?: Prisma.SortOrder
   token?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  mode?: Prisma.SortOrder
   destinationUrl?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -389,6 +409,7 @@ export type ReviewCardMaxOrderByAggregateInput = {
   locationId?: Prisma.SortOrder
   token?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  mode?: Prisma.SortOrder
   destinationUrl?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -401,6 +422,7 @@ export type ReviewCardMinOrderByAggregateInput = {
   locationId?: Prisma.SortOrder
   token?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  mode?: Prisma.SortOrder
   destinationUrl?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -491,6 +513,10 @@ export type ReviewCardUncheckedUpdateManyWithoutLocationNestedInput = {
   deleteMany?: Prisma.ReviewCardScalarWhereInput | Prisma.ReviewCardScalarWhereInput[]
 }
 
+export type EnumReviewCardModeFieldUpdateOperationsInput = {
+  set?: $Enums.ReviewCardMode
+}
+
 export type EnumReviewCardStatusFieldUpdateOperationsInput = {
   set?: $Enums.ReviewCardStatus
 }
@@ -503,6 +529,7 @@ export type ReviewCardCreateWithoutBusinessInput = {
   id?: string
   token: string
   name: string
+  mode?: $Enums.ReviewCardMode
   destinationUrl: string
   status?: $Enums.ReviewCardStatus
   createdAt?: Date | string
@@ -515,6 +542,7 @@ export type ReviewCardUncheckedCreateWithoutBusinessInput = {
   locationId?: string | null
   token: string
   name: string
+  mode?: $Enums.ReviewCardMode
   destinationUrl: string
   status?: $Enums.ReviewCardStatus
   createdAt?: Date | string
@@ -552,10 +580,11 @@ export type ReviewCardScalarWhereInput = {
   OR?: Prisma.ReviewCardScalarWhereInput[]
   NOT?: Prisma.ReviewCardScalarWhereInput | Prisma.ReviewCardScalarWhereInput[]
   id?: Prisma.StringFilter<"ReviewCard"> | string
-  businessId?: Prisma.StringFilter<"ReviewCard"> | string
+  businessId?: Prisma.StringNullableFilter<"ReviewCard"> | string | null
   locationId?: Prisma.StringNullableFilter<"ReviewCard"> | string | null
   token?: Prisma.StringFilter<"ReviewCard"> | string
   name?: Prisma.StringFilter<"ReviewCard"> | string
+  mode?: Prisma.EnumReviewCardModeFilter<"ReviewCard"> | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFilter<"ReviewCard"> | string
   status?: Prisma.EnumReviewCardStatusFilter<"ReviewCard"> | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFilter<"ReviewCard"> | Date | string
@@ -566,18 +595,20 @@ export type ReviewCardCreateWithoutLocationInput = {
   id?: string
   token: string
   name: string
+  mode?: $Enums.ReviewCardMode
   destinationUrl: string
   status?: $Enums.ReviewCardStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  business: Prisma.BusinessCreateNestedOneWithoutReviewCardsInput
+  business?: Prisma.BusinessCreateNestedOneWithoutReviewCardsInput
 }
 
 export type ReviewCardUncheckedCreateWithoutLocationInput = {
   id?: string
-  businessId: string
+  businessId?: string | null
   token: string
   name: string
+  mode?: $Enums.ReviewCardMode
   destinationUrl: string
   status?: $Enums.ReviewCardStatus
   createdAt?: Date | string
@@ -615,6 +646,7 @@ export type ReviewCardCreateManyBusinessInput = {
   locationId?: string | null
   token: string
   name: string
+  mode?: $Enums.ReviewCardMode
   destinationUrl: string
   status?: $Enums.ReviewCardStatus
   createdAt?: Date | string
@@ -625,6 +657,7 @@ export type ReviewCardUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  mode?: Prisma.EnumReviewCardModeFieldUpdateOperationsInput | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReviewCardStatusFieldUpdateOperationsInput | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -637,6 +670,7 @@ export type ReviewCardUncheckedUpdateWithoutBusinessInput = {
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   token?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  mode?: Prisma.EnumReviewCardModeFieldUpdateOperationsInput | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReviewCardStatusFieldUpdateOperationsInput | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -648,6 +682,7 @@ export type ReviewCardUncheckedUpdateManyWithoutBusinessInput = {
   locationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   token?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  mode?: Prisma.EnumReviewCardModeFieldUpdateOperationsInput | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReviewCardStatusFieldUpdateOperationsInput | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -656,9 +691,10 @@ export type ReviewCardUncheckedUpdateManyWithoutBusinessInput = {
 
 export type ReviewCardCreateManyLocationInput = {
   id?: string
-  businessId: string
+  businessId?: string | null
   token: string
   name: string
+  mode?: $Enums.ReviewCardMode
   destinationUrl: string
   status?: $Enums.ReviewCardStatus
   createdAt?: Date | string
@@ -669,18 +705,20 @@ export type ReviewCardUpdateWithoutLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  mode?: Prisma.EnumReviewCardModeFieldUpdateOperationsInput | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReviewCardStatusFieldUpdateOperationsInput | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  business?: Prisma.BusinessUpdateOneRequiredWithoutReviewCardsNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutReviewCardsNestedInput
 }
 
 export type ReviewCardUncheckedUpdateWithoutLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  businessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   token?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  mode?: Prisma.EnumReviewCardModeFieldUpdateOperationsInput | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReviewCardStatusFieldUpdateOperationsInput | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -689,9 +727,10 @@ export type ReviewCardUncheckedUpdateWithoutLocationInput = {
 
 export type ReviewCardUncheckedUpdateManyWithoutLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  businessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   token?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  mode?: Prisma.EnumReviewCardModeFieldUpdateOperationsInput | $Enums.ReviewCardMode
   destinationUrl?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReviewCardStatusFieldUpdateOperationsInput | $Enums.ReviewCardStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -706,11 +745,12 @@ export type ReviewCardSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   locationId?: boolean
   token?: boolean
   name?: boolean
+  mode?: boolean
   destinationUrl?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  business?: boolean | Prisma.ReviewCard$businessArgs<ExtArgs>
   location?: boolean | Prisma.ReviewCard$locationArgs<ExtArgs>
 }, ExtArgs["result"]["reviewCard"]>
 
@@ -720,11 +760,12 @@ export type ReviewCardSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   locationId?: boolean
   token?: boolean
   name?: boolean
+  mode?: boolean
   destinationUrl?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  business?: boolean | Prisma.ReviewCard$businessArgs<ExtArgs>
   location?: boolean | Prisma.ReviewCard$locationArgs<ExtArgs>
 }, ExtArgs["result"]["reviewCard"]>
 
@@ -734,11 +775,12 @@ export type ReviewCardSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   locationId?: boolean
   token?: boolean
   name?: boolean
+  mode?: boolean
   destinationUrl?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  business?: boolean | Prisma.ReviewCard$businessArgs<ExtArgs>
   location?: boolean | Prisma.ReviewCard$locationArgs<ExtArgs>
 }, ExtArgs["result"]["reviewCard"]>
 
@@ -748,38 +790,40 @@ export type ReviewCardSelectScalar = {
   locationId?: boolean
   token?: boolean
   name?: boolean
+  mode?: boolean
   destinationUrl?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ReviewCardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "locationId" | "token" | "name" | "destinationUrl" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["reviewCard"]>
+export type ReviewCardOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "locationId" | "token" | "name" | "mode" | "destinationUrl" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["reviewCard"]>
 export type ReviewCardInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  business?: boolean | Prisma.ReviewCard$businessArgs<ExtArgs>
   location?: boolean | Prisma.ReviewCard$locationArgs<ExtArgs>
 }
 export type ReviewCardIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  business?: boolean | Prisma.ReviewCard$businessArgs<ExtArgs>
   location?: boolean | Prisma.ReviewCard$locationArgs<ExtArgs>
 }
 export type ReviewCardIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  business?: boolean | Prisma.ReviewCard$businessArgs<ExtArgs>
   location?: boolean | Prisma.ReviewCard$locationArgs<ExtArgs>
 }
 
 export type $ReviewCardPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ReviewCard"
   objects: {
-    business: Prisma.$BusinessPayload<ExtArgs>
+    business: Prisma.$BusinessPayload<ExtArgs> | null
     location: Prisma.$LocationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    businessId: string
+    businessId: string | null
     locationId: string | null
     token: string
     name: string
+    mode: $Enums.ReviewCardMode
     destinationUrl: string
     status: $Enums.ReviewCardStatus
     createdAt: Date
@@ -1178,7 +1222,7 @@ readonly fields: ReviewCardFieldRefs;
  */
 export interface Prisma__ReviewCardClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  business<T extends Prisma.BusinessDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BusinessDefaultArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  business<T extends Prisma.ReviewCard$businessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ReviewCard$businessArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   location<T extends Prisma.ReviewCard$locationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ReviewCard$locationArgs<ExtArgs>>): Prisma.Prisma__LocationClient<runtime.Types.Result.GetResult<Prisma.$LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1214,6 +1258,7 @@ export interface ReviewCardFieldRefs {
   readonly locationId: Prisma.FieldRef<"ReviewCard", 'String'>
   readonly token: Prisma.FieldRef<"ReviewCard", 'String'>
   readonly name: Prisma.FieldRef<"ReviewCard", 'String'>
+  readonly mode: Prisma.FieldRef<"ReviewCard", 'ReviewCardMode'>
   readonly destinationUrl: Prisma.FieldRef<"ReviewCard", 'String'>
   readonly status: Prisma.FieldRef<"ReviewCard", 'ReviewCardStatus'>
   readonly createdAt: Prisma.FieldRef<"ReviewCard", 'DateTime'>
@@ -1616,6 +1661,25 @@ export type ReviewCardDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many ReviewCards to delete.
    */
   limit?: number
+}
+
+/**
+ * ReviewCard.business
+ */
+export type ReviewCard$businessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Business
+   */
+  select?: Prisma.BusinessSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Business
+   */
+  omit?: Prisma.BusinessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessInclude<ExtArgs> | null
+  where?: Prisma.BusinessWhereInput
 }
 
 /**

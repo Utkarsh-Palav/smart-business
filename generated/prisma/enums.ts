@@ -9,7 +9,34 @@
 * 🟢 You can import this file directly.
 */
 
+export const BusinessStatus = {
+  ACTIVE: 'ACTIVE',
+  SUSPENDED: 'SUSPENDED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type BusinessStatus = (typeof BusinessStatus)[keyof typeof BusinessStatus]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const LocationStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type LocationStatus = (typeof LocationStatus)[keyof typeof LocationStatus]
+
+
+export const ReviewCardStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type ReviewCardStatus = (typeof ReviewCardStatus)[keyof typeof ReviewCardStatus]
+
+
+export const ReviewCardMode = {
+  STANDALONE: 'STANDALONE',
+  MANAGED: 'MANAGED'
+} as const
+
+export type ReviewCardMode = (typeof ReviewCardMode)[keyof typeof ReviewCardMode]

@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -48,14 +48,16 @@ model Location {
 model ReviewCard {
   id String @id @default(cuid())
 
-  businessId String
-  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  businessId String?
+  business   Business? @relation(fields: [businessId], references: [id], onDelete: Restrict)
 
   locationId String?
   location   Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
 
   token String @unique
   name  String
+
+  mode ReviewCardMode @default(STANDALONE)
 
   destinationUrl String
 
@@ -66,5 +68,7 @@ model ReviewCard {
 
   @@index([businessId])
   @@index([locationId])
+  @@index([mode])
+  @@index([status])
   @@index([businessId, status])
 }

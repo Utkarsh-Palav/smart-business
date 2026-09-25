@@ -346,6 +346,11 @@ export type BusinessScalarRelationFilter = {
   isNot?: Prisma.BusinessWhereInput
 }
 
+export type BusinessNullableScalarRelationFilter = {
+  is?: Prisma.BusinessWhereInput | null
+  isNot?: Prisma.BusinessWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -378,10 +383,12 @@ export type BusinessCreateNestedOneWithoutReviewCardsInput = {
   connect?: Prisma.BusinessWhereUniqueInput
 }
 
-export type BusinessUpdateOneRequiredWithoutReviewCardsNestedInput = {
+export type BusinessUpdateOneWithoutReviewCardsNestedInput = {
   create?: Prisma.XOR<Prisma.BusinessCreateWithoutReviewCardsInput, Prisma.BusinessUncheckedCreateWithoutReviewCardsInput>
   connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutReviewCardsInput
   upsert?: Prisma.BusinessUpsertWithoutReviewCardsInput
+  disconnect?: Prisma.BusinessWhereInput | boolean
+  delete?: Prisma.BusinessWhereInput | boolean
   connect?: Prisma.BusinessWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutReviewCardsInput, Prisma.BusinessUpdateWithoutReviewCardsInput>, Prisma.BusinessUncheckedUpdateWithoutReviewCardsInput>
 }

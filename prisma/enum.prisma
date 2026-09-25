@@ -13,3 +13,8 @@ enum ReviewCardStatus {
   ACTIVE
   INACTIVE
 }
+
+enum ReviewCardMode {
+  STANDALONE
+  MANAGED
+}

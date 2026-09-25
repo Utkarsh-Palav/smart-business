@@ -8,4 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Business'
+export type * from './models/Location'
+export type * from './models/ReviewCard'
 export type * from './commonInputTypes'
