@@ -1,0 +1,15 @@
+enum BusinessStatus {
+  ACTIVE
+  SUSPENDED
+  ARCHIVED
+}
+
+enum LocationStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ReviewCardStatus {
+  ACTIVE
+  INACTIVE
+}
