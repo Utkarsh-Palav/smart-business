@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../../generated/control"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  ARCHIVED
+}
+
+enum BusinessStatus {
+  ACTIVE
+  SUSPENDED
+  ARCHIVED
+}
+
+enum TenantDatabaseProvider {
+  NEON
+}
+
+enum TenantDatabaseStatus {
+  PROVISIONING
+  ACTIVE
+  MIGRATION_REQUIRED
+  SUSPENDED
+  FAILED
+  ARCHIVED
+}
+
+enum MembershipStatus {
+  ACTIVE
+  INVITED
+  SUSPENDED
+  REMOVED
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  PAUSED
+  CANCELED
+  EXPIRED
+}
+
+enum SubscriptionEventType {
+  CREATED
+  ACTIVATED
+  RENEWED
+  PLAN_CHANGED
+  PAYMENT_FAILED
+  PAUSED
+  RESUMED
+  CANCEL_REQUESTED
+  CANCELED
+  EXPIRED
+}
+
+enum ReviewCardStatus {
+  AVAILABLE
+  RESERVED
+  ASSIGNED
+  INACTIVE
+  RETIRED
+}
+
+enum ReviewCardAssignmentStatus {
+  ACTIVE
+  ENDED
+}
+
+enum CatalogProductType {
+  REVIEW_CARD
+  OTHER
+}
+
+enum PurchaseOrderStatus {
+  PENDING_PAYMENT
+  PAID
+  PROCESSING
+  FULFILLED
+  CANCELED
+  REFUNDED
+}
+
+enum PaymentProvider {
+  RAZORPAY
+  OTHER
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  CANCELED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum RefundStatus {
+  PENDING
+  PROCESSED
+  FAILED
+  CANCELED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PAID
+  VOID
+  CANCELED
+}
+
+enum PublicRouteStatus {
+  ACTIVE
+  INACTIVE
+  RETIRED
+}
+
+enum OtpChannel {
+  EMAIL
+  PHONE
+}

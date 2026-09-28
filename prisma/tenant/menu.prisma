@@ -1,0 +1,144 @@
+model Category {
+  id String @id @default(cuid())
+
+  name String
+  slug String
+
+  description String?
+
+  status CategoryStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
+  menuCategories MenuCategory[]
+
+  @@unique([slug])
+  @@index([status])
+}
+
+model Product {
+  id String @id @default(cuid())
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  name String
+  slug String
+
+  description String?
+
+  sku String?
+
+  imageUrl String?
+
+  basePriceMinor Int
+  currency String @default("INR")
+
+  status ProductStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  menuProducts MenuProduct[]
+
+  availability ProductAvailability[]
+
+  orderItems OrderItem[]
+
+  @@unique([slug])
+  @@index([categoryId])
+  @@index([status])
+  @@index([sku])
+}
+
+model Menu {
+  id String @id @default(cuid())
+
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  name String
+  slug String
+
+  status MenuStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  categories MenuCategory[]
+
+  products MenuProduct[]
+
+  @@unique([locationId, slug])
+  @@index([locationId])
+  @@index([locationId, status])
+}
+
+model MenuCategory {
+  id String @id @default(cuid())
+
+  menuId String
+  menu   Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  sortOrder Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([menuId, categoryId])
+  @@index([categoryId])
+  @@index([menuId, sortOrder])
+}
+
+model MenuProduct {
+  id String @id @default(cuid())
+
+  menuId String
+  menu   Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  displayName String?
+  displayDescription String?
+
+  sortOrder Int @default(0)
+
+  isVisible Boolean @default(true)
+
+  priceOverrideMinor Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([menuId, productId])
+  @@index([productId])
+  @@index([menuId, sortOrder])
+  @@index([menuId, isVisible])
+}
+
+model ProductAvailability {
+  id String @id @default(cuid())
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  isAvailable Boolean @default(true)
+
+  priceOverrideMinor Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([productId, locationId])
+  @@index([locationId])
+  @@index([locationId, isAvailable])
+}

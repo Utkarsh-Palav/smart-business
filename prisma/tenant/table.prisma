@@ -1,0 +1,25 @@
+model Table {
+  id String @id @default(cuid())
+
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  name String
+  code String
+
+  publicToken String @unique
+
+  status TableStatus @default(ACTIVE)
+
+  capacity Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders Order[]
+
+  @@unique([locationId, code])
+  @@unique([id, locationId])
+  @@index([locationId])
+  @@index([locationId, status])
+}

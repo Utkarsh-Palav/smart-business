@@ -1,0 +1,31 @@
+model TenantDatabase {
+    id String @id @default(cuid())
+
+    businessId String   @unique
+    business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+    tenantKey String @unique
+
+    provider TenantDatabaseProvider @default(NEON)
+
+    neonProjectId String?
+    neonBranchId  String?
+
+    databaseName        String
+    databaseHost        String
+    connectionSecretRef String?
+
+    status TenantDatabaseStatus @default(PROVISIONING)
+
+    schemaVersion String?
+
+    provisionedAt   DateTime?
+    lastMigrationAt DateTime?
+
+    lastProvisioningError String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([status])
+}

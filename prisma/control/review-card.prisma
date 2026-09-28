@@ -1,0 +1,38 @@
+model ReviewCard {
+  id String @id @default(cuid())
+
+  token String @unique
+
+  serialNumber String? @unique
+
+  status ReviewCardStatus @default(AVAILABLE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  assignments ReviewCardAssignment[]
+
+  @@index([status])
+}
+
+model ReviewCardAssignment {
+  id String @id @default(cuid())
+
+  reviewCardId String
+  reviewCard   ReviewCard @relation(fields: [reviewCardId], references: [id], onDelete: Restrict)
+
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Restrict)
+
+  assignedAt   DateTime
+  unassignedAt DateTime?
+
+  status ReviewCardAssignmentStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([reviewCardId])
+  @@index([businessId])
+  @@index([status])
+}

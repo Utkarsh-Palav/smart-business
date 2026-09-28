@@ -1,0 +1,75 @@
+model Plan {
+  id String @id @default(cuid())
+
+  name String
+  slug String @unique
+  description String?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  entitlements PlanEntitlement[]
+  subscriptions Subscription[]
+}
+
+model PlanEntitlement {
+  id String @id @default(cuid())
+
+  planId String
+  plan   Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  key String
+  value String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([planId, key])
+  @@index([key])
+}
+
+model Subscription {
+  id String @id @default(cuid())
+
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Restrict)
+
+  planId String
+  plan   Plan @relation(fields: [planId], references: [id], onDelete: Restrict)
+
+  status SubscriptionStatus @default(TRIAL)
+
+  currentPeriodStart DateTime?
+  currentPeriodEnd DateTime?
+
+  cancelAtPeriodEnd Boolean @default(false)
+  canceledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  events SubscriptionEvent[]
+
+  @@index([businessId])
+  @@index([planId])
+  @@index([status])
+}
+
+model SubscriptionEvent {
+  id String @id @default(cuid())
+
+  subscriptionId String
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  type SubscriptionEventType
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([subscriptionId])
+  @@index([type])
+  @@index([createdAt])
+}

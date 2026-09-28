@@ -1,0 +1,22 @@
+model TableRoute {
+  id String @id @default(cuid())
+
+  token String @unique
+
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Restrict)
+
+  tenantKey String
+
+  tableId String
+
+  status PublicRouteStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([businessId])
+  @@index([tenantKey])
+  @@index([tableId])
+  @@index([status])
+}

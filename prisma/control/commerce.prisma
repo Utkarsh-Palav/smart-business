@@ -1,0 +1,174 @@
+model CatalogProduct {
+    id String @id @default(cuid())
+
+    name        String
+    slug        String  @unique
+    description String?
+
+    type CatalogProductType
+
+    isActive Boolean @default(true)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    prices ProductPrice[]
+
+    purchaseOrderItems PurchaseOrderItem[]
+
+    @@index([type])
+    @@index([isActive])
+}
+
+model ProductPrice {
+    id String @id @default(cuid())
+
+    productId String
+    product   CatalogProduct @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+    currency    String @default("INR")
+    amountMinor Int
+
+    validFrom DateTime
+    validTo   DateTime?
+
+    createdAt DateTime @default(now())
+
+    @@index([productId])
+    @@index([validFrom])
+}
+
+model PurchaseOrder {
+    id String @id @default(cuid())
+
+    businessId String
+    business   Business @relation(fields: [businessId], references: [id], onDelete: Restrict)
+
+    orderNumber String @unique
+
+    status PurchaseOrderStatus @default(PENDING_PAYMENT)
+
+    subtotalMinor Int
+    taxMinor      Int @default(0)
+    discountMinor Int @default(0)
+    totalMinor    Int
+
+    currency String @default("INR")
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    items PurchaseOrderItem[]
+
+    payments Payment[]
+
+    invoices Invoice[]
+
+    @@index([businessId])
+    @@index([status])
+    @@index([createdAt])
+}
+
+model PurchaseOrderItem {
+    id String @id @default(cuid())
+
+    purchaseOrderId String
+    purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+
+    productId String
+    product   CatalogProduct @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+    quantity Int
+
+    unitPriceMinor Int
+    totalMinor     Int
+
+    createdAt DateTime @default(now())
+
+    @@index([purchaseOrderId])
+    @@index([productId])
+}
+
+model Payment {
+    id String @id @default(cuid())
+
+    purchaseOrderId String
+    purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Restrict)
+
+    provider PaymentProvider
+
+    providerPaymentId String? @unique
+
+    status PaymentStatus @default(PENDING)
+
+    amountMinor Int
+    currency    String @default("INR")
+
+    paidAt DateTime?
+
+    metadata Json?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    refunds Refund[]
+
+    @@index([purchaseOrderId])
+    @@index([status])
+    @@index([provider])
+    @@index([createdAt])
+}
+
+model Refund {
+    id String @id @default(cuid())
+
+    paymentId String
+    payment   Payment @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+
+    providerRefundId String? @unique
+
+    status RefundStatus @default(PENDING)
+
+    amountMinor Int
+    currency    String @default("INR")
+
+    reason String?
+
+    processedAt DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([paymentId])
+    @@index([status])
+}
+
+model Invoice {
+    id String @id @default(cuid())
+
+    purchaseOrderId String
+    purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Restrict)
+
+    invoiceNumber String @unique
+
+    status InvoiceStatus @default(DRAFT)
+
+    subtotalMinor Int
+    taxMinor      Int @default(0)
+    discountMinor Int @default(0)
+    totalMinor    Int
+
+    currency String @default("INR")
+
+    issuedAt DateTime?
+    dueAt    DateTime?
+
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+    business   Business? @relation(fields: [businessId], references: [id])
+    businessId String?
+
+    @@index([purchaseOrderId])
+    @@index([status])
+    @@index([createdAt])
+}

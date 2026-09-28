@@ -1,0 +1,27 @@
+model Business {
+    id String @id @default(cuid())
+
+    name String
+    slug String @unique
+
+    status BusinessStatus @default(ACTIVE)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    tenantDatabase TenantDatabase?
+
+    memberships BusinessMembership[]
+
+    subscriptions Subscription[]
+
+    purchaseOrders PurchaseOrder[]
+
+    invoices Invoice[]
+
+    reviewCardAssignments ReviewCardAssignment[]
+
+    tableRoutes TableRoute[]
+    
+    @@index([status])
+}

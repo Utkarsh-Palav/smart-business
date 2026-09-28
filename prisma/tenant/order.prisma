@@ -1,0 +1,65 @@
+model Order {
+    id String @id @default(cuid())
+
+    orderNumber String @unique
+
+    locationId String
+    location   Location @relation(fields: [locationId], references: [id], onDelete: Restrict)
+
+    tableId String?
+    table   Table?  @relation(fields: [tableId, locationId], references: [id, locationId], onDelete: Restrict)
+
+    source OrderSource
+    status OrderStatus @default(PENDING)
+
+    subtotalMinor Int
+    discountMinor Int @default(0)
+    taxMinor      Int @default(0)
+    totalMinor    Int
+
+    currency String @default("INR")
+
+    customerName  String?
+    customerPhone String?
+
+    notes String?
+
+    placedAt    DateTime  @default(now())
+    acceptedAt  DateTime?
+    completedAt DateTime?
+    canceledAt  DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    items OrderItem[]
+
+    @@index([locationId])
+    @@index([locationId, status])
+    @@index([tableId])
+    @@index([source])
+    @@index([createdAt])
+}
+
+model OrderItem {
+    id String @id @default(cuid())
+
+    orderId String
+    order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+    productId String
+    product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+    productName    String
+    unitPriceMinor Int
+    quantity       Int
+    totalMinor     Int
+
+    notes String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([orderId])
+    @@index([productId])
+}

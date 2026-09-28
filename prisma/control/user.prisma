@@ -1,0 +1,69 @@
+model User {
+  id String @id @default(cuid())
+
+  email           String  @unique
+  phone           String? @unique
+  passwordHash    String?
+  isEmailVerified Boolean @default(false)
+  isPhoneVerified Boolean @default(false)
+
+  status UserStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships   BusinessMembership[]
+  otpChallenges OtpChallenge[]
+  authSessions  AuthSession[]
+
+  @@index([status])
+}
+
+model OtpChallenge {
+  id String @id @default(cuid())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  channel    OtpChannel
+  identifier String
+
+  codeHash String
+
+  expiresAt  DateTime
+  verifiedAt DateTime?
+
+  attempts    Int @default(0)
+  maxAttempts Int @default(5)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([identifier, channel, createdAt])
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model AuthSession {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  refreshTokenHash String @unique
+
+  expiresAt DateTime
+
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime?
+
+  revokedAt     DateTime?
+  revokedReason String?
+
+  userAgent String?
+  ipAddress String?
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([revokedAt])
+}
