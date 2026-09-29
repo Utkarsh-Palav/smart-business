@@ -7,7 +7,9 @@ export interface TenantDatabaseProvider {
     input: ProvisionTenantDatabaseInput,
   ): Promise<ProvisionedTenantDatabase>;
 
-  get(neonProjectId: string): Promise<ProvisionedTenantDatabase | null>;
+  get(
+    input: GetTenantDatabaseInput,
+  ): Promise<ProvisionedTenantDatabase | null>;
 
   destroy(neonProjectId: string): Promise<void>;
 }
@@ -16,4 +18,9 @@ export type ProvisionTenantDatabaseInput = {
   tenantKey: string;
   businessName: string;
   databaseName: string;
+};
+
+export type GetTenantDatabaseInput = ProvisionTenantDatabaseInput & {
+  neonProjectId: string;
+  neonBranchId: string | null;
 };

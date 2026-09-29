@@ -39,6 +39,8 @@ export type TenantDatabaseMinAggregateOutputType = {
   provisionedAt: Date | null
   lastMigrationAt: Date | null
   lastProvisioningError: string | null
+  provisioningLeaseId: string | null
+  provisioningLeaseExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -58,6 +60,8 @@ export type TenantDatabaseMaxAggregateOutputType = {
   provisionedAt: Date | null
   lastMigrationAt: Date | null
   lastProvisioningError: string | null
+  provisioningLeaseId: string | null
+  provisioningLeaseExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -77,6 +81,8 @@ export type TenantDatabaseCountAggregateOutputType = {
   provisionedAt: number
   lastMigrationAt: number
   lastProvisioningError: number
+  provisioningLeaseId: number
+  provisioningLeaseExpiresAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -98,6 +104,8 @@ export type TenantDatabaseMinAggregateInputType = {
   provisionedAt?: true
   lastMigrationAt?: true
   lastProvisioningError?: true
+  provisioningLeaseId?: true
+  provisioningLeaseExpiresAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -117,6 +125,8 @@ export type TenantDatabaseMaxAggregateInputType = {
   provisionedAt?: true
   lastMigrationAt?: true
   lastProvisioningError?: true
+  provisioningLeaseId?: true
+  provisioningLeaseExpiresAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -136,6 +146,8 @@ export type TenantDatabaseCountAggregateInputType = {
   provisionedAt?: true
   lastMigrationAt?: true
   lastProvisioningError?: true
+  provisioningLeaseId?: true
+  provisioningLeaseExpiresAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -221,13 +233,15 @@ export type TenantDatabaseGroupByOutputType = {
   neonProjectId: string | null
   neonBranchId: string | null
   databaseName: string
-  databaseHost: string
+  databaseHost: string | null
   connectionSecretRef: string | null
   status: $Enums.TenantDatabaseStatus
   schemaVersion: string | null
   provisionedAt: Date | null
   lastMigrationAt: Date | null
   lastProvisioningError: string | null
+  provisioningLeaseId: string | null
+  provisioningLeaseExpiresAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: TenantDatabaseCountAggregateOutputType | null
@@ -261,13 +275,15 @@ export type TenantDatabaseWhereInput = {
   neonProjectId?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
   neonBranchId?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
   databaseName?: Prisma.StringFilter<"TenantDatabase"> | string
-  databaseHost?: Prisma.StringFilter<"TenantDatabase"> | string
+  databaseHost?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
   connectionSecretRef?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
   status?: Prisma.EnumTenantDatabaseStatusFilter<"TenantDatabase"> | $Enums.TenantDatabaseStatus
   schemaVersion?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
   provisionedAt?: Prisma.DateTimeNullableFilter<"TenantDatabase"> | Date | string | null
   lastMigrationAt?: Prisma.DateTimeNullableFilter<"TenantDatabase"> | Date | string | null
   lastProvisioningError?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
+  provisioningLeaseId?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
+  provisioningLeaseExpiresAt?: Prisma.DateTimeNullableFilter<"TenantDatabase"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TenantDatabase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TenantDatabase"> | Date | string
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
@@ -281,13 +297,15 @@ export type TenantDatabaseOrderByWithRelationInput = {
   neonProjectId?: Prisma.SortOrderInput | Prisma.SortOrder
   neonBranchId?: Prisma.SortOrderInput | Prisma.SortOrder
   databaseName?: Prisma.SortOrder
-  databaseHost?: Prisma.SortOrder
+  databaseHost?: Prisma.SortOrderInput | Prisma.SortOrder
   connectionSecretRef?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   schemaVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   provisionedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastMigrationAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastProvisioningError?: Prisma.SortOrderInput | Prisma.SortOrder
+  provisioningLeaseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  provisioningLeaseExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   business?: Prisma.BusinessOrderByWithRelationInput
@@ -304,13 +322,15 @@ export type TenantDatabaseWhereUniqueInput = Prisma.AtLeast<{
   neonProjectId?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
   neonBranchId?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
   databaseName?: Prisma.StringFilter<"TenantDatabase"> | string
-  databaseHost?: Prisma.StringFilter<"TenantDatabase"> | string
+  databaseHost?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
   connectionSecretRef?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
   status?: Prisma.EnumTenantDatabaseStatusFilter<"TenantDatabase"> | $Enums.TenantDatabaseStatus
   schemaVersion?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
   provisionedAt?: Prisma.DateTimeNullableFilter<"TenantDatabase"> | Date | string | null
   lastMigrationAt?: Prisma.DateTimeNullableFilter<"TenantDatabase"> | Date | string | null
   lastProvisioningError?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
+  provisioningLeaseId?: Prisma.StringNullableFilter<"TenantDatabase"> | string | null
+  provisioningLeaseExpiresAt?: Prisma.DateTimeNullableFilter<"TenantDatabase"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TenantDatabase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TenantDatabase"> | Date | string
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
@@ -324,13 +344,15 @@ export type TenantDatabaseOrderByWithAggregationInput = {
   neonProjectId?: Prisma.SortOrderInput | Prisma.SortOrder
   neonBranchId?: Prisma.SortOrderInput | Prisma.SortOrder
   databaseName?: Prisma.SortOrder
-  databaseHost?: Prisma.SortOrder
+  databaseHost?: Prisma.SortOrderInput | Prisma.SortOrder
   connectionSecretRef?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   schemaVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   provisionedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastMigrationAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastProvisioningError?: Prisma.SortOrderInput | Prisma.SortOrder
+  provisioningLeaseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  provisioningLeaseExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TenantDatabaseCountOrderByAggregateInput
@@ -349,13 +371,15 @@ export type TenantDatabaseScalarWhereWithAggregatesInput = {
   neonProjectId?: Prisma.StringNullableWithAggregatesFilter<"TenantDatabase"> | string | null
   neonBranchId?: Prisma.StringNullableWithAggregatesFilter<"TenantDatabase"> | string | null
   databaseName?: Prisma.StringWithAggregatesFilter<"TenantDatabase"> | string
-  databaseHost?: Prisma.StringWithAggregatesFilter<"TenantDatabase"> | string
+  databaseHost?: Prisma.StringNullableWithAggregatesFilter<"TenantDatabase"> | string | null
   connectionSecretRef?: Prisma.StringNullableWithAggregatesFilter<"TenantDatabase"> | string | null
   status?: Prisma.EnumTenantDatabaseStatusWithAggregatesFilter<"TenantDatabase"> | $Enums.TenantDatabaseStatus
   schemaVersion?: Prisma.StringNullableWithAggregatesFilter<"TenantDatabase"> | string | null
   provisionedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TenantDatabase"> | Date | string | null
   lastMigrationAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TenantDatabase"> | Date | string | null
   lastProvisioningError?: Prisma.StringNullableWithAggregatesFilter<"TenantDatabase"> | string | null
+  provisioningLeaseId?: Prisma.StringNullableWithAggregatesFilter<"TenantDatabase"> | string | null
+  provisioningLeaseExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TenantDatabase"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TenantDatabase"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TenantDatabase"> | Date | string
 }
@@ -367,13 +391,15 @@ export type TenantDatabaseCreateInput = {
   neonProjectId?: string | null
   neonBranchId?: string | null
   databaseName: string
-  databaseHost: string
+  databaseHost?: string | null
   connectionSecretRef?: string | null
   status?: $Enums.TenantDatabaseStatus
   schemaVersion?: string | null
   provisionedAt?: Date | string | null
   lastMigrationAt?: Date | string | null
   lastProvisioningError?: string | null
+  provisioningLeaseId?: string | null
+  provisioningLeaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   business: Prisma.BusinessCreateNestedOneWithoutTenantDatabaseInput
@@ -387,13 +413,15 @@ export type TenantDatabaseUncheckedCreateInput = {
   neonProjectId?: string | null
   neonBranchId?: string | null
   databaseName: string
-  databaseHost: string
+  databaseHost?: string | null
   connectionSecretRef?: string | null
   status?: $Enums.TenantDatabaseStatus
   schemaVersion?: string | null
   provisionedAt?: Date | string | null
   lastMigrationAt?: Date | string | null
   lastProvisioningError?: string | null
+  provisioningLeaseId?: string | null
+  provisioningLeaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -405,13 +433,15 @@ export type TenantDatabaseUpdateInput = {
   neonProjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   neonBranchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   databaseName?: Prisma.StringFieldUpdateOperationsInput | string
-  databaseHost?: Prisma.StringFieldUpdateOperationsInput | string
+  databaseHost?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectionSecretRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
   schemaVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provisionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastMigrationAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastProvisioningError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   business?: Prisma.BusinessUpdateOneRequiredWithoutTenantDatabaseNestedInput
@@ -425,13 +455,15 @@ export type TenantDatabaseUncheckedUpdateInput = {
   neonProjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   neonBranchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   databaseName?: Prisma.StringFieldUpdateOperationsInput | string
-  databaseHost?: Prisma.StringFieldUpdateOperationsInput | string
+  databaseHost?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectionSecretRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
   schemaVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provisionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastMigrationAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastProvisioningError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -444,13 +476,15 @@ export type TenantDatabaseCreateManyInput = {
   neonProjectId?: string | null
   neonBranchId?: string | null
   databaseName: string
-  databaseHost: string
+  databaseHost?: string | null
   connectionSecretRef?: string | null
   status?: $Enums.TenantDatabaseStatus
   schemaVersion?: string | null
   provisionedAt?: Date | string | null
   lastMigrationAt?: Date | string | null
   lastProvisioningError?: string | null
+  provisioningLeaseId?: string | null
+  provisioningLeaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -462,13 +496,15 @@ export type TenantDatabaseUpdateManyMutationInput = {
   neonProjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   neonBranchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   databaseName?: Prisma.StringFieldUpdateOperationsInput | string
-  databaseHost?: Prisma.StringFieldUpdateOperationsInput | string
+  databaseHost?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectionSecretRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
   schemaVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provisionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastMigrationAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastProvisioningError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -481,13 +517,15 @@ export type TenantDatabaseUncheckedUpdateManyInput = {
   neonProjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   neonBranchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   databaseName?: Prisma.StringFieldUpdateOperationsInput | string
-  databaseHost?: Prisma.StringFieldUpdateOperationsInput | string
+  databaseHost?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectionSecretRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
   schemaVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provisionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastMigrationAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastProvisioningError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -512,6 +550,8 @@ export type TenantDatabaseCountOrderByAggregateInput = {
   provisionedAt?: Prisma.SortOrder
   lastMigrationAt?: Prisma.SortOrder
   lastProvisioningError?: Prisma.SortOrder
+  provisioningLeaseId?: Prisma.SortOrder
+  provisioningLeaseExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -531,6 +571,8 @@ export type TenantDatabaseMaxOrderByAggregateInput = {
   provisionedAt?: Prisma.SortOrder
   lastMigrationAt?: Prisma.SortOrder
   lastProvisioningError?: Prisma.SortOrder
+  provisioningLeaseId?: Prisma.SortOrder
+  provisioningLeaseExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -550,6 +592,8 @@ export type TenantDatabaseMinOrderByAggregateInput = {
   provisionedAt?: Prisma.SortOrder
   lastMigrationAt?: Prisma.SortOrder
   lastProvisioningError?: Prisma.SortOrder
+  provisioningLeaseId?: Prisma.SortOrder
+  provisioningLeaseExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -601,13 +645,15 @@ export type TenantDatabaseCreateWithoutBusinessInput = {
   neonProjectId?: string | null
   neonBranchId?: string | null
   databaseName: string
-  databaseHost: string
+  databaseHost?: string | null
   connectionSecretRef?: string | null
   status?: $Enums.TenantDatabaseStatus
   schemaVersion?: string | null
   provisionedAt?: Date | string | null
   lastMigrationAt?: Date | string | null
   lastProvisioningError?: string | null
+  provisioningLeaseId?: string | null
+  provisioningLeaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -619,13 +665,15 @@ export type TenantDatabaseUncheckedCreateWithoutBusinessInput = {
   neonProjectId?: string | null
   neonBranchId?: string | null
   databaseName: string
-  databaseHost: string
+  databaseHost?: string | null
   connectionSecretRef?: string | null
   status?: $Enums.TenantDatabaseStatus
   schemaVersion?: string | null
   provisionedAt?: Date | string | null
   lastMigrationAt?: Date | string | null
   lastProvisioningError?: string | null
+  provisioningLeaseId?: string | null
+  provisioningLeaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -653,13 +701,15 @@ export type TenantDatabaseUpdateWithoutBusinessInput = {
   neonProjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   neonBranchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   databaseName?: Prisma.StringFieldUpdateOperationsInput | string
-  databaseHost?: Prisma.StringFieldUpdateOperationsInput | string
+  databaseHost?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectionSecretRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
   schemaVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provisionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastMigrationAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastProvisioningError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -671,13 +721,15 @@ export type TenantDatabaseUncheckedUpdateWithoutBusinessInput = {
   neonProjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   neonBranchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   databaseName?: Prisma.StringFieldUpdateOperationsInput | string
-  databaseHost?: Prisma.StringFieldUpdateOperationsInput | string
+  databaseHost?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectionSecretRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
   schemaVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provisionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastMigrationAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastProvisioningError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provisioningLeaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -699,6 +751,8 @@ export type TenantDatabaseSelect<ExtArgs extends runtime.Types.Extensions.Intern
   provisionedAt?: boolean
   lastMigrationAt?: boolean
   lastProvisioningError?: boolean
+  provisioningLeaseId?: boolean
+  provisioningLeaseExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
@@ -719,6 +773,8 @@ export type TenantDatabaseSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   provisionedAt?: boolean
   lastMigrationAt?: boolean
   lastProvisioningError?: boolean
+  provisioningLeaseId?: boolean
+  provisioningLeaseExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
@@ -739,6 +795,8 @@ export type TenantDatabaseSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   provisionedAt?: boolean
   lastMigrationAt?: boolean
   lastProvisioningError?: boolean
+  provisioningLeaseId?: boolean
+  provisioningLeaseExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
@@ -759,11 +817,13 @@ export type TenantDatabaseSelectScalar = {
   provisionedAt?: boolean
   lastMigrationAt?: boolean
   lastProvisioningError?: boolean
+  provisioningLeaseId?: boolean
+  provisioningLeaseExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TenantDatabaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "tenantKey" | "provider" | "neonProjectId" | "neonBranchId" | "databaseName" | "databaseHost" | "connectionSecretRef" | "status" | "schemaVersion" | "provisionedAt" | "lastMigrationAt" | "lastProvisioningError" | "createdAt" | "updatedAt", ExtArgs["result"]["tenantDatabase"]>
+export type TenantDatabaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "tenantKey" | "provider" | "neonProjectId" | "neonBranchId" | "databaseName" | "databaseHost" | "connectionSecretRef" | "status" | "schemaVersion" | "provisionedAt" | "lastMigrationAt" | "lastProvisioningError" | "provisioningLeaseId" | "provisioningLeaseExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["tenantDatabase"]>
 export type TenantDatabaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }
@@ -787,13 +847,15 @@ export type $TenantDatabasePayload<ExtArgs extends runtime.Types.Extensions.Inte
     neonProjectId: string | null
     neonBranchId: string | null
     databaseName: string
-    databaseHost: string
+    databaseHost: string | null
     connectionSecretRef: string | null
     status: $Enums.TenantDatabaseStatus
     schemaVersion: string | null
     provisionedAt: Date | null
     lastMigrationAt: Date | null
     lastProvisioningError: string | null
+    provisioningLeaseId: string | null
+    provisioningLeaseExpiresAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["tenantDatabase"]>
@@ -1234,6 +1296,8 @@ export interface TenantDatabaseFieldRefs {
   readonly provisionedAt: Prisma.FieldRef<"TenantDatabase", 'DateTime'>
   readonly lastMigrationAt: Prisma.FieldRef<"TenantDatabase", 'DateTime'>
   readonly lastProvisioningError: Prisma.FieldRef<"TenantDatabase", 'String'>
+  readonly provisioningLeaseId: Prisma.FieldRef<"TenantDatabase", 'String'>
+  readonly provisioningLeaseExpiresAt: Prisma.FieldRef<"TenantDatabase", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"TenantDatabase", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TenantDatabase", 'DateTime'>
 }

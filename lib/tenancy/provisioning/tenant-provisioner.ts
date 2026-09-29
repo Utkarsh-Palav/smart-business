@@ -1,6 +1,6 @@
 import "server-only";
 
-import { randomBytes } from "node:crypto";
+import { randomUUID } from "node:crypto";
 
 import { controlPrisma } from "@/lib/db/control";
 
@@ -8,11 +8,12 @@ import type { TenantDatabaseProvider } from "./database-provider";
 import type { TenantMigrationRunner } from "./migration-runner";
 import type { TenantSecretManager } from "./secret-manager";
 import type { TenantHealthVerifier } from "./health-verifier";
-import { Prisma } from "@/generated/control/client";
+
+const PROVISIONING_LEASE_DURATION_MS = 5 * 60 * 1000;
+const PROVISIONING_LEASE_RENEWAL_MS = 60 * 1000;
 
 export type ProvisionTenantInput = {
   businessId: string;
-  businessName: string;
 };
 
 export type ProvisionTenantResult = {
@@ -44,6 +45,18 @@ export class TenantProvisioningConflictError extends Error {
   }
 }
 
+export class TenantProvisioningStateError extends Error {
+  constructor(
+    message: string,
+    public readonly businessId: string,
+    public readonly tenantDatabaseId: string,
+    options?: ErrorOptions,
+  ) {
+    super(message, options);
+    this.name = "TenantProvisioningStateError";
+  }
+}
+
 export class TenantProvisioner {
   constructor(
     private readonly databaseProvider: TenantDatabaseProvider,
@@ -51,6 +64,16 @@ export class TenantProvisioner {
     private readonly secretManager: TenantSecretManager,
     private readonly healthVerifier: TenantHealthVerifier,
   ) {}
+
+  async getTenantDatabaseStatus(businessId: string) {
+    return controlPrisma.tenantDatabase.findUnique({
+      where: { businessId },
+      select: {
+        id: true,
+        status: true,
+      },
+    });
+  }
 
   async provision(input: ProvisionTenantInput): Promise<ProvisionTenantResult> {
     const business = await controlPrisma.business.findUnique({
@@ -63,6 +86,10 @@ export class TenantProvisioner {
         tenantDatabase: {
           select: {
             id: true,
+            tenantKey: true,
+            databaseName: true,
+            neonProjectId: true,
+            neonBranchId: true,
             status: true,
           },
         },
@@ -76,127 +103,96 @@ export class TenantProvisioner {
       );
     }
 
-    /**
-     * Fast application-level check.
-     *
-     * The database UNIQUE constraint on
-     * TenantDatabase.businessId remains the final
-     * concurrency protection.
-     */
-    if (business.tenantDatabase) {
-      throw new TenantProvisioningConflictError(
-        `Business "${input.businessId}" already has tenant database "${business.tenantDatabase.id}" with status "${business.tenantDatabase.status}"`,
+    const tenantDatabase = business.tenantDatabase;
+
+    if (!tenantDatabase) {
+      throw new TenantProvisioningError(
+        `Business "${business.id}" does not have a TenantDatabase record`,
         business.id,
       );
     }
 
-    const tenantKey = this.generateTenantKey();
+    if (
+      tenantDatabase.status !== "PROVISIONING" &&
+      tenantDatabase.status !== "FAILED"
+    ) {
+      throw new TenantProvisioningConflictError(
+        `Tenant database "${tenantDatabase.id}" cannot be provisioned from status "${tenantDatabase.status}"`,
+        business.id,
+      );
+    }
 
-    let tenantDatabase;
+    const leaseId = randomUUID();
+    await this.claimProvisioningLease(tenantDatabase.id, business.id, leaseId);
 
-    /**
-     * The UNIQUE constraint on businessId protects
-     * against two concurrent provisioning requests.
-     */
+    const lease = this.startLeaseHeartbeat(
+      tenantDatabase.id,
+      business.id,
+      leaseId,
+    );
+    let stage = "Neon provisioning";
+
     try {
-      tenantDatabase = await controlPrisma.tenantDatabase.create({
-        data: {
-          businessId: business.id,
-          tenantKey,
-          databaseName: this.generateDatabaseName(tenantKey),
-          databaseHost: "pending",
-          status: "PROVISIONING",
-        },
-        select: {
-          id: true,
-          tenantKey: true,
-          databaseName: true,
-        },
-      });
-    } catch (error) {
-      if (this.isUniqueConstraintViolation(error)) {
-        throw new TenantProvisioningConflictError(
-          `Business "${business.id}" is already being provisioned`,
-          business.id,
+      const providerInput = {
+        tenantKey: tenantDatabase.tenantKey,
+        businessName: business.name,
+        databaseName: tenantDatabase.databaseName,
+      };
+
+      await lease.assertOwned();
+      const provisioned = tenantDatabase.neonProjectId
+        ? await this.databaseProvider.get({
+            ...providerInput,
+            neonProjectId: tenantDatabase.neonProjectId,
+            neonBranchId: tenantDatabase.neonBranchId,
+          })
+        : await this.databaseProvider.provision(providerInput);
+
+      if (!provisioned) {
+        throw new Error(
+          `Neon project "${tenantDatabase.neonProjectId}" could not be recovered`,
         );
       }
 
-      throw error;
-    }
-
-    try {
-      /**
-       * Step 1:
-       * Provision the physical tenant database.
-       */
-      const provisioned = await this.databaseProvider.provision({
-        tenantKey,
-        businessName: business.name,
-        databaseName: tenantDatabase.databaseName,
+      stage = "Control DB metadata persistence";
+      await this.updateOwnedTenantDatabase(tenantDatabase.id, leaseId, {
+        neonProjectId: provisioned.neonProjectId,
+        neonBranchId: provisioned.neonBranchId,
+        databaseHost: provisioned.databaseHost,
+        databaseName: provisioned.databaseName,
       });
 
-      /**
-       * Step 2:
-       * Persist Neon infrastructure details
-       * immediately after successful provisioning.
-       */
-      await controlPrisma.tenantDatabase.update({
-        where: {
-          id: tenantDatabase.id,
-        },
-        data: {
-          neonProjectId: provisioned.neonProjectId,
-          neonBranchId: provisioned.neonBranchId,
-          databaseHost: provisioned.databaseHost,
-          databaseName: provisioned.databaseName,
-        },
-      });
-
-      /**
-       * Step 3:
-       * Apply tenant database migrations.
-       */
+      stage = "tenant migration";
+      await lease.assertOwned();
       await this.migrationRunner.migrate(
         provisioned.credentials.connectionString,
       );
 
-      await controlPrisma.tenantDatabase.update({
-        where: {
-          id: tenantDatabase.id,
-        },
-        data: {
-          lastMigrationAt: new Date(),
-        },
+      await this.updateOwnedTenantDatabase(tenantDatabase.id, leaseId, {
+        lastMigrationAt: new Date(),
       });
 
-      /**
-       * Step 4:
-       * Store the tenant database connection
-       * securely in Infisical.
-       */
+      stage = "Infisical secret storage";
+      await lease.assertOwned();
       const secretRef = await this.secretManager.setDatabaseUrl(
-        tenantKey,
+        tenantDatabase.tenantKey,
         provisioned.credentials.connectionString,
       );
 
-      /**
-       * Step 5:
-       * Verify that the newly migrated database
-       * is reachable.
-       */
+      stage = "tenant health verification";
+      await lease.assertOwned();
       await this.healthVerifier.verify(
         provisioned.credentials.connectionString,
       );
 
-      /**
-       * Step 6:
-       * Tenant provisioning completed successfully.
-       */
+      stage = "tenant activation";
       const now = new Date();
 
-      const updated = await controlPrisma.tenantDatabase.update({
+      const activated = await controlPrisma.tenantDatabase.updateMany({
         where: {
           id: tenantDatabase.id,
+          status: "PROVISIONING",
+          provisioningLeaseId: leaseId,
         },
         data: {
           connectionSecretRef: secretRef,
@@ -205,64 +201,200 @@ export class TenantProvisioner {
           provisionedAt: now,
           lastMigrationAt: now,
           lastProvisioningError: null,
-        },
-        select: {
-          businessId: true,
-          id: true,
-          tenantKey: true,
-          status: true,
+          provisioningLeaseId: null,
+          provisioningLeaseExpiresAt: null,
         },
       });
 
+      if (activated.count !== 1) {
+        throw new TenantProvisioningStateError(
+          "Tenant provisioning lease was lost before activation.",
+          business.id,
+          tenantDatabase.id,
+        );
+      }
+
       return {
-        businessId: updated.businessId,
-        tenantDatabaseId: updated.id,
-        tenantKey: updated.tenantKey,
+        businessId: business.id,
+        tenantDatabaseId: tenantDatabase.id,
+        tenantKey: tenantDatabase.tenantKey,
         status: "ACTIVE",
       };
     } catch (error) {
-      /**
-       * Provisioning failed after the TenantDatabase
-       * record was created.
-       *
-       * Do not automatically destroy external
-       * infrastructure yet.
-       */
-      const message = error instanceof Error ? error.message : String(error);
-      
-      await controlPrisma.tenantDatabase.update({
-        where: {
-          id: tenantDatabase.id,
-        },
-        data: {
-          status: "FAILED",
-          lastProvisioningError: message,
-        },
-      });
+      try {
+        const failed = await controlPrisma.tenantDatabase.updateMany({
+          where: {
+            id: tenantDatabase.id,
+            status: "PROVISIONING",
+            provisioningLeaseId: leaseId,
+          },
+          data: {
+            status: "FAILED",
+            lastProvisioningError: `Tenant provisioning failed during ${stage}.`,
+            provisioningLeaseId: null,
+            provisioningLeaseExpiresAt: null,
+          },
+        });
+
+        if (failed.count !== 1) {
+          throw new TenantProvisioningStateError(
+            "Tenant provisioning outcome could not be persisted.",
+            business.id,
+            tenantDatabase.id,
+            { cause: error },
+          );
+        }
+      } catch (persistenceError) {
+        throw new TenantProvisioningStateError(
+          "Tenant provisioning outcome could not be verified.",
+          business.id,
+          tenantDatabase.id,
+          { cause: persistenceError },
+        );
+      }
 
       throw new TenantProvisioningError(
-        `Tenant provisioning failed: ${message}`,
+        "Tenant provisioning failed.",
         business.id,
         tenantDatabase.id,
         {
           cause: error,
         },
       );
+    } finally {
+      lease.stop();
     }
   }
 
-  private generateTenantKey(): string {
-    return `ten_${randomBytes(12).toString("hex")}`;
+  private async claimProvisioningLease(
+    tenantDatabaseId: string,
+    businessId: string,
+    leaseId: string,
+  ): Promise<void> {
+    const now = new Date();
+    const claim = await controlPrisma.tenantDatabase.updateMany({
+      where: {
+        id: tenantDatabaseId,
+        OR: [
+          { status: "FAILED" },
+          {
+            status: "PROVISIONING",
+            OR: [
+              { provisioningLeaseExpiresAt: null },
+              { provisioningLeaseExpiresAt: { lte: now } },
+            ],
+          },
+        ],
+      },
+      data: {
+        status: "PROVISIONING",
+        lastProvisioningError: null,
+        provisioningLeaseId: leaseId,
+        provisioningLeaseExpiresAt: new Date(
+          now.getTime() + PROVISIONING_LEASE_DURATION_MS,
+        ),
+      },
+    });
+
+    if (claim.count !== 1) {
+      throw new TenantProvisioningConflictError(
+        `Tenant database "${tenantDatabaseId}" is already being provisioned or is not retryable.`,
+        businessId,
+      );
+    }
   }
 
-  private generateDatabaseName(tenantKey: string): string {
-    return `tenant_${tenantKey.replace(/^ten_/, "")}`;
+  private startLeaseHeartbeat(
+    tenantDatabaseId: string,
+    businessId: string,
+    leaseId: string,
+  ) {
+    let renewalError: unknown;
+    let renewing = false;
+
+    const renew = async () => {
+      if (renewing) {
+        return;
+      }
+
+      renewing = true;
+
+      try {
+        const renewed = await controlPrisma.tenantDatabase.updateMany({
+          where: {
+            id: tenantDatabaseId,
+            status: "PROVISIONING",
+            provisioningLeaseId: leaseId,
+          },
+          data: {
+            provisioningLeaseExpiresAt: new Date(
+              Date.now() + PROVISIONING_LEASE_DURATION_MS,
+            ),
+          },
+        });
+
+        if (renewed.count !== 1) {
+          renewalError = new TenantProvisioningStateError(
+            "Tenant provisioning lease was lost.",
+            businessId,
+            tenantDatabaseId,
+          );
+        }
+      } catch (error) {
+        renewalError = error;
+      } finally {
+        renewing = false;
+      }
+    };
+
+    const timer = setInterval(() => {
+      void renew();
+    }, PROVISIONING_LEASE_RENEWAL_MS);
+    timer.unref();
+
+    return {
+      assertOwned: async () => {
+        if (renewalError) {
+          throw renewalError;
+        }
+
+        await renew();
+
+        if (renewalError) {
+          throw renewalError;
+        }
+      },
+      stop: () => clearInterval(timer),
+    };
   }
 
-  private isUniqueConstraintViolation(error: unknown): boolean {
-    return (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    );
+  private async updateOwnedTenantDatabase(
+    tenantDatabaseId: string,
+    leaseId: string,
+    data: {
+      neonProjectId?: string;
+      neonBranchId?: string | null;
+      databaseHost?: string | null;
+      databaseName?: string;
+      lastMigrationAt?: Date;
+    },
+  ): Promise<void> {
+    const updated = await controlPrisma.tenantDatabase.updateMany({
+      where: {
+        id: tenantDatabaseId,
+        status: "PROVISIONING",
+        provisioningLeaseId: leaseId,
+      },
+      data,
+    });
+
+    if (updated.count !== 1) {
+      throw new TenantProvisioningStateError(
+        "Tenant provisioning lease was lost before Control DB persistence.",
+        "",
+        tenantDatabaseId,
+      );
+    }
   }
+
 }

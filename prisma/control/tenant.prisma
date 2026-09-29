@@ -12,7 +12,7 @@ model TenantDatabase {
     neonBranchId  String?
 
     databaseName        String
-    databaseHost        String
+    databaseHost        String?
     connectionSecretRef String?
 
     status TenantDatabaseStatus @default(PROVISIONING)
@@ -24,8 +24,12 @@ model TenantDatabase {
 
     lastProvisioningError String?
 
+    provisioningLeaseId        String?
+    provisioningLeaseExpiresAt DateTime?
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([status])
+    @@index([status, provisioningLeaseExpiresAt])
 }

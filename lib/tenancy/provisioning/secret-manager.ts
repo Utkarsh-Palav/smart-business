@@ -80,10 +80,9 @@ export class InfisicalTenantSecretManager implements TenantSecretManager {
     /**
      * Check whether the secret already exists.
      *
-     * We intentionally do not treat every update error
-     * as "secret not found", because authentication,
-     * permission, network, or Infisical errors must
-     * propagate normally.
+     * Only a confirmed missing-secret response may create
+     * a value. Authentication, permission, network, and
+     * other Infisical errors propagate normally.
      */
     try {
       await client.secrets().getSecret({
@@ -97,12 +96,6 @@ export class InfisicalTenantSecretManager implements TenantSecretManager {
       /**
        * Secret exists → update it.
        */
-      await client.secrets().updateSecret("DATABASE_URL", {
-        projectId,
-        environment,
-        secretPath,
-        secretValue: databaseUrl,
-      });
     } catch (error) {
       /**
        * If getSecret failed because the secret does not
@@ -113,6 +106,10 @@ export class InfisicalTenantSecretManager implements TenantSecretManager {
        * against the installed Infisical SDK before relying
        * on this branch in production.
        */
+      if (!this.isSecretNotFoundError(error)) {
+        throw error;
+      }
+
       await client.secrets().createSecret("DATABASE_URL", {
         projectId,
         environment,
@@ -122,5 +119,15 @@ export class InfisicalTenantSecretManager implements TenantSecretManager {
     }
 
     return `${secretPath}/DATABASE_URL`;
+  }
+
+  private isSecretNotFoundError(error: unknown): boolean {
+    return (
+      error instanceof Error &&
+      error.name === "InfisicalSDKRequestError" &&
+      /\[StatusCode=404\]\s+.*\bsecret\b.*\bnot found\b/i.test(
+        error.message,
+      )
+    );
   }
 }

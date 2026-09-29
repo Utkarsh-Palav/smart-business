@@ -13,7 +13,7 @@ export type TenantDatabaseCredentials = {
 export type ProvisionedTenantDatabase = {
   tenantKey: string;
   databaseName: string;
-  databaseHost: string;
+  databaseHost: string | null;
   neonProjectId: string;
   neonBranchId: string | null;
   credentials: TenantDatabaseCredentials;

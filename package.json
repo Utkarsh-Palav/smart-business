@@ -10,7 +10,8 @@
     "generate:controlDB": "pnpm prisma generate --config prisma/control.config.ts",
     "generate:tenantDB": "pnpm prisma generate --config prisma/tenant.config.ts",
     "migrate:controlDB": "pnpm prisma migrate dev --name init_control --config prisma/control.config.ts",
-    "migrate:tenantDB": "pnpm prisma migrate dev --name init_tenant --config prisma/tenant.config.ts"
+    "migrate:tenantDB": "pnpm prisma migrate dev --name init_tenant --config prisma/tenant.config.ts",
+    "seed:control": "tsx scripts/seed-control.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

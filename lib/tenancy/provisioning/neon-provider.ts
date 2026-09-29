@@ -3,6 +3,7 @@ import "server-only";
 import { createNeonClient } from "@neon/sdk";
 
 import type {
+  GetTenantDatabaseInput,
   ProvisionTenantDatabaseInput,
   TenantDatabaseProvider,
 } from "./database-provider";
@@ -28,6 +29,28 @@ export class NeonTenantDatabaseProvider implements TenantDatabaseProvider {
       apiKey,
     });
 
+    const existingProject = await this.findProjectByTenantKey(
+      neon,
+      orgId,
+      input.tenantKey,
+    );
+
+    if (existingProject) {
+      const recovered = await this.get({
+        ...input,
+        neonProjectId: existingProject.id,
+        neonBranchId: null,
+      });
+
+      if (!recovered) {
+        throw new Error(
+          `Neon project "${existingProject.id}" could not be recovered`,
+        );
+      }
+
+      return recovered;
+    }
+
     /**
      * 1. Create the Neon project.
      *
@@ -35,7 +58,7 @@ export class NeonTenantDatabaseProvider implements TenantDatabaseProvider {
      * a connection string for the project's default branch.
      */
     const { data, error } = await neon.projects.createAndConnect({
-      name: input.businessName,
+      name: this.getProjectName(input.tenantKey),
       org_id: orgId,
     });
 
@@ -95,15 +118,96 @@ export class NeonTenantDatabaseProvider implements TenantDatabaseProvider {
     };
   }
 
-  async get(neonProjectId: string): Promise<ProvisionedTenantDatabase | null> {
-    throw new Error(
-      `Neon project lookup is not implemented yet: ${neonProjectId}`,
-    );
+  async get(
+    input: GetTenantDatabaseInput,
+  ): Promise<ProvisionedTenantDatabase | null> {
+    const apiKey = process.env.NEON_API_KEY;
+
+    if (!apiKey) {
+      throw new Error("NEON_API_KEY is not configured");
+    }
+
+    const neon = createNeonClient({ apiKey });
+
+    const { data: branch, error: branchError } = input.neonBranchId
+      ? await neon.branches.get({
+          projectId: input.neonProjectId,
+          branchId: input.neonBranchId,
+        })
+      : await neon.branches.getDefault({
+          projectId: input.neonProjectId,
+        });
+
+    if (branchError) {
+      throw branchError;
+    }
+
+    if (!branch?.id) {
+      return null;
+    }
+
+    const { data: connectionString, error: connectionError } =
+      await neon.postgres.connectionString({
+        projectId: input.neonProjectId,
+        branchId: branch.id,
+      });
+
+    if (connectionError) {
+      throw connectionError;
+    }
+
+    if (!connectionString) {
+      return null;
+    }
+
+    return {
+      tenantKey: input.tenantKey,
+      databaseName: input.databaseName,
+      databaseHost: new URL(connectionString).hostname,
+      neonProjectId: input.neonProjectId,
+      neonBranchId: branch.id,
+      credentials: {
+        connectionString,
+      },
+    };
   }
 
   async destroy(neonProjectId: string): Promise<void> {
     throw new Error(
       `Neon project destruction is not implemented yet: ${neonProjectId}`,
     );
+  }
+
+  private getProjectName(tenantKey: string): string {
+    return `smart-business-${tenantKey}`;
+  }
+
+  private async findProjectByTenantKey(
+    neon: ReturnType<typeof createNeonClient>,
+    orgId: string,
+    tenantKey: string,
+  ) {
+    const projectResult = await neon.projects.list({ org_id: orgId }).all();
+    const projects = Array.isArray(projectResult)
+      ? projectResult
+      : (() => {
+          if (projectResult.error) {
+            throw projectResult.error;
+          }
+
+          return projectResult.data;
+        })();
+
+    const matches = projects.filter(
+      (project) => project.name === this.getProjectName(tenantKey),
+    );
+
+    if (matches.length > 1) {
+      throw new Error(
+        `Multiple Neon projects match tenant key "${tenantKey}".`,
+      );
+    }
+
+    return matches[0] ?? null;
   }
 }

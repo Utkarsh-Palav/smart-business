@@ -369,6 +369,8 @@ export const TenantDatabaseScalarFieldEnum = {
   provisionedAt: 'provisionedAt',
   lastMigrationAt: 'lastMigrationAt',
   lastProvisioningError: 'lastProvisioningError',
+  provisioningLeaseId: 'provisioningLeaseId',
+  provisioningLeaseExpiresAt: 'provisioningLeaseExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

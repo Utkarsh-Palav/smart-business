@@ -3,6 +3,6 @@ export type TenantResolution = {
   tenantDatabaseId: string;
   tenantKey: string;
   databaseName: string;
-  databaseHost: string;
+  databaseHost: string | null;
   connectionSecretRef: string | null;
 };
