@@ -12,6 +12,27 @@ import type { TenantHealthVerifier } from "./health-verifier";
 const PROVISIONING_LEASE_DURATION_MS = 5 * 60 * 1000;
 const PROVISIONING_LEASE_RENEWAL_MS = 60 * 1000;
 
+function getProvisioningErrorDetails(error: unknown): string {
+  const messages: string[] = [];
+  let current: unknown = error;
+
+  for (let depth = 0; depth < 5 && current; depth += 1) {
+    if (current instanceof Error) {
+      messages.push(current.message);
+      current = current.cause;
+      continue;
+    }
+
+    messages.push(String(current));
+    break;
+  }
+
+  return messages
+    .join(" <- ")
+    .replace(/(?:postgres|postgresql):\/\/[^\s"'<>]+/gi, "[redacted database URL]")
+    .slice(0, 2000);
+}
+
 export type ProvisionTenantInput = {
   businessId: string;
 };
@@ -221,6 +242,15 @@ export class TenantProvisioner {
         status: "ACTIVE",
       };
     } catch (error) {
+      const errorDetails = getProvisioningErrorDetails(error);
+
+      console.error("Tenant provisioning failed", {
+        businessId: business.id,
+        tenantDatabaseId: tenantDatabase.id,
+        stage,
+        error: errorDetails,
+      });
+
       try {
         const failed = await controlPrisma.tenantDatabase.updateMany({
           where: {
@@ -230,7 +260,7 @@ export class TenantProvisioner {
           },
           data: {
             status: "FAILED",
-            lastProvisioningError: `Tenant provisioning failed during ${stage}.`,
+            lastProvisioningError: `${stage}: ${errorDetails}`,
             provisioningLeaseId: null,
             provisioningLeaseExpiresAt: null,
           },

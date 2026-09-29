@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 8.1.0-dev.7
- * Query Engine version: d1b3f377ca835d73fd50954a5e22128b9ebdd6b8
+ * Prisma Client JS version: 7.10.0
+ * Query Engine version: 0edf323efd1d98336f3f0a68684b56f689b900d3
  */
 export const prismaVersion: PrismaVersion = {
-  client: "8.1.0-dev.7",
-  engine: "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8"
+  client: "7.10.0",
+  engine: "0edf323efd1d98336f3f0a68684b56f689b900d3"
 }
 
 /**
@@ -412,6 +412,7 @@ export const ModelName = {
   ReviewCard: 'ReviewCard',
   ReviewCardAssignment: 'ReviewCardAssignment',
   Plan: 'Plan',
+  PlanPrice: 'PlanPrice',
   PlanEntitlement: 'PlanEntitlement',
   Subscription: 'Subscription',
   SubscriptionEvent: 'SubscriptionEvent',
@@ -435,7 +436,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "role" | "permission" | "rolePermission" | "business" | "catalogProduct" | "productPrice" | "purchaseOrder" | "purchaseOrderItem" | "payment" | "refund" | "invoice" | "businessMembership" | "reviewCard" | "reviewCardAssignment" | "plan" | "planEntitlement" | "subscription" | "subscriptionEvent" | "tableRoute" | "tenantDatabase" | "user" | "otpChallenge" | "authSession"
+    modelProps: "role" | "permission" | "rolePermission" | "business" | "catalogProduct" | "productPrice" | "purchaseOrder" | "purchaseOrderItem" | "payment" | "refund" | "invoice" | "businessMembership" | "reviewCard" | "reviewCardAssignment" | "plan" | "planPrice" | "planEntitlement" | "subscription" | "subscriptionEvent" | "tableRoute" | "tenantDatabase" | "user" | "otpChallenge" | "authSession"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1549,6 +1550,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PlanPrice: {
+      payload: Prisma.$PlanPricePayload<ExtArgs>
+      fields: Prisma.PlanPriceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PlanPriceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PlanPriceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload>
+        }
+        findFirst: {
+          args: Prisma.PlanPriceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PlanPriceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload>
+        }
+        findMany: {
+          args: Prisma.PlanPriceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload>[]
+        }
+        create: {
+          args: Prisma.PlanPriceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload>
+        }
+        createMany: {
+          args: Prisma.PlanPriceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PlanPriceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload>[]
+        }
+        delete: {
+          args: Prisma.PlanPriceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload>
+        }
+        update: {
+          args: Prisma.PlanPriceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload>
+        }
+        deleteMany: {
+          args: Prisma.PlanPriceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PlanPriceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PlanPriceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload>[]
+        }
+        upsert: {
+          args: Prisma.PlanPriceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPricePayload>
+        }
+        aggregate: {
+          args: Prisma.PlanPriceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePlanPrice>
+        }
+        groupBy: {
+          args: Prisma.PlanPriceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanPriceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PlanPriceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanPriceCountAggregateOutputType> | number
+        }
+      }
+    }
     PlanEntitlement: {
       payload: Prisma.$PlanEntitlementPayload<ExtArgs>
       fields: Prisma.PlanEntitlementFieldRefs
@@ -2389,6 +2464,23 @@ export const PlanScalarFieldEnum = {
 export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
 
 
+export const PlanPriceScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  currency: 'currency',
+  amountMinor: 'amountMinor',
+  interval: 'interval',
+  intervalCount: 'intervalCount',
+  unit: 'unit',
+  priceType: 'priceType',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlanPriceScalarFieldEnum = (typeof PlanPriceScalarFieldEnum)[keyof typeof PlanPriceScalarFieldEnum]
+
+
 export const PlanEntitlementScalarFieldEnum = {
   id: 'id',
   planId: 'planId',
@@ -2765,6 +2857,48 @@ export type ListEnumReviewCardAssignmentStatusFieldRefInput<$PrismaModel> = Fiel
 
 
 /**
+ * Reference to a field of type 'PlanPriceInterval'
+ */
+export type EnumPlanPriceIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceInterval'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceInterval[]'
+ */
+export type ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceInterval[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceUnit'
+ */
+export type EnumPlanPriceUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceUnit'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceUnit[]'
+ */
+export type ListEnumPlanPriceUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceUnit[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceType'
+ */
+export type EnumPlanPriceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceType'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceType[]'
+ */
+export type ListEnumPlanPriceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceType[]'>
+    
+
+
+/**
  * Reference to a field of type 'SubscriptionStatus'
  */
 export type EnumSubscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionStatus'>
@@ -3041,6 +3175,7 @@ export type GlobalOmitConfig = {
   reviewCard?: Prisma.ReviewCardOmit
   reviewCardAssignment?: Prisma.ReviewCardAssignmentOmit
   plan?: Prisma.PlanOmit
+  planPrice?: Prisma.PlanPriceOmit
   planEntitlement?: Prisma.PlanEntitlementOmit
   subscription?: Prisma.SubscriptionOmit
   subscriptionEvent?: Prisma.SubscriptionEventOmit

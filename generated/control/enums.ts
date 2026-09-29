@@ -84,6 +84,30 @@ export const SubscriptionEventType = {
 export type SubscriptionEventType = (typeof SubscriptionEventType)[keyof typeof SubscriptionEventType]
 
 
+export const PlanPriceInterval = {
+  MONTH: 'MONTH',
+  YEAR: 'YEAR'
+} as const
+
+export type PlanPriceInterval = (typeof PlanPriceInterval)[keyof typeof PlanPriceInterval]
+
+
+export const PlanPriceUnit = {
+  BUSINESS: 'BUSINESS',
+  LOCATION: 'LOCATION'
+} as const
+
+export type PlanPriceUnit = (typeof PlanPriceUnit)[keyof typeof PlanPriceUnit]
+
+
+export const PlanPriceType = {
+  FIXED: 'FIXED',
+  STARTING_AT: 'STARTING_AT'
+} as const
+
+export type PlanPriceType = (typeof PlanPriceType)[keyof typeof PlanPriceType]
+
+
 export const ReviewCardStatus = {
   AVAILABLE: 'AVAILABLE',
   RESERVED: 'RESERVED',

@@ -60,6 +60,9 @@ export class NeonTenantDatabaseProvider implements TenantDatabaseProvider {
     const { data, error } = await neon.projects.createAndConnect({
       name: this.getProjectName(input.tenantKey),
       org_id: orgId,
+      branch: {
+        database_name: input.databaseName,
+      },
     });
 
     if (error) {
@@ -70,12 +73,6 @@ export class NeonTenantDatabaseProvider implements TenantDatabaseProvider {
 
     if (!project.id) {
       throw new Error("Neon project was created but project ID is missing");
-    }
-
-    if (!data.connectionString) {
-      throw new Error(
-        "Neon project was created but connection string is missing",
-      );
     }
 
     /**
@@ -97,25 +94,19 @@ export class NeonTenantDatabaseProvider implements TenantDatabaseProvider {
       throw new Error(`Neon project "${project.id}" has no default branch`);
     }
 
-    /**
-     * 3. Extract the database host from the connection string.
-     */
-    const databaseHost = new URL(data.connectionString).hostname;
-
-    /**
-     * 4. Return the infrastructure information needed
-     *    by the tenant provisioning workflow.
-     */
-    return {
-      tenantKey: input.tenantKey,
-      databaseName: input.databaseName,
-      databaseHost,
+    const provisioned = await this.get({
+      ...input,
       neonProjectId: project.id,
       neonBranchId: defaultBranch.id,
-      credentials: {
-        connectionString: data.connectionString,
-      },
-    };
+    });
+
+    if (!provisioned) {
+      throw new Error(
+        `Neon project "${project.id}" could not connect to database "${input.databaseName}"`,
+      );
+    }
+
+    return provisioned;
   }
 
   async get(
@@ -146,10 +137,19 @@ export class NeonTenantDatabaseProvider implements TenantDatabaseProvider {
       return null;
     }
 
+    await this.ensureDatabase(
+      neon,
+      input.neonProjectId,
+      branch.id,
+      input.databaseName,
+    );
+
     const { data: connectionString, error: connectionError } =
       await neon.postgres.connectionString({
         projectId: input.neonProjectId,
         branchId: branch.id,
+        databaseName: input.databaseName,
+        pooled: false,
       });
 
     if (connectionError) {
@@ -170,6 +170,68 @@ export class NeonTenantDatabaseProvider implements TenantDatabaseProvider {
         connectionString,
       },
     };
+  }
+
+  private async ensureDatabase(
+    neon: ReturnType<typeof createNeonClient>,
+    projectId: string,
+    branchId: string,
+    databaseName: string,
+  ): Promise<void> {
+    const listDatabases = async () => {
+      const result = await neon.postgres.databases.list({
+        projectId,
+        branchId,
+      });
+
+      if (Array.isArray(result)) {
+        return result;
+      }
+
+      if (result.error) {
+        throw result.error;
+      }
+
+      return result.data;
+    };
+
+    const databases = await listDatabases();
+
+    if (!databases) {
+      throw new Error("Neon returned no database list for the tenant branch");
+    }
+
+    if (databases.some((database) => database.name === databaseName)) {
+      return;
+    }
+
+    const ownerDatabase =
+      databases.find((database) => database.name === "neondb") ?? databases[0];
+
+    if (!ownerDatabase) {
+      throw new Error("Neon tenant branch has no database role to reuse");
+    }
+
+    const createResult = await neon.postgres.databases.create({
+      projectId,
+      branchId,
+      name: databaseName,
+      owner_name: ownerDatabase.owner_name,
+    });
+
+    if (!("error" in createResult) || !createResult.error) {
+      return;
+    }
+    const createError = createResult.error;
+
+    // A concurrent retry may have created the database after the initial list.
+    const refreshedDatabases = await listDatabases();
+
+    if (
+      !refreshedDatabases?.some((database) => database.name === databaseName)
+    ) {
+      throw createError;
+    }
   }
 
   async destroy(neonProjectId: string): Promise<void> {

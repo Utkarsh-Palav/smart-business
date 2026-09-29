@@ -77,6 +77,9 @@ export class InfisicalTenantSecretManager implements TenantSecretManager {
      */
     const secretPath = `/tenants/${tenantKey}`;
 
+    await this.ensureFolder(client, projectId, environment, "tenants", "/");
+    await this.ensureFolder(client, projectId, environment, tenantKey, "/tenants");
+
     /**
      * Check whether the secret already exists.
      *
@@ -93,18 +96,16 @@ export class InfisicalTenantSecretManager implements TenantSecretManager {
         viewSecretValue: false,
       });
 
-      /**
-       * Secret exists → update it.
-       */
+      await client.secrets().updateSecret("DATABASE_URL", {
+        projectId,
+        environment,
+        secretPath,
+        secretValue: databaseUrl,
+      });
     } catch (error) {
       /**
-       * If getSecret failed because the secret does not
-       * exist, create it.
-       *
-       * IMPORTANT:
-       * The exact "not found" error shape should be verified
-       * against the installed Infisical SDK before relying
-       * on this branch in production.
+       * Missing DATABASE_URL is recoverable after the tenant
+       * folders have been ensured above.
        */
       if (!this.isSecretNotFoundError(error)) {
         throw error;
@@ -119,6 +120,44 @@ export class InfisicalTenantSecretManager implements TenantSecretManager {
     }
 
     return `${secretPath}/DATABASE_URL`;
+  }
+
+  private async ensureFolder(
+    client: InfisicalSDK,
+    projectId: string,
+    environment: string,
+    name: string,
+    path: string,
+  ): Promise<void> {
+    const folderOptions = {
+      projectId,
+      environment,
+      path,
+      recursive: false,
+    };
+    const folderExists = async () =>
+      (await client.folders().listFolders(folderOptions)).some(
+        (folder) => folder.name === name,
+      );
+
+    if (await folderExists()) {
+      return;
+    }
+
+    try {
+      await client.folders().create({
+        projectId,
+        environment,
+        path,
+        name,
+      });
+    } catch (error) {
+      if (await folderExists()) {
+        return;
+      }
+
+      throw error;
+    }
   }
 
   private isSecretNotFoundError(error: unknown): boolean {

@@ -93,6 +93,11 @@ export type ReviewCardAssignment = Prisma.ReviewCardAssignmentModel
  */
 export type Plan = Prisma.PlanModel
 /**
+ * Model PlanPrice
+ * 
+ */
+export type PlanPrice = Prisma.PlanPriceModel
+/**
  * Model PlanEntitlement
  * 
  */

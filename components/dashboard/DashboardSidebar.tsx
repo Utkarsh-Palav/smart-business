@@ -1,3 +1,4 @@
+import { BuildingComplex, ChartPie, ConciergeBell, ReceiptIndianRupee, ShelvingUnit, Utensils } from "lucide-react";
 import Link from "next/link";
 
 export function DashboardSidebar() {
@@ -15,30 +16,37 @@ export function DashboardSidebar() {
       <nav className="space-y-1 p-4">
         <Link
           href="/dashboard"
-          className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
+          className="rounded-md px-3 py-2 text-sm font-medium hover:bg-muted flex items-center justify-start gap-2"
         >
-          Overview
+          <ChartPie size={20} className="text-gray-500" /> Overview
         </Link>
 
         <Link
           href="/dashboard/businesses"
-          className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
+          className="rounded-md px-3 py-2 text-sm font-medium hover:bg-muted flex items-center justify-start gap-2"
         >
-          Businesses
-        </Link>
-
-        <Link
-          href="/dashboard/locations"
-          className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
-        >
-          Locations
+          <ShelvingUnit size={20} className="text-gray-500" /> Inventory
         </Link>
 
         <Link
           href="/dashboard/review-cards"
-          className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
+          className="rounded-md px-3 py-2 text-sm font-medium hover:bg-muted flex items-center justify-start gap-2"
         >
-          Review Cards
+          <Utensils size={20} className="text-gray-500" /> Tables
+        </Link>
+
+        <Link
+          href="/dashboard/locations"
+          className="rounded-md px-3 py-2 text-sm font-medium hover:bg-muted flex items-center justify-start gap-2"
+        >
+          <ConciergeBell size={20} className="text-gray-500" />Orders
+        </Link>
+
+        <Link
+          href="/dashboard/review-cards"
+          className="rounded-md px-3 py-2 text-sm font-medium hover:bg-muted flex items-center justify-start gap-2"
+        >
+          <ReceiptIndianRupee size={20} className="text-gray-500" /> Bills
         </Link>
       </nav>
     </aside>

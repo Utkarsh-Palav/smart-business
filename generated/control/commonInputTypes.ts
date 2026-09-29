@@ -396,6 +396,57 @@ export type EnumReviewCardAssignmentStatusWithAggregatesFilter<$PrismaModel = ne
   _max?: Prisma.NestedEnumReviewCardAssignmentStatusFilter<$PrismaModel>
 }
 
+export type EnumPlanPriceIntervalFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceInterval | Prisma.EnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceInterval[] | Prisma.ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceInterval[] | Prisma.ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceIntervalFilter<$PrismaModel> | $Enums.PlanPriceInterval
+}
+
+export type EnumPlanPriceUnitFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceUnit | Prisma.EnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceUnit[] | Prisma.ListEnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceUnit[] | Prisma.ListEnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceUnitFilter<$PrismaModel> | $Enums.PlanPriceUnit
+}
+
+export type EnumPlanPriceTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceType | Prisma.EnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceType[] | Prisma.ListEnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceType[] | Prisma.ListEnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceTypeFilter<$PrismaModel> | $Enums.PlanPriceType
+}
+
+export type EnumPlanPriceIntervalWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceInterval | Prisma.EnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceInterval[] | Prisma.ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceInterval[] | Prisma.ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceIntervalWithAggregatesFilter<$PrismaModel> | $Enums.PlanPriceInterval
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanPriceIntervalFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanPriceIntervalFilter<$PrismaModel>
+}
+
+export type EnumPlanPriceUnitWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceUnit | Prisma.EnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceUnit[] | Prisma.ListEnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceUnit[] | Prisma.ListEnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceUnitWithAggregatesFilter<$PrismaModel> | $Enums.PlanPriceUnit
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanPriceUnitFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanPriceUnitFilter<$PrismaModel>
+}
+
+export type EnumPlanPriceTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceType | Prisma.EnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceType[] | Prisma.ListEnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceType[] | Prisma.ListEnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceTypeWithAggregatesFilter<$PrismaModel> | $Enums.PlanPriceType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanPriceTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanPriceTypeFilter<$PrismaModel>
+}
+
 export type EnumSubscriptionStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.SubscriptionStatus | Prisma.EnumSubscriptionStatusFieldRefInput<$PrismaModel>
   in?: $Enums.SubscriptionStatus[] | Prisma.ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
@@ -881,6 +932,57 @@ export type NestedEnumReviewCardAssignmentStatusWithAggregatesFilter<$PrismaMode
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumReviewCardAssignmentStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumReviewCardAssignmentStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumPlanPriceIntervalFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceInterval | Prisma.EnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceInterval[] | Prisma.ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceInterval[] | Prisma.ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceIntervalFilter<$PrismaModel> | $Enums.PlanPriceInterval
+}
+
+export type NestedEnumPlanPriceUnitFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceUnit | Prisma.EnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceUnit[] | Prisma.ListEnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceUnit[] | Prisma.ListEnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceUnitFilter<$PrismaModel> | $Enums.PlanPriceUnit
+}
+
+export type NestedEnumPlanPriceTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceType | Prisma.EnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceType[] | Prisma.ListEnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceType[] | Prisma.ListEnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceTypeFilter<$PrismaModel> | $Enums.PlanPriceType
+}
+
+export type NestedEnumPlanPriceIntervalWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceInterval | Prisma.EnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceInterval[] | Prisma.ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceInterval[] | Prisma.ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceIntervalWithAggregatesFilter<$PrismaModel> | $Enums.PlanPriceInterval
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanPriceIntervalFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanPriceIntervalFilter<$PrismaModel>
+}
+
+export type NestedEnumPlanPriceUnitWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceUnit | Prisma.EnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceUnit[] | Prisma.ListEnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceUnit[] | Prisma.ListEnumPlanPriceUnitFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceUnitWithAggregatesFilter<$PrismaModel> | $Enums.PlanPriceUnit
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanPriceUnitFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanPriceUnitFilter<$PrismaModel>
+}
+
+export type NestedEnumPlanPriceTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanPriceType | Prisma.EnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanPriceType[] | Prisma.ListEnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanPriceType[] | Prisma.ListEnumPlanPriceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanPriceTypeWithAggregatesFilter<$PrismaModel> | $Enums.PlanPriceType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanPriceTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanPriceTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumSubscriptionStatusFilter<$PrismaModel = never> = {

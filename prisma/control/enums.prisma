@@ -61,6 +61,21 @@ enum SubscriptionEventType {
   EXPIRED
 }
 
+enum PlanPriceInterval {
+  MONTH
+  YEAR
+}
+
+enum PlanPriceUnit {
+  BUSINESS
+  LOCATION
+}
+
+enum PlanPriceType {
+  FIXED
+  STARTING_AT
+}
+
 enum ReviewCardStatus {
   AVAILABLE
   RESERVED

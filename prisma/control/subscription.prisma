@@ -11,7 +11,29 @@ model Plan {
   updatedAt DateTime @updatedAt
 
   entitlements PlanEntitlement[]
+  prices       PlanPrice[]
   subscriptions Subscription[]
+}
+
+model PlanPrice {
+  id String @id @default(cuid())
+
+  planId String
+  plan   Plan   @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  currency      String           @default("INR")
+  amountMinor   Int
+  interval      PlanPriceInterval
+  intervalCount Int              @default(1)
+  unit          PlanPriceUnit    @default(BUSINESS)
+  priceType     PlanPriceType    @default(FIXED)
+  isActive      Boolean          @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([planId, currency, interval, intervalCount, unit, priceType])
+  @@index([planId, isActive])
 }
 
 model PlanEntitlement {

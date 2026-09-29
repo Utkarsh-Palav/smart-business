@@ -66,6 +66,7 @@ export const ModelName = {
   ReviewCard: 'ReviewCard',
   ReviewCardAssignment: 'ReviewCardAssignment',
   Plan: 'Plan',
+  PlanPrice: 'PlanPrice',
   PlanEntitlement: 'PlanEntitlement',
   Subscription: 'Subscription',
   SubscriptionEvent: 'SubscriptionEvent',
@@ -299,6 +300,23 @@ export const PlanScalarFieldEnum = {
 } as const
 
 export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
+
+
+export const PlanPriceScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  currency: 'currency',
+  amountMinor: 'amountMinor',
+  interval: 'interval',
+  intervalCount: 'intervalCount',
+  unit: 'unit',
+  priceType: 'priceType',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlanPriceScalarFieldEnum = (typeof PlanPriceScalarFieldEnum)[keyof typeof PlanPriceScalarFieldEnum]
 
 
 export const PlanEntitlementScalarFieldEnum = {
