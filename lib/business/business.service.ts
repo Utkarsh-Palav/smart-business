@@ -13,6 +13,8 @@ export class BusinessService {
   ): Promise<CreateBusinessResult> {
     const name = input.name.trim();
     const slug = input.slug.trim().toLowerCase();
+    const legalName = input.legalName?.trim() || null;
+    const gstin = input.gstin?.trim().toUpperCase() || null;
 
     if (!input.userId || !name || !slug) {
       throw new BusinessError(
@@ -89,12 +91,42 @@ export class BusinessService {
           data: {
             name,
             slug,
+            legalName,
+            businessType: input.businessType,
+            gstin,
             status: "ACTIVE",
           },
           select: {
             id: true,
             name: true,
             slug: true,
+          },
+        });
+
+        const onboardingProfile = await tx.businessOnboardingProfile.create({
+          data: {
+            businessId: business.id,
+            firstLocationName: input.firstLocation.name.trim(),
+            firstLocationSlug: input.firstLocation.slug.trim().toLowerCase(),
+            operatingMode: input.firstLocation.operatingMode,
+            addressLine1: input.firstLocation.addressLine1.trim(),
+            addressLine2: input.firstLocation.addressLine2?.trim() || null,
+            city: input.firstLocation.city.trim(),
+            state: input.firstLocation.state.trim(),
+            postalCode: input.firstLocation.postalCode.trim(),
+            phone: input.firstLocation.phone?.trim() || null,
+          },
+          select: {
+            firstLocationName: true,
+            firstLocationSlug: true,
+            operatingMode: true,
+            addressLine1: true,
+            addressLine2: true,
+            city: true,
+            state: true,
+            postalCode: true,
+            country: true,
+            phone: true,
           },
         });
 
@@ -167,6 +199,7 @@ export class BusinessService {
 
         return {
           business,
+          onboardingProfile,
           membership,
           subscription,
           tenantDatabase,
@@ -177,6 +210,18 @@ export class BusinessService {
         businessId: result.business.id,
         businessName: result.business.name,
         businessSlug: result.business.slug,
+        firstLocation: {
+          name: result.onboardingProfile.firstLocationName,
+          slug: result.onboardingProfile.firstLocationSlug,
+          operatingMode: result.onboardingProfile.operatingMode,
+          addressLine1: result.onboardingProfile.addressLine1,
+          addressLine2: result.onboardingProfile.addressLine2 ?? undefined,
+          city: result.onboardingProfile.city,
+          state: result.onboardingProfile.state,
+          postalCode: result.onboardingProfile.postalCode,
+          country: result.onboardingProfile.country,
+          phone: result.onboardingProfile.phone ?? undefined,
+        },
         membershipId: result.membership.id,
         tenantDatabaseId: result.tenantDatabase.id,
         tenantKey: result.tenantDatabase.tenantKey,

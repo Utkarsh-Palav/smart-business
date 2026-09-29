@@ -45,6 +45,20 @@ export async function POST(
             status: true,
           },
         },
+        onboardingProfile: {
+          select: {
+            firstLocationName: true,
+            firstLocationSlug: true,
+            operatingMode: true,
+            addressLine1: true,
+            addressLine2: true,
+            city: true,
+            state: true,
+            postalCode: true,
+            country: true,
+            phone: true,
+          },
+        },
         subscriptions: {
           select: { id: true, status: true },
           orderBy: { createdAt: "desc" },
@@ -135,8 +149,17 @@ export async function POST(
     try {
       const location = await initialLocationService.createInitialLocation({
         businessId: business.id,
-        businessName: business.name,
-        businessSlug: business.slug,
+        name: business.onboardingProfile?.firstLocationName ?? business.name,
+        slug: business.onboardingProfile?.firstLocationSlug ?? business.slug,
+        operatingMode:
+          business.onboardingProfile?.operatingMode ?? "DINE_IN",
+        addressLine1: business.onboardingProfile?.addressLine1,
+        addressLine2: business.onboardingProfile?.addressLine2,
+        city: business.onboardingProfile?.city,
+        state: business.onboardingProfile?.state,
+        postalCode: business.onboardingProfile?.postalCode,
+        country: business.onboardingProfile?.country,
+        phone: business.onboardingProfile?.phone,
       });
       const subscription = business.subscriptions[0];
 

@@ -1,7 +1,13 @@
 export type CreateInitialLocationInput = {
   businessId: string;
-  businessName: string;
-  businessSlug: string;
+  name: string;
+  slug: string;
+  operatingMode?:
+    | "DINE_IN"
+    | "TAKEAWAY"
+    | "DELIVERY_ONLY"
+    | "HYBRID"
+    | "OTHER";
   addressLine1?: string | null;
   addressLine2?: string | null;
   city?: string | null;

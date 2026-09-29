@@ -11,6 +11,7 @@
     "generate:tenantDB": "pnpm prisma generate --config prisma/tenant.config.ts",
     "migrate:controlDB": "pnpm prisma migrate dev -y-name init_control --config prisma/control.config.ts",
     "migrate:tenantDB": "pnpm prisma migrate dev --name init_tenant --config prisma/tenant.config.ts",
+    "migrate:activeTenants": "tsx scripts/migrate-active-tenants.ts",
     "reset:controlDB": "pnpm prisma migrate reset --config prisma/control.config.ts",
     "seed:control": "tsx scripts/seed-control.ts"
   },

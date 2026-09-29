@@ -27,6 +27,30 @@ export const BusinessStatus = {
 export type BusinessStatus = (typeof BusinessStatus)[keyof typeof BusinessStatus]
 
 
+export const BusinessType = {
+  CAFE: 'CAFE',
+  RESTAURANT: 'RESTAURANT',
+  QSR: 'QSR',
+  CLOUD_KITCHEN: 'CLOUD_KITCHEN',
+  BAKERY: 'BAKERY',
+  FOOD_TRUCK: 'FOOD_TRUCK',
+  OTHER: 'OTHER'
+} as const
+
+export type BusinessType = (typeof BusinessType)[keyof typeof BusinessType]
+
+
+export const LocationOperatingMode = {
+  DINE_IN: 'DINE_IN',
+  TAKEAWAY: 'TAKEAWAY',
+  DELIVERY_ONLY: 'DELIVERY_ONLY',
+  HYBRID: 'HYBRID',
+  OTHER: 'OTHER'
+} as const
+
+export type LocationOperatingMode = (typeof LocationOperatingMode)[keyof typeof LocationOperatingMode]
+
+
 export const TenantDatabaseProvider = {
   NEON: 'NEON'
 } as const
@@ -68,6 +92,28 @@ export const SubscriptionStatus = {
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
 
 
+export const OnboardingPaymentStatus = {
+  CREATED: 'CREATED',
+  AUTHORIZED: 'AUTHORIZED',
+  CAPTURED: 'CAPTURED',
+  FAILED: 'FAILED',
+  CANCELED: 'CANCELED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type OnboardingPaymentStatus = (typeof OnboardingPaymentStatus)[keyof typeof OnboardingPaymentStatus]
+
+
+export const WebhookEventStatus = {
+  RECEIVED: 'RECEIVED',
+  PROCESSED: 'PROCESSED',
+  IGNORED: 'IGNORED',
+  FAILED: 'FAILED'
+} as const
+
+export type WebhookEventStatus = (typeof WebhookEventStatus)[keyof typeof WebhookEventStatus]
+
+
 export const SubscriptionEventType = {
   CREATED: 'CREATED',
   ACTIVATED: 'ACTIVATED',
@@ -82,6 +128,20 @@ export const SubscriptionEventType = {
 } as const
 
 export type SubscriptionEventType = (typeof SubscriptionEventType)[keyof typeof SubscriptionEventType]
+
+
+export const BusinessOnboardingStatus = {
+  DRAFT: 'DRAFT',
+  PENDING_PAYMENT: 'PENDING_PAYMENT',
+  PAYMENT_FAILED: 'PAYMENT_FAILED',
+  PAID: 'PAID',
+  PROVISIONING: 'PROVISIONING',
+  PROVISIONING_FAILED: 'PROVISIONING_FAILED',
+  COMPLETED: 'COMPLETED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type BusinessOnboardingStatus = (typeof BusinessOnboardingStatus)[keyof typeof BusinessOnboardingStatus]
 
 
 export const PlanPriceInterval = {

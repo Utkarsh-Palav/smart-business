@@ -269,6 +269,7 @@ export type PlanPriceWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"PlanPrice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PlanPrice"> | Date | string
   plan?: Prisma.XOR<Prisma.PlanScalarRelationFilter, Prisma.PlanWhereInput>
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftListRelationFilter
 }
 
 export type PlanPriceOrderByWithRelationInput = {
@@ -284,6 +285,7 @@ export type PlanPriceOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   plan?: Prisma.PlanOrderByWithRelationInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftOrderByRelationAggregateInput
 }
 
 export type PlanPriceWhereUniqueInput = Prisma.AtLeast<{
@@ -303,6 +305,7 @@ export type PlanPriceWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"PlanPrice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PlanPrice"> | Date | string
   plan?: Prisma.XOR<Prisma.PlanScalarRelationFilter, Prisma.PlanWhereInput>
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftListRelationFilter
 }, "id" | "planId_currency_interval_intervalCount_unit_priceType">
 
 export type PlanPriceOrderByWithAggregationInput = {
@@ -353,6 +356,7 @@ export type PlanPriceCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   plan: Prisma.PlanCreateNestedOneWithoutPricesInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftCreateNestedManyWithoutPlanPriceInput
 }
 
 export type PlanPriceUncheckedCreateInput = {
@@ -367,6 +371,7 @@ export type PlanPriceUncheckedCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedManyWithoutPlanPriceInput
 }
 
 export type PlanPriceUpdateInput = {
@@ -381,6 +386,7 @@ export type PlanPriceUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   plan?: Prisma.PlanUpdateOneRequiredWithoutPricesNestedInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUpdateManyWithoutPlanPriceNestedInput
 }
 
 export type PlanPriceUncheckedUpdateInput = {
@@ -395,6 +401,7 @@ export type PlanPriceUncheckedUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedUpdateManyWithoutPlanPriceNestedInput
 }
 
 export type PlanPriceCreateManyInput = {
@@ -436,6 +443,11 @@ export type PlanPriceUncheckedUpdateManyInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PlanPriceNullableScalarRelationFilter = {
+  is?: Prisma.PlanPriceWhereInput | null
+  isNot?: Prisma.PlanPriceWhereInput | null
 }
 
 export type PlanPriceListRelationFilter = {
@@ -509,6 +521,22 @@ export type PlanPriceSumOrderByAggregateInput = {
   intervalCount?: Prisma.SortOrder
 }
 
+export type PlanPriceCreateNestedOneWithoutOnboardingDraftsInput = {
+  create?: Prisma.XOR<Prisma.PlanPriceCreateWithoutOnboardingDraftsInput, Prisma.PlanPriceUncheckedCreateWithoutOnboardingDraftsInput>
+  connectOrCreate?: Prisma.PlanPriceCreateOrConnectWithoutOnboardingDraftsInput
+  connect?: Prisma.PlanPriceWhereUniqueInput
+}
+
+export type PlanPriceUpdateOneWithoutOnboardingDraftsNestedInput = {
+  create?: Prisma.XOR<Prisma.PlanPriceCreateWithoutOnboardingDraftsInput, Prisma.PlanPriceUncheckedCreateWithoutOnboardingDraftsInput>
+  connectOrCreate?: Prisma.PlanPriceCreateOrConnectWithoutOnboardingDraftsInput
+  upsert?: Prisma.PlanPriceUpsertWithoutOnboardingDraftsInput
+  disconnect?: Prisma.PlanPriceWhereInput | boolean
+  delete?: Prisma.PlanPriceWhereInput | boolean
+  connect?: Prisma.PlanPriceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlanPriceUpdateToOneWithWhereWithoutOnboardingDraftsInput, Prisma.PlanPriceUpdateWithoutOnboardingDraftsInput>, Prisma.PlanPriceUncheckedUpdateWithoutOnboardingDraftsInput>
+}
+
 export type PlanPriceCreateNestedManyWithoutPlanInput = {
   create?: Prisma.XOR<Prisma.PlanPriceCreateWithoutPlanInput, Prisma.PlanPriceUncheckedCreateWithoutPlanInput> | Prisma.PlanPriceCreateWithoutPlanInput[] | Prisma.PlanPriceUncheckedCreateWithoutPlanInput[]
   connectOrCreate?: Prisma.PlanPriceCreateOrConnectWithoutPlanInput | Prisma.PlanPriceCreateOrConnectWithoutPlanInput[]
@@ -563,6 +591,78 @@ export type EnumPlanPriceTypeFieldUpdateOperationsInput = {
   set?: $Enums.PlanPriceType
 }
 
+export type PlanPriceCreateWithoutOnboardingDraftsInput = {
+  id?: string
+  currency?: string
+  amountMinor: number
+  interval: $Enums.PlanPriceInterval
+  intervalCount?: number
+  unit?: $Enums.PlanPriceUnit
+  priceType?: $Enums.PlanPriceType
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  plan: Prisma.PlanCreateNestedOneWithoutPricesInput
+}
+
+export type PlanPriceUncheckedCreateWithoutOnboardingDraftsInput = {
+  id?: string
+  planId: string
+  currency?: string
+  amountMinor: number
+  interval: $Enums.PlanPriceInterval
+  intervalCount?: number
+  unit?: $Enums.PlanPriceUnit
+  priceType?: $Enums.PlanPriceType
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PlanPriceCreateOrConnectWithoutOnboardingDraftsInput = {
+  where: Prisma.PlanPriceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlanPriceCreateWithoutOnboardingDraftsInput, Prisma.PlanPriceUncheckedCreateWithoutOnboardingDraftsInput>
+}
+
+export type PlanPriceUpsertWithoutOnboardingDraftsInput = {
+  update: Prisma.XOR<Prisma.PlanPriceUpdateWithoutOnboardingDraftsInput, Prisma.PlanPriceUncheckedUpdateWithoutOnboardingDraftsInput>
+  create: Prisma.XOR<Prisma.PlanPriceCreateWithoutOnboardingDraftsInput, Prisma.PlanPriceUncheckedCreateWithoutOnboardingDraftsInput>
+  where?: Prisma.PlanPriceWhereInput
+}
+
+export type PlanPriceUpdateToOneWithWhereWithoutOnboardingDraftsInput = {
+  where?: Prisma.PlanPriceWhereInput
+  data: Prisma.XOR<Prisma.PlanPriceUpdateWithoutOnboardingDraftsInput, Prisma.PlanPriceUncheckedUpdateWithoutOnboardingDraftsInput>
+}
+
+export type PlanPriceUpdateWithoutOnboardingDraftsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  amountMinor?: Prisma.IntFieldUpdateOperationsInput | number
+  interval?: Prisma.EnumPlanPriceIntervalFieldUpdateOperationsInput | $Enums.PlanPriceInterval
+  intervalCount?: Prisma.IntFieldUpdateOperationsInput | number
+  unit?: Prisma.EnumPlanPriceUnitFieldUpdateOperationsInput | $Enums.PlanPriceUnit
+  priceType?: Prisma.EnumPlanPriceTypeFieldUpdateOperationsInput | $Enums.PlanPriceType
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  plan?: Prisma.PlanUpdateOneRequiredWithoutPricesNestedInput
+}
+
+export type PlanPriceUncheckedUpdateWithoutOnboardingDraftsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  planId?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  amountMinor?: Prisma.IntFieldUpdateOperationsInput | number
+  interval?: Prisma.EnumPlanPriceIntervalFieldUpdateOperationsInput | $Enums.PlanPriceInterval
+  intervalCount?: Prisma.IntFieldUpdateOperationsInput | number
+  unit?: Prisma.EnumPlanPriceUnitFieldUpdateOperationsInput | $Enums.PlanPriceUnit
+  priceType?: Prisma.EnumPlanPriceTypeFieldUpdateOperationsInput | $Enums.PlanPriceType
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type PlanPriceCreateWithoutPlanInput = {
   id?: string
   currency?: string
@@ -574,6 +674,7 @@ export type PlanPriceCreateWithoutPlanInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftCreateNestedManyWithoutPlanPriceInput
 }
 
 export type PlanPriceUncheckedCreateWithoutPlanInput = {
@@ -587,6 +688,7 @@ export type PlanPriceUncheckedCreateWithoutPlanInput = {
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedManyWithoutPlanPriceInput
 }
 
 export type PlanPriceCreateOrConnectWithoutPlanInput = {
@@ -656,6 +758,7 @@ export type PlanPriceUpdateWithoutPlanInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUpdateManyWithoutPlanPriceNestedInput
 }
 
 export type PlanPriceUncheckedUpdateWithoutPlanInput = {
@@ -669,6 +772,7 @@ export type PlanPriceUncheckedUpdateWithoutPlanInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedUpdateManyWithoutPlanPriceNestedInput
 }
 
 export type PlanPriceUncheckedUpdateManyWithoutPlanInput = {
@@ -685,6 +789,35 @@ export type PlanPriceUncheckedUpdateManyWithoutPlanInput = {
 }
 
 
+/**
+ * Count Type PlanPriceCountOutputType
+ */
+
+export type PlanPriceCountOutputType = {
+  onboardingDrafts: number
+}
+
+export type PlanPriceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  onboardingDrafts?: boolean | PlanPriceCountOutputTypeCountOnboardingDraftsArgs
+}
+
+/**
+ * PlanPriceCountOutputType without action
+ */
+export type PlanPriceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlanPriceCountOutputType
+   */
+  select?: Prisma.PlanPriceCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PlanPriceCountOutputType without action
+ */
+export type PlanPriceCountOutputTypeCountOnboardingDraftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BusinessOnboardingDraftWhereInput
+}
+
 
 export type PlanPriceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -699,6 +832,8 @@ export type PlanPriceSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   createdAt?: boolean
   updatedAt?: boolean
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  onboardingDrafts?: boolean | Prisma.PlanPrice$onboardingDraftsArgs<ExtArgs>
+  _count?: boolean | Prisma.PlanPriceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["planPrice"]>
 
 export type PlanPriceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -748,6 +883,8 @@ export type PlanPriceSelectScalar = {
 export type PlanPriceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "currency" | "amountMinor" | "interval" | "intervalCount" | "unit" | "priceType" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["planPrice"]>
 export type PlanPriceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  onboardingDrafts?: boolean | Prisma.PlanPrice$onboardingDraftsArgs<ExtArgs>
+  _count?: boolean | Prisma.PlanPriceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PlanPriceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
@@ -760,6 +897,7 @@ export type $PlanPricePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   name: "PlanPrice"
   objects: {
     plan: Prisma.$PlanPayload<ExtArgs>
+    onboardingDrafts: Prisma.$BusinessOnboardingDraftPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1168,6 +1306,7 @@ readonly fields: PlanPriceFieldRefs;
 export interface Prisma__PlanPriceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   plan<T extends Prisma.PlanDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlanDefaultArgs<ExtArgs>>): Prisma.Prisma__PlanClient<runtime.Types.Result.GetResult<Prisma.$PlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  onboardingDrafts<T extends Prisma.PlanPrice$onboardingDraftsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlanPrice$onboardingDraftsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessOnboardingDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1606,6 +1745,30 @@ export type PlanPriceDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many PlanPrices to delete.
    */
   limit?: number
+}
+
+/**
+ * PlanPrice.onboardingDrafts
+ */
+export type PlanPrice$onboardingDraftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessOnboardingDraft
+   */
+  select?: Prisma.BusinessOnboardingDraftSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessOnboardingDraft
+   */
+  omit?: Prisma.BusinessOnboardingDraftOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessOnboardingDraftInclude<ExtArgs> | null
+  where?: Prisma.BusinessOnboardingDraftWhereInput
+  orderBy?: Prisma.BusinessOnboardingDraftOrderByWithRelationInput | Prisma.BusinessOnboardingDraftOrderByWithRelationInput[]
+  cursor?: Prisma.BusinessOnboardingDraftWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BusinessOnboardingDraftScalarFieldEnum | Prisma.BusinessOnboardingDraftScalarFieldEnum[]
 }
 
 /**

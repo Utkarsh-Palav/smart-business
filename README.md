@@ -1,6 +1,6 @@
 Smart Business
 
-Smart Business is a multi-tenant business operations application built with Next.js, Prisma 7, PostgreSQL, Neon, and Infisical. This document describes the authentication and business onboarding flows that are implemented today. Payment checkout and payment-provider webhooks are not yet integrated.
+Smart Business is a multi-tenant business operations application built with Next.js, Prisma 7, PostgreSQL, Neon, and Infisical. This document describes the authentication and business onboarding flows that are implemented today. Razorpay test-mode checkout and webhook recording are integrated; final Business/tenant activation after payment is the next workflow step.
 
 ## Architecture
 
@@ -38,6 +38,9 @@ Use Node.js 20 or later and pnpm. Configure the required environment variables i
 | `INFISICAL_CLIENT_ID` | Universal Auth machine identity client ID. |
 | `INFISICAL_CLIENT_SECRET` | Universal Auth machine identity client secret. |
 | `SECRET_PROVIDER` | Set to `infisical` so tenant clients retrieve URLs from Infisical. The code defaults to `env`. |
+| `RAZORPAY_KEY_ID` | Razorpay Test Mode public key ID used by Checkout. |
+| `RAZORPAY_KEY_SECRET` | Razorpay Test Mode server secret used to create Orders. |
+| `RAZORPAY_WEBHOOK_SECRET` | Secret configured for the Razorpay webhook endpoint. |
 
 The Infisical machine identity must belong to the configured project and have permission to read, create, and update secrets, as well as create the required folders in the configured environment. Folder creation uses `/tenants` and `/tenants/<tenantKey>`.
 
@@ -144,11 +147,25 @@ Create a business with `POST /api/businesses`. It requires an authenticated acce
 ```json
 {
 	"name": "Smoke Test Cafe",
-	"slug": "smoke-test-cafe"
+	"slug": "smoke-test-cafe",
+	"businessType": "RESTAURANT",
+	"legalName": "Smoke Test Foods Private Limited",
+	"gstin": "27ABCDE1234F1Z5",
+	"firstLocation": {
+		"name": "Smoke Test Cafe Andheri",
+		"slug": "smoke-test-cafe-andheri",
+		"operatingMode": "DINE_IN",
+		"addressLine1": "12 Example Road",
+		"addressLine2": "Shop 4",
+		"city": "Mumbai",
+		"state": "Maharashtra",
+		"postalCode": "400001",
+		"phone": "+912200000000"
+	}
 }
 ```
 
-The name must be 2-100 characters. The slug must be 2-80 lowercase letters, numbers, and hyphens, with no leading, trailing, or repeated separators.
+`businessType` accepts `CAFE`, `RESTAURANT`, `QSR`, `CLOUD_KITCHEN`, `BAKERY`, `FOOD_TRUCK`, or `OTHER`. `legalName` and `gstin` are optional. The first outlet name, slug, operating mode, street address, city, state, and six-digit Indian PIN are required; second address line and phone are optional. GSTIN is normalized to uppercase and format-validated when supplied.
 
 ### Provisioning Sequence
 
@@ -158,7 +175,8 @@ Business creation first commits a control-database transaction:
 2. Resolve the seeded system `owner` role and active `starter` plan.
 3. Create the Business and an active Owner membership for the current user.
 4. Create a `TRIAL` subscription and a `CREATED` subscription event. This does not charge the user or contact a payment provider.
-5. Create a `TenantDatabase` lifecycle row in `PROVISIONING` state with a tenant key in the form `tenant-<businessId>`.
+5. Save the legal/business classification fields and first-outlet setup in the Control DB. The saved outlet profile allows provisioning retries to continue with the same details.
+6. Create a `TenantDatabase` lifecycle row in `PROVISIONING` state with a tenant key in the form `tenant-<businessId>`.
 
 After that transaction commits, external provisioning runs:
 
@@ -169,11 +187,26 @@ After that transaction commits, external provisioning runs:
 5. Store or update the database URL in Infisical at `/tenants/<tenantKey>/DATABASE_URL`.
 6. Verify connectivity with a tenant database health check.
 7. Mark the tenant database `ACTIVE` and record schema version and provisioning timestamps.
-8. Create the initial Location in the tenant database. This operation is idempotent by business slug.
+8. Create the initial Location in the tenant database using the saved outlet details. This operation is idempotent by outlet slug.
 
 The successful response is `201` and includes the business, tenant, subscription, initial location, and `onboarding.status: "COMPLETED"`.
 
-The seeded Starter plan currently includes `maxLocations=3` and `maxReviewCards=3`. The subscription is initialized as `TRIAL`; current onboarding does not have a checkout or payment gate.
+The seeded plans are Starter (`maxLocations=1`, `maxReviewCards=3`), Growth (`maxLocations=5`, billed per location), and Enterprise (unlimited locations, starting-at price per location). Starter and Growth include monthly and annual prices; Enterprise currently has a monthly starting price. Prices are stored in INR minor units and are exclusive of GST. New onboarding drafts select a quoted plan price before checkout; no Business or tenant is created until the later payment-finalization workflow.
+
+### Razorpay Test Checkout
+
+The draft flow currently exposes:
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/plans` | Return active plans, prices, and entitlements. |
+| `POST /api/onboarding/drafts` | Save authenticated business and first-outlet details. |
+| `GET /api/onboarding/drafts/<draftId>` | Resume an owner’s draft. |
+| `PATCH /api/onboarding/drafts/<draftId>` | Select and snapshot an active plan price. |
+| `POST /api/onboarding/drafts/<draftId>/checkout` | Create or reuse a Razorpay Test Mode Order. |
+| `POST /api/webhooks/razorpay` | Verify and idempotently process Razorpay events. |
+
+The checkout endpoint calculates the amount from the selected Control DB `PlanPrice`; clients cannot submit an amount. The webhook verifies the raw request body with `RAZORPAY_WEBHOOK_SECRET` and the `X-Razorpay-Signature` header, deduplicates using `x-razorpay-event-id`, and moves the draft to `PAID` only for captured payment events. A browser callback is not treated as payment confirmation. Configure Razorpay in Test Mode and expose the webhook endpoint through a public HTTPS staging URL; localhost cannot receive Razorpay webhooks directly.
 
 ### Provisioning Failures and Retry
 
@@ -209,15 +242,15 @@ The retry endpoint currently accepts only `FAILED` tenant rows. If the tenant is
 
 ## Payment Integration Roadmap
 
-Payment integration is intentionally skipped in the current onboarding flow. The control schema already has early commerce structures (`PurchaseOrder`, `Payment`, `Refund`, and `Invoice`) and subscription lifecycle statuses/events, but no provider checkout, signature-verified webhook, or payment-driven subscription activation is currently wired into onboarding.
+The control schema already has early commerce structures (`PurchaseOrder`, `Payment`, `Refund`, and `Invoice`) and subscription lifecycle statuses/events. Razorpay Order creation and webhook recording now exist for onboarding, but payment-driven Business activation, subscription creation, and tenant provisioning after `PAID` are still intentionally separate.
 
 Suggested implementation order:
 
 1. **Define billing behavior.** Decide which plans are free trials versus paid, supported currencies, billing periods, tax treatment, trial duration, and what happens when payment fails. The current Starter plan and entitlements are seeded in `scripts/seed-control.ts`.
 2. **Add provider mappings.** Choose a provider (the schema already lists Razorpay as an option), store provider customer/subscription identifiers, and map local plans/prices to provider price IDs. Keep all money amounts in integer minor units, as the commerce models do now.
-3. **Create checkout server-side.** Add an authenticated endpoint that validates the requested plan, calculates the amount from trusted Control DB pricing, creates an idempotent local payment/order record, and asks the provider for a hosted checkout session. Never trust a client-submitted amount or store card data.
-4. **Verify payment asynchronously.** Add a webhook endpoint that verifies the provider signature against the raw request body, deduplicates provider event IDs, persists payment results transactionally, and records subscription events. Do not activate a subscription based only on a browser redirect.
-5. **Connect payment state to entitlements.** Define when a subscription becomes `ACTIVE`, `PAST_DUE`, `CANCELED`, or `EXPIRED`; make access checks enforce those states and plan entitlements. Decide explicitly whether tenant provisioning starts before payment, after payment, or during a trial.
+3. **Razorpay checkout and webhook recording.** Implemented for Test Mode: the server creates Orders from the quoted Control DB price, and the webhook verifies the raw-body signature, deduplicates events, and marks drafts paid.
+4. **Finalize after payment.** Create the Business, owner membership, subscription, onboarding profile, and tenant lifecycle record transactionally after `PAID`; then provision Neon asynchronously. Do not activate based only on a browser callback.
+5. **Connect payment state to entitlements.** Define when a subscription becomes `ACTIVE`, `PAST_DUE`, `CANCELED`, or `EXPIRED`; make access checks enforce those states and plan entitlements. Decide explicitly whether tenant provisioning starts after payment or during a trial.
 6. **Handle lifecycle and failures.** Implement renewals, failed-payment retries/dunning, cancellation at period end, plan changes/proration, refunds, invoice issuance, and idempotent webhook replay. Keep tenant provisioning retries independent from payment retries so a paid business can recover infrastructure without paying twice.
 7. **Test in provider sandbox.** Cover success, decline, duplicate/out-of-order webhooks, timeouts, webhook signature failures, retries, cancellation, refunds, and provisioning failure after confirmed payment before enabling live credentials.
 

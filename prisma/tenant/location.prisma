@@ -5,6 +5,7 @@ model Location {
   slug String
 
   status LocationStatus @default(ACTIVE)
+  operatingMode LocationOperatingMode @default(DINE_IN)
 
   addressLine1 String?
   addressLine2 String?

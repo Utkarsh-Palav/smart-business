@@ -15,6 +15,7 @@ model User {
   memberships   BusinessMembership[]
   otpChallenges OtpChallenge[]
   authSessions  AuthSession[]
+  onboardingDrafts BusinessOnboardingDraft[]
 
   @@index([status])
 }

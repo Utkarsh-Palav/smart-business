@@ -45,6 +45,10 @@ export async function POST(request: Request) {
       userId: session.userId,
       name: parsed.data.name,
       slug: parsed.data.slug,
+      businessType: parsed.data.businessType,
+      legalName: parsed.data.legalName,
+      gstin: parsed.data.gstin || undefined,
+      firstLocation: parsed.data.firstLocation,
     });
 
     /*
@@ -150,12 +154,12 @@ export async function POST(request: Request) {
        */
       const location = await initialLocationService.createInitialLocation({
         businessId: business.businessId,
-        businessName: business.businessName,
-        businessSlug: business.businessSlug,
+        ...business.firstLocation,
       });
 
       return NextResponse.json(
         {
+          success: true,
           business: {
             id: business.businessId,
             name: business.businessName,

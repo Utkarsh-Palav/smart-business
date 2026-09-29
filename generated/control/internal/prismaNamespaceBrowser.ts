@@ -55,6 +55,10 @@ export const ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   Business: 'Business',
+  BusinessOnboardingDraft: 'BusinessOnboardingDraft',
+  BusinessOnboardingPaymentAttempt: 'BusinessOnboardingPaymentAttempt',
+  RazorpayWebhookEvent: 'RazorpayWebhookEvent',
+  BusinessOnboardingProfile: 'BusinessOnboardingProfile',
   CatalogProduct: 'CatalogProduct',
   ProductPrice: 'ProductPrice',
   PurchaseOrder: 'PurchaseOrder',
@@ -132,12 +136,102 @@ export const BusinessScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
+  legalName: 'legalName',
+  businessType: 'businessType',
+  gstin: 'gstin',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type BusinessScalarFieldEnum = (typeof BusinessScalarFieldEnum)[keyof typeof BusinessScalarFieldEnum]
+
+
+export const BusinessOnboardingDraftScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  businessId: 'businessId',
+  businessName: 'businessName',
+  businessSlug: 'businessSlug',
+  businessType: 'businessType',
+  legalName: 'legalName',
+  gstin: 'gstin',
+  firstLocationName: 'firstLocationName',
+  firstLocationSlug: 'firstLocationSlug',
+  operatingMode: 'operatingMode',
+  addressLine1: 'addressLine1',
+  addressLine2: 'addressLine2',
+  city: 'city',
+  state: 'state',
+  postalCode: 'postalCode',
+  country: 'country',
+  phone: 'phone',
+  planPriceId: 'planPriceId',
+  quotedAmountMinor: 'quotedAmountMinor',
+  quotedCurrency: 'quotedCurrency',
+  quotedInterval: 'quotedInterval',
+  quotedIntervalCount: 'quotedIntervalCount',
+  quotedUnit: 'quotedUnit',
+  quotedPriceType: 'quotedPriceType',
+  quotedAt: 'quotedAt',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BusinessOnboardingDraftScalarFieldEnum = (typeof BusinessOnboardingDraftScalarFieldEnum)[keyof typeof BusinessOnboardingDraftScalarFieldEnum]
+
+
+export const BusinessOnboardingPaymentAttemptScalarFieldEnum = {
+  id: 'id',
+  draftId: 'draftId',
+  provider: 'provider',
+  orderId: 'orderId',
+  paymentId: 'paymentId',
+  amountMinor: 'amountMinor',
+  currency: 'currency',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BusinessOnboardingPaymentAttemptScalarFieldEnum = (typeof BusinessOnboardingPaymentAttemptScalarFieldEnum)[keyof typeof BusinessOnboardingPaymentAttemptScalarFieldEnum]
+
+
+export const RazorpayWebhookEventScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  eventType: 'eventType',
+  payload: 'payload',
+  status: 'status',
+  error: 'error',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RazorpayWebhookEventScalarFieldEnum = (typeof RazorpayWebhookEventScalarFieldEnum)[keyof typeof RazorpayWebhookEventScalarFieldEnum]
+
+
+export const BusinessOnboardingProfileScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
+  firstLocationName: 'firstLocationName',
+  firstLocationSlug: 'firstLocationSlug',
+  operatingMode: 'operatingMode',
+  addressLine1: 'addressLine1',
+  addressLine2: 'addressLine2',
+  city: 'city',
+  state: 'state',
+  postalCode: 'postalCode',
+  country: 'country',
+  phone: 'phone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BusinessOnboardingProfileScalarFieldEnum = (typeof BusinessOnboardingProfileScalarFieldEnum)[keyof typeof BusinessOnboardingProfileScalarFieldEnum]
 
 
 export const CatalogProductScalarFieldEnum = {
@@ -450,6 +544,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {

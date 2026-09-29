@@ -447,18 +447,6 @@ export type ProductPriceUncheckedUpdateManyWithoutProductNestedInput = {
   deleteMany?: Prisma.ProductPriceScalarWhereInput | Prisma.ProductPriceScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type ProductPriceCreateWithoutProductInput = {
   id?: string
   currency?: string

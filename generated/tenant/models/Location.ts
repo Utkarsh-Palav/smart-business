@@ -29,6 +29,7 @@ export type LocationMinAggregateOutputType = {
   name: string | null
   slug: string | null
   status: $Enums.LocationStatus | null
+  operatingMode: $Enums.LocationOperatingMode | null
   addressLine1: string | null
   addressLine2: string | null
   city: string | null
@@ -45,6 +46,7 @@ export type LocationMaxAggregateOutputType = {
   name: string | null
   slug: string | null
   status: $Enums.LocationStatus | null
+  operatingMode: $Enums.LocationOperatingMode | null
   addressLine1: string | null
   addressLine2: string | null
   city: string | null
@@ -61,6 +63,7 @@ export type LocationCountAggregateOutputType = {
   name: number
   slug: number
   status: number
+  operatingMode: number
   addressLine1: number
   addressLine2: number
   city: number
@@ -79,6 +82,7 @@ export type LocationMinAggregateInputType = {
   name?: true
   slug?: true
   status?: true
+  operatingMode?: true
   addressLine1?: true
   addressLine2?: true
   city?: true
@@ -95,6 +99,7 @@ export type LocationMaxAggregateInputType = {
   name?: true
   slug?: true
   status?: true
+  operatingMode?: true
   addressLine1?: true
   addressLine2?: true
   city?: true
@@ -111,6 +116,7 @@ export type LocationCountAggregateInputType = {
   name?: true
   slug?: true
   status?: true
+  operatingMode?: true
   addressLine1?: true
   addressLine2?: true
   city?: true
@@ -200,6 +206,7 @@ export type LocationGroupByOutputType = {
   name: string
   slug: string
   status: $Enums.LocationStatus
+  operatingMode: $Enums.LocationOperatingMode
   addressLine1: string | null
   addressLine2: string | null
   city: string | null
@@ -237,6 +244,7 @@ export type LocationWhereInput = {
   name?: Prisma.StringFilter<"Location"> | string
   slug?: Prisma.StringFilter<"Location"> | string
   status?: Prisma.EnumLocationStatusFilter<"Location"> | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFilter<"Location"> | $Enums.LocationOperatingMode
   addressLine1?: Prisma.StringNullableFilter<"Location"> | string | null
   addressLine2?: Prisma.StringNullableFilter<"Location"> | string | null
   city?: Prisma.StringNullableFilter<"Location"> | string | null
@@ -257,6 +265,7 @@ export type LocationOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  operatingMode?: Prisma.SortOrder
   addressLine1?: Prisma.SortOrderInput | Prisma.SortOrder
   addressLine2?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -280,6 +289,7 @@ export type LocationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.LocationWhereInput | Prisma.LocationWhereInput[]
   name?: Prisma.StringFilter<"Location"> | string
   status?: Prisma.EnumLocationStatusFilter<"Location"> | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFilter<"Location"> | $Enums.LocationOperatingMode
   addressLine1?: Prisma.StringNullableFilter<"Location"> | string | null
   addressLine2?: Prisma.StringNullableFilter<"Location"> | string | null
   city?: Prisma.StringNullableFilter<"Location"> | string | null
@@ -300,6 +310,7 @@ export type LocationOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  operatingMode?: Prisma.SortOrder
   addressLine1?: Prisma.SortOrderInput | Prisma.SortOrder
   addressLine2?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -322,6 +333,7 @@ export type LocationScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Location"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Location"> | string
   status?: Prisma.EnumLocationStatusWithAggregatesFilter<"Location"> | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeWithAggregatesFilter<"Location"> | $Enums.LocationOperatingMode
   addressLine1?: Prisma.StringNullableWithAggregatesFilter<"Location"> | string | null
   addressLine2?: Prisma.StringNullableWithAggregatesFilter<"Location"> | string | null
   city?: Prisma.StringNullableWithAggregatesFilter<"Location"> | string | null
@@ -338,6 +350,7 @@ export type LocationCreateInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -358,6 +371,7 @@ export type LocationUncheckedCreateInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -378,6 +392,7 @@ export type LocationUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -398,6 +413,7 @@ export type LocationUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -418,6 +434,7 @@ export type LocationCreateManyInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -434,6 +451,7 @@ export type LocationUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -450,6 +468,7 @@ export type LocationUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -466,6 +485,7 @@ export type LocationCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  operatingMode?: Prisma.SortOrder
   addressLine1?: Prisma.SortOrder
   addressLine2?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -482,6 +502,7 @@ export type LocationMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  operatingMode?: Prisma.SortOrder
   addressLine1?: Prisma.SortOrder
   addressLine2?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -498,6 +519,7 @@ export type LocationMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  operatingMode?: Prisma.SortOrder
   addressLine1?: Prisma.SortOrder
   addressLine2?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -520,6 +542,10 @@ export type StringFieldUpdateOperationsInput = {
 
 export type EnumLocationStatusFieldUpdateOperationsInput = {
   set?: $Enums.LocationStatus
+}
+
+export type EnumLocationOperatingModeFieldUpdateOperationsInput = {
+  set?: $Enums.LocationOperatingMode
 }
 
 export type NullableStringFieldUpdateOperationsInput = {
@@ -591,6 +617,7 @@ export type LocationCreateWithoutMenusInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -610,6 +637,7 @@ export type LocationUncheckedCreateWithoutMenusInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -645,6 +673,7 @@ export type LocationUpdateWithoutMenusInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -664,6 +693,7 @@ export type LocationUncheckedUpdateWithoutMenusInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -683,6 +713,7 @@ export type LocationCreateWithoutProductAvailabilitiesInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -702,6 +733,7 @@ export type LocationUncheckedCreateWithoutProductAvailabilitiesInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -737,6 +769,7 @@ export type LocationUpdateWithoutProductAvailabilitiesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -756,6 +789,7 @@ export type LocationUncheckedUpdateWithoutProductAvailabilitiesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -775,6 +809,7 @@ export type LocationCreateWithoutOrdersInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -794,6 +829,7 @@ export type LocationUncheckedCreateWithoutOrdersInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -829,6 +865,7 @@ export type LocationUpdateWithoutOrdersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -848,6 +885,7 @@ export type LocationUncheckedUpdateWithoutOrdersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -867,6 +905,7 @@ export type LocationCreateWithoutTablesInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -886,6 +925,7 @@ export type LocationUncheckedCreateWithoutTablesInput = {
   name: string
   slug: string
   status?: $Enums.LocationStatus
+  operatingMode?: $Enums.LocationOperatingMode
   addressLine1?: string | null
   addressLine2?: string | null
   city?: string | null
@@ -921,6 +961,7 @@ export type LocationUpdateWithoutTablesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -940,6 +981,7 @@ export type LocationUncheckedUpdateWithoutTablesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumLocationStatusFieldUpdateOperationsInput | $Enums.LocationStatus
+  operatingMode?: Prisma.EnumLocationOperatingModeFieldUpdateOperationsInput | $Enums.LocationOperatingMode
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1017,6 +1059,7 @@ export type LocationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name?: boolean
   slug?: boolean
   status?: boolean
+  operatingMode?: boolean
   addressLine1?: boolean
   addressLine2?: boolean
   city?: boolean
@@ -1038,6 +1081,7 @@ export type LocationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   name?: boolean
   slug?: boolean
   status?: boolean
+  operatingMode?: boolean
   addressLine1?: boolean
   addressLine2?: boolean
   city?: boolean
@@ -1054,6 +1098,7 @@ export type LocationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   name?: boolean
   slug?: boolean
   status?: boolean
+  operatingMode?: boolean
   addressLine1?: boolean
   addressLine2?: boolean
   city?: boolean
@@ -1070,6 +1115,7 @@ export type LocationSelectScalar = {
   name?: boolean
   slug?: boolean
   status?: boolean
+  operatingMode?: boolean
   addressLine1?: boolean
   addressLine2?: boolean
   city?: boolean
@@ -1081,7 +1127,7 @@ export type LocationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type LocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "status" | "addressLine1" | "addressLine2" | "city" | "state" | "postalCode" | "country" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["location"]>
+export type LocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "status" | "operatingMode" | "addressLine1" | "addressLine2" | "city" | "state" | "postalCode" | "country" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["location"]>
 export type LocationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tables?: boolean | Prisma.Location$tablesArgs<ExtArgs>
   menus?: boolean | Prisma.Location$menusArgs<ExtArgs>
@@ -1105,6 +1151,7 @@ export type $LocationPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     name: string
     slug: string
     status: $Enums.LocationStatus
+    operatingMode: $Enums.LocationOperatingMode
     addressLine1: string | null
     addressLine2: string | null
     city: string | null
@@ -1545,6 +1592,7 @@ export interface LocationFieldRefs {
   readonly name: Prisma.FieldRef<"Location", 'String'>
   readonly slug: Prisma.FieldRef<"Location", 'String'>
   readonly status: Prisma.FieldRef<"Location", 'LocationStatus'>
+  readonly operatingMode: Prisma.FieldRef<"Location", 'LocationOperatingMode'>
   readonly addressLine1: Prisma.FieldRef<"Location", 'String'>
   readonly addressLine2: Prisma.FieldRef<"Location", 'String'>
   readonly city: Prisma.FieldRef<"Location", 'String'>

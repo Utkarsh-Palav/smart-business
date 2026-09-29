@@ -1,8 +1,11 @@
 model Business {
     id String @id @default(cuid())
 
-    name String
-    slug String @unique
+    name         String
+    slug         String       @unique
+    legalName    String?
+    businessType BusinessType @default(OTHER)
+    gstin        String?
 
     status BusinessStatus @default(ACTIVE)
 
@@ -22,6 +25,115 @@ model Business {
     reviewCardAssignments ReviewCardAssignment[]
 
     tableRoutes TableRoute[]
+
+    onboardingProfile BusinessOnboardingProfile?
+    onboardingDraft   BusinessOnboardingDraft?
     
     @@index([status])
+}
+
+model BusinessOnboardingDraft {
+    id String @id @default(cuid())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    businessId String?   @unique
+    business   Business? @relation(fields: [businessId], references: [id], onDelete: SetNull)
+
+    businessName String
+    businessSlug String
+    businessType BusinessType
+    legalName    String?
+    gstin        String?
+
+    firstLocationName   String
+    firstLocationSlug   String
+    operatingMode       LocationOperatingMode
+    addressLine1        String
+    addressLine2        String?
+    city                String
+    state               String
+    postalCode          String
+    country             String   @default("IN")
+    phone               String?
+
+    planPriceId String?
+    planPrice   PlanPrice? @relation(fields: [planPriceId], references: [id], onDelete: Restrict)
+
+    quotedAmountMinor   Int?
+    quotedCurrency      String?
+    quotedInterval      PlanPriceInterval?
+    quotedIntervalCount Int?
+    quotedUnit          PlanPriceUnit?
+    quotedPriceType     PlanPriceType?
+    quotedAt            DateTime?
+
+    status    BusinessOnboardingStatus @default(DRAFT)
+    expiresAt DateTime
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    paymentAttempts BusinessOnboardingPaymentAttempt[]
+
+    @@index([userId, status])
+    @@index([status, expiresAt])
+}
+
+model BusinessOnboardingPaymentAttempt {
+    id String @id @default(cuid())
+
+    draftId String
+    draft   BusinessOnboardingDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+    provider String @default("RAZORPAY")
+    orderId  String @unique
+    paymentId String? @unique
+
+    amountMinor Int
+    currency    String
+    status      OnboardingPaymentStatus @default(CREATED)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([draftId, status])
+}
+
+model RazorpayWebhookEvent {
+    id String @id @default(cuid())
+
+    eventId   String @unique
+    eventType String
+    payload   Json
+    status    WebhookEventStatus @default(RECEIVED)
+    error     String?
+    processedAt DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([eventType, status])
+}
+
+model BusinessOnboardingProfile {
+    id String @id @default(cuid())
+
+    businessId String   @unique
+    business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+    firstLocationName   String
+    firstLocationSlug   String
+    operatingMode       LocationOperatingMode
+    addressLine1        String
+    addressLine2        String?
+    city                String
+    state               String
+    postalCode          String
+    country             String   @default("IN")
+    phone               String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }

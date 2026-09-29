@@ -217,6 +217,7 @@ export type UserWhereInput = {
   memberships?: Prisma.BusinessMembershipListRelationFilter
   otpChallenges?: Prisma.OtpChallengeListRelationFilter
   authSessions?: Prisma.AuthSessionListRelationFilter
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -232,6 +233,7 @@ export type UserOrderByWithRelationInput = {
   memberships?: Prisma.BusinessMembershipOrderByRelationAggregateInput
   otpChallenges?: Prisma.OtpChallengeOrderByRelationAggregateInput
   authSessions?: Prisma.AuthSessionOrderByRelationAggregateInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -250,6 +252,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   memberships?: Prisma.BusinessMembershipListRelationFilter
   otpChallenges?: Prisma.OtpChallengeListRelationFilter
   authSessions?: Prisma.AuthSessionListRelationFilter
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftListRelationFilter
 }, "id" | "email" | "phone">
 
 export type UserOrderByWithAggregationInput = {
@@ -295,6 +298,7 @@ export type UserCreateInput = {
   memberships?: Prisma.BusinessMembershipCreateNestedManyWithoutUserInput
   otpChallenges?: Prisma.OtpChallengeCreateNestedManyWithoutUserInput
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -310,6 +314,7 @@ export type UserUncheckedCreateInput = {
   memberships?: Prisma.BusinessMembershipUncheckedCreateNestedManyWithoutUserInput
   otpChallenges?: Prisma.OtpChallengeUncheckedCreateNestedManyWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -325,6 +330,7 @@ export type UserUpdateInput = {
   memberships?: Prisma.BusinessMembershipUpdateManyWithoutUserNestedInput
   otpChallenges?: Prisma.OtpChallengeUpdateManyWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -340,6 +346,7 @@ export type UserUncheckedUpdateInput = {
   memberships?: Prisma.BusinessMembershipUncheckedUpdateManyWithoutUserNestedInput
   otpChallenges?: Prisma.OtpChallengeUncheckedUpdateManyWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -424,6 +431,20 @@ export type UserNullableScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput | null
 }
 
+export type UserCreateNestedOneWithoutOnboardingDraftsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOnboardingDraftsInput, Prisma.UserUncheckedCreateWithoutOnboardingDraftsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOnboardingDraftsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOnboardingDraftsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOnboardingDraftsInput, Prisma.UserUncheckedCreateWithoutOnboardingDraftsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOnboardingDraftsInput
+  upsert?: Prisma.UserUpsertWithoutOnboardingDraftsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOnboardingDraftsInput, Prisma.UserUpdateWithoutOnboardingDraftsInput>, Prisma.UserUncheckedUpdateWithoutOnboardingDraftsInput>
+}
+
 export type UserCreateNestedOneWithoutMembershipsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembershipsInput
@@ -472,6 +493,82 @@ export type UserUpdateOneRequiredWithoutAuthSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuthSessionsInput, Prisma.UserUpdateWithoutAuthSessionsInput>, Prisma.UserUncheckedUpdateWithoutAuthSessionsInput>
 }
 
+export type UserCreateWithoutOnboardingDraftsInput = {
+  id?: string
+  email: string
+  phone?: string | null
+  passwordHash?: string | null
+  isEmailVerified?: boolean
+  isPhoneVerified?: boolean
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.BusinessMembershipCreateNestedManyWithoutUserInput
+  otpChallenges?: Prisma.OtpChallengeCreateNestedManyWithoutUserInput
+  authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutOnboardingDraftsInput = {
+  id?: string
+  email: string
+  phone?: string | null
+  passwordHash?: string | null
+  isEmailVerified?: boolean
+  isPhoneVerified?: boolean
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.BusinessMembershipUncheckedCreateNestedManyWithoutUserInput
+  otpChallenges?: Prisma.OtpChallengeUncheckedCreateNestedManyWithoutUserInput
+  authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutOnboardingDraftsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOnboardingDraftsInput, Prisma.UserUncheckedCreateWithoutOnboardingDraftsInput>
+}
+
+export type UserUpsertWithoutOnboardingDraftsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOnboardingDraftsInput, Prisma.UserUncheckedUpdateWithoutOnboardingDraftsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOnboardingDraftsInput, Prisma.UserUncheckedCreateWithoutOnboardingDraftsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOnboardingDraftsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOnboardingDraftsInput, Prisma.UserUncheckedUpdateWithoutOnboardingDraftsInput>
+}
+
+export type UserUpdateWithoutOnboardingDraftsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.BusinessMembershipUpdateManyWithoutUserNestedInput
+  otpChallenges?: Prisma.OtpChallengeUpdateManyWithoutUserNestedInput
+  authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOnboardingDraftsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.BusinessMembershipUncheckedUpdateManyWithoutUserNestedInput
+  otpChallenges?: Prisma.OtpChallengeUncheckedUpdateManyWithoutUserNestedInput
+  authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutMembershipsInput = {
   id?: string
   email: string
@@ -484,6 +581,7 @@ export type UserCreateWithoutMembershipsInput = {
   updatedAt?: Date | string
   otpChallenges?: Prisma.OtpChallengeCreateNestedManyWithoutUserInput
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -498,6 +596,7 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   updatedAt?: Date | string
   otpChallenges?: Prisma.OtpChallengeUncheckedCreateNestedManyWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -528,6 +627,7 @@ export type UserUpdateWithoutMembershipsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   otpChallenges?: Prisma.OtpChallengeUpdateManyWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -542,6 +642,7 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   otpChallenges?: Prisma.OtpChallengeUncheckedUpdateManyWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOtpChallengesInput = {
@@ -556,6 +657,7 @@ export type UserCreateWithoutOtpChallengesInput = {
   updatedAt?: Date | string
   memberships?: Prisma.BusinessMembershipCreateNestedManyWithoutUserInput
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOtpChallengesInput = {
@@ -570,6 +672,7 @@ export type UserUncheckedCreateWithoutOtpChallengesInput = {
   updatedAt?: Date | string
   memberships?: Prisma.BusinessMembershipUncheckedCreateNestedManyWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOtpChallengesInput = {
@@ -600,6 +703,7 @@ export type UserUpdateWithoutOtpChallengesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.BusinessMembershipUpdateManyWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOtpChallengesInput = {
@@ -614,6 +718,7 @@ export type UserUncheckedUpdateWithoutOtpChallengesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.BusinessMembershipUncheckedUpdateManyWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAuthSessionsInput = {
@@ -628,6 +733,7 @@ export type UserCreateWithoutAuthSessionsInput = {
   updatedAt?: Date | string
   memberships?: Prisma.BusinessMembershipCreateNestedManyWithoutUserInput
   otpChallenges?: Prisma.OtpChallengeCreateNestedManyWithoutUserInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuthSessionsInput = {
@@ -642,6 +748,7 @@ export type UserUncheckedCreateWithoutAuthSessionsInput = {
   updatedAt?: Date | string
   memberships?: Prisma.BusinessMembershipUncheckedCreateNestedManyWithoutUserInput
   otpChallenges?: Prisma.OtpChallengeUncheckedCreateNestedManyWithoutUserInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuthSessionsInput = {
@@ -672,6 +779,7 @@ export type UserUpdateWithoutAuthSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.BusinessMembershipUpdateManyWithoutUserNestedInput
   otpChallenges?: Prisma.OtpChallengeUpdateManyWithoutUserNestedInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthSessionsInput = {
@@ -686,6 +794,7 @@ export type UserUncheckedUpdateWithoutAuthSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.BusinessMembershipUncheckedUpdateManyWithoutUserNestedInput
   otpChallenges?: Prisma.OtpChallengeUncheckedUpdateManyWithoutUserNestedInput
+  onboardingDrafts?: Prisma.BusinessOnboardingDraftUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -697,12 +806,14 @@ export type UserCountOutputType = {
   memberships: number
   otpChallenges: number
   authSessions: number
+  onboardingDrafts: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memberships?: boolean | UserCountOutputTypeCountMembershipsArgs
   otpChallenges?: boolean | UserCountOutputTypeCountOtpChallengesArgs
   authSessions?: boolean | UserCountOutputTypeCountAuthSessionsArgs
+  onboardingDrafts?: boolean | UserCountOutputTypeCountOnboardingDraftsArgs
 }
 
 /**
@@ -736,6 +847,13 @@ export type UserCountOutputTypeCountAuthSessionsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.AuthSessionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOnboardingDraftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BusinessOnboardingDraftWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -750,6 +868,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   otpChallenges?: boolean | Prisma.User$otpChallengesArgs<ExtArgs>
   authSessions?: boolean | Prisma.User$authSessionsArgs<ExtArgs>
+  onboardingDrafts?: boolean | Prisma.User$onboardingDraftsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -794,6 +913,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   otpChallenges?: boolean | Prisma.User$otpChallengesArgs<ExtArgs>
   authSessions?: boolean | Prisma.User$authSessionsArgs<ExtArgs>
+  onboardingDrafts?: boolean | Prisma.User$onboardingDraftsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -805,6 +925,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     memberships: Prisma.$BusinessMembershipPayload<ExtArgs>[]
     otpChallenges: Prisma.$OtpChallengePayload<ExtArgs>[]
     authSessions: Prisma.$AuthSessionPayload<ExtArgs>[]
+    onboardingDrafts: Prisma.$BusinessOnboardingDraftPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1213,6 +1334,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   memberships<T extends Prisma.User$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   otpChallenges<T extends Prisma.User$otpChallengesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$otpChallengesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OtpChallengePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   authSessions<T extends Prisma.User$authSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$authSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuthSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  onboardingDrafts<T extends Prisma.User$onboardingDraftsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$onboardingDraftsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessOnboardingDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1713,6 +1835,30 @@ export type User$authSessionsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.AuthSessionScalarFieldEnum | Prisma.AuthSessionScalarFieldEnum[]
+}
+
+/**
+ * User.onboardingDrafts
+ */
+export type User$onboardingDraftsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessOnboardingDraft
+   */
+  select?: Prisma.BusinessOnboardingDraftSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessOnboardingDraft
+   */
+  omit?: Prisma.BusinessOnboardingDraftOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessOnboardingDraftInclude<ExtArgs> | null
+  where?: Prisma.BusinessOnboardingDraftWhereInput
+  orderBy?: Prisma.BusinessOnboardingDraftOrderByWithRelationInput | Prisma.BusinessOnboardingDraftOrderByWithRelationInput[]
+  cursor?: Prisma.BusinessOnboardingDraftWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BusinessOnboardingDraftScalarFieldEnum | Prisma.BusinessOnboardingDraftScalarFieldEnum[]
 }
 
 /**

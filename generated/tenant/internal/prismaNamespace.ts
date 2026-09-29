@@ -1210,6 +1210,7 @@ export const LocationScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   status: 'status',
+  operatingMode: 'operatingMode',
   addressLine1: 'addressLine1',
   addressLine2: 'addressLine2',
   city: 'city',
@@ -1421,6 +1422,20 @@ export type EnumLocationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'LocationStatus[]'
  */
 export type ListEnumLocationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocationStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'LocationOperatingMode'
+ */
+export type EnumLocationOperatingModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocationOperatingMode'>
+    
+
+
+/**
+ * Reference to a field of type 'LocationOperatingMode[]'
+ */
+export type ListEnumLocationOperatingModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocationOperatingMode[]'>
     
 
 

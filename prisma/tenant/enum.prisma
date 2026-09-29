@@ -19,6 +19,14 @@ enum TableStatus {
   ARCHIVED
 }
 
+enum LocationOperatingMode {
+  DINE_IN
+  TAKEAWAY
+  DELIVERY_ONLY
+  HYBRID
+  OTHER
+}
+
 enum MenuStatus {
   DRAFT
   PUBLISHED

@@ -21,6 +21,8 @@ model PlanPrice {
   planId String
   plan   Plan   @relation(fields: [planId], references: [id], onDelete: Cascade)
 
+  onboardingDrafts BusinessOnboardingDraft[]
+
   currency      String           @default("INR")
   amountMinor   Int
   interval      PlanPriceInterval

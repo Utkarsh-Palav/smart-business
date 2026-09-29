@@ -19,6 +19,24 @@ enum BusinessStatus {
   ARCHIVED
 }
 
+enum BusinessType {
+  CAFE
+  RESTAURANT
+  QSR
+  CLOUD_KITCHEN
+  BAKERY
+  FOOD_TRUCK
+  OTHER
+}
+
+enum LocationOperatingMode {
+  DINE_IN
+  TAKEAWAY
+  DELIVERY_ONLY
+  HYBRID
+  OTHER
+}
+
 enum TenantDatabaseProvider {
   NEON
 }
@@ -48,6 +66,22 @@ enum SubscriptionStatus {
   EXPIRED
 }
 
+enum OnboardingPaymentStatus {
+  CREATED
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  CANCELED
+  EXPIRED
+}
+
+enum WebhookEventStatus {
+  RECEIVED
+  PROCESSED
+  IGNORED
+  FAILED
+}
+
 enum SubscriptionEventType {
   CREATED
   ACTIVATED
@@ -58,6 +92,17 @@ enum SubscriptionEventType {
   RESUMED
   CANCEL_REQUESTED
   CANCELED
+  EXPIRED
+}
+
+enum BusinessOnboardingStatus {
+  DRAFT
+  PENDING_PAYMENT
+  PAYMENT_FAILED
+  PAID
+  PROVISIONING
+  PROVISIONING_FAILED
+  COMPLETED
   EXPIRED
 }
 

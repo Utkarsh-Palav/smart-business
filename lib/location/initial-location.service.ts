@@ -14,8 +14,8 @@ export class InitialLocationService {
     input: CreateInitialLocationInput,
   ): Promise<InitialLocationResult> {
     const businessId = input.businessId?.trim();
-    const name = (input.businessName ?? "").trim();
-    const slug = (input.businessSlug ?? "").trim().toLowerCase();
+    const name = input.name.trim();
+    const slug = input.slug.trim().toLowerCase();
 
     if (!businessId || !name || !slug) {
       throw new LocationError(
@@ -74,6 +74,7 @@ export class InitialLocationService {
           name,
           slug,
           status: "ACTIVE",
+          ...(input.operatingMode && { operatingMode: input.operatingMode }),
           addressLine1: input.addressLine1 ?? null,
           addressLine2: input.addressLine2 ?? null,
           city: input.city ?? null,

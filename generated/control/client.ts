@@ -62,6 +62,26 @@ export type RolePermission = Prisma.RolePermissionModel
  */
 export type Business = Prisma.BusinessModel
 /**
+ * Model BusinessOnboardingDraft
+ * 
+ */
+export type BusinessOnboardingDraft = Prisma.BusinessOnboardingDraftModel
+/**
+ * Model BusinessOnboardingPaymentAttempt
+ * 
+ */
+export type BusinessOnboardingPaymentAttempt = Prisma.BusinessOnboardingPaymentAttemptModel
+/**
+ * Model RazorpayWebhookEvent
+ * 
+ */
+export type RazorpayWebhookEvent = Prisma.RazorpayWebhookEventModel
+/**
+ * Model BusinessOnboardingProfile
+ * 
+ */
+export type BusinessOnboardingProfile = Prisma.BusinessOnboardingProfileModel
+/**
  * Model CatalogProduct
  * 
  */

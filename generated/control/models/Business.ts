@@ -28,6 +28,9 @@ export type BusinessMinAggregateOutputType = {
   id: string | null
   name: string | null
   slug: string | null
+  legalName: string | null
+  businessType: $Enums.BusinessType | null
+  gstin: string | null
   status: $Enums.BusinessStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -37,6 +40,9 @@ export type BusinessMaxAggregateOutputType = {
   id: string | null
   name: string | null
   slug: string | null
+  legalName: string | null
+  businessType: $Enums.BusinessType | null
+  gstin: string | null
   status: $Enums.BusinessStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -46,6 +52,9 @@ export type BusinessCountAggregateOutputType = {
   id: number
   name: number
   slug: number
+  legalName: number
+  businessType: number
+  gstin: number
   status: number
   createdAt: number
   updatedAt: number
@@ -57,6 +66,9 @@ export type BusinessMinAggregateInputType = {
   id?: true
   name?: true
   slug?: true
+  legalName?: true
+  businessType?: true
+  gstin?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -66,6 +78,9 @@ export type BusinessMaxAggregateInputType = {
   id?: true
   name?: true
   slug?: true
+  legalName?: true
+  businessType?: true
+  gstin?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -75,6 +90,9 @@ export type BusinessCountAggregateInputType = {
   id?: true
   name?: true
   slug?: true
+  legalName?: true
+  businessType?: true
+  gstin?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -157,6 +175,9 @@ export type BusinessGroupByOutputType = {
   id: string
   name: string
   slug: string
+  legalName: string | null
+  businessType: $Enums.BusinessType
+  gstin: string | null
   status: $Enums.BusinessStatus
   createdAt: Date
   updatedAt: Date
@@ -187,6 +208,9 @@ export type BusinessWhereInput = {
   id?: Prisma.StringFilter<"Business"> | string
   name?: Prisma.StringFilter<"Business"> | string
   slug?: Prisma.StringFilter<"Business"> | string
+  legalName?: Prisma.StringNullableFilter<"Business"> | string | null
+  businessType?: Prisma.EnumBusinessTypeFilter<"Business"> | $Enums.BusinessType
+  gstin?: Prisma.StringNullableFilter<"Business"> | string | null
   status?: Prisma.EnumBusinessStatusFilter<"Business"> | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFilter<"Business"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Business"> | Date | string
@@ -197,12 +221,17 @@ export type BusinessWhereInput = {
   invoices?: Prisma.InvoiceListRelationFilter
   reviewCardAssignments?: Prisma.ReviewCardAssignmentListRelationFilter
   tableRoutes?: Prisma.TableRouteListRelationFilter
+  onboardingProfile?: Prisma.XOR<Prisma.BusinessOnboardingProfileNullableScalarRelationFilter, Prisma.BusinessOnboardingProfileWhereInput> | null
+  onboardingDraft?: Prisma.XOR<Prisma.BusinessOnboardingDraftNullableScalarRelationFilter, Prisma.BusinessOnboardingDraftWhereInput> | null
 }
 
 export type BusinessOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  legalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  gstin?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -213,6 +242,8 @@ export type BusinessOrderByWithRelationInput = {
   invoices?: Prisma.InvoiceOrderByRelationAggregateInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentOrderByRelationAggregateInput
   tableRoutes?: Prisma.TableRouteOrderByRelationAggregateInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileOrderByWithRelationInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftOrderByWithRelationInput
 }
 
 export type BusinessWhereUniqueInput = Prisma.AtLeast<{
@@ -222,6 +253,9 @@ export type BusinessWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.BusinessWhereInput[]
   NOT?: Prisma.BusinessWhereInput | Prisma.BusinessWhereInput[]
   name?: Prisma.StringFilter<"Business"> | string
+  legalName?: Prisma.StringNullableFilter<"Business"> | string | null
+  businessType?: Prisma.EnumBusinessTypeFilter<"Business"> | $Enums.BusinessType
+  gstin?: Prisma.StringNullableFilter<"Business"> | string | null
   status?: Prisma.EnumBusinessStatusFilter<"Business"> | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFilter<"Business"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Business"> | Date | string
@@ -232,12 +266,17 @@ export type BusinessWhereUniqueInput = Prisma.AtLeast<{
   invoices?: Prisma.InvoiceListRelationFilter
   reviewCardAssignments?: Prisma.ReviewCardAssignmentListRelationFilter
   tableRoutes?: Prisma.TableRouteListRelationFilter
+  onboardingProfile?: Prisma.XOR<Prisma.BusinessOnboardingProfileNullableScalarRelationFilter, Prisma.BusinessOnboardingProfileWhereInput> | null
+  onboardingDraft?: Prisma.XOR<Prisma.BusinessOnboardingDraftNullableScalarRelationFilter, Prisma.BusinessOnboardingDraftWhereInput> | null
 }, "id" | "slug">
 
 export type BusinessOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  legalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  gstin?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -253,6 +292,9 @@ export type BusinessScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Business"> | string
   name?: Prisma.StringWithAggregatesFilter<"Business"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Business"> | string
+  legalName?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
+  businessType?: Prisma.EnumBusinessTypeWithAggregatesFilter<"Business"> | $Enums.BusinessType
+  gstin?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
   status?: Prisma.EnumBusinessStatusWithAggregatesFilter<"Business"> | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Business"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Business"> | Date | string
@@ -262,6 +304,9 @@ export type BusinessCreateInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -272,12 +317,17 @@ export type BusinessCreateInput = {
   invoices?: Prisma.InvoiceCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -288,12 +338,17 @@ export type BusinessUncheckedCreateInput = {
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteUncheckedCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -304,12 +359,17 @@ export type BusinessUpdateInput = {
   invoices?: Prisma.InvoiceUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -320,12 +380,17 @@ export type BusinessUncheckedUpdateInput = {
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUncheckedUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessCreateManyInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -335,6 +400,9 @@ export type BusinessUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -344,6 +412,9 @@ export type BusinessUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -353,6 +424,9 @@ export type BusinessCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  legalName?: Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  gstin?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -362,6 +436,9 @@ export type BusinessMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  legalName?: Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  gstin?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -371,14 +448,12 @@ export type BusinessMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  legalName?: Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  gstin?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type BusinessScalarRelationFilter = {
-  is?: Prisma.BusinessWhereInput
-  isNot?: Prisma.BusinessWhereInput
 }
 
 export type BusinessNullableScalarRelationFilter = {
@@ -386,8 +461,47 @@ export type BusinessNullableScalarRelationFilter = {
   isNot?: Prisma.BusinessWhereInput | null
 }
 
+export type BusinessScalarRelationFilter = {
+  is?: Prisma.BusinessWhereInput
+  isNot?: Prisma.BusinessWhereInput
+}
+
+export type EnumBusinessTypeFieldUpdateOperationsInput = {
+  set?: $Enums.BusinessType
+}
+
 export type EnumBusinessStatusFieldUpdateOperationsInput = {
   set?: $Enums.BusinessStatus
+}
+
+export type BusinessCreateNestedOneWithoutOnboardingDraftInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingDraftInput, Prisma.BusinessUncheckedCreateWithoutOnboardingDraftInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutOnboardingDraftInput
+  connect?: Prisma.BusinessWhereUniqueInput
+}
+
+export type BusinessUpdateOneWithoutOnboardingDraftNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingDraftInput, Prisma.BusinessUncheckedCreateWithoutOnboardingDraftInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutOnboardingDraftInput
+  upsert?: Prisma.BusinessUpsertWithoutOnboardingDraftInput
+  disconnect?: Prisma.BusinessWhereInput | boolean
+  delete?: Prisma.BusinessWhereInput | boolean
+  connect?: Prisma.BusinessWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutOnboardingDraftInput, Prisma.BusinessUpdateWithoutOnboardingDraftInput>, Prisma.BusinessUncheckedUpdateWithoutOnboardingDraftInput>
+}
+
+export type BusinessCreateNestedOneWithoutOnboardingProfileInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingProfileInput, Prisma.BusinessUncheckedCreateWithoutOnboardingProfileInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutOnboardingProfileInput
+  connect?: Prisma.BusinessWhereUniqueInput
+}
+
+export type BusinessUpdateOneRequiredWithoutOnboardingProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingProfileInput, Prisma.BusinessUncheckedCreateWithoutOnboardingProfileInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutOnboardingProfileInput
+  upsert?: Prisma.BusinessUpsertWithoutOnboardingProfileInput
+  connect?: Prisma.BusinessWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutOnboardingProfileInput, Prisma.BusinessUpdateWithoutOnboardingProfileInput>, Prisma.BusinessUncheckedUpdateWithoutOnboardingProfileInput>
 }
 
 export type BusinessCreateNestedOneWithoutPurchaseOrdersInput = {
@@ -490,10 +604,205 @@ export type BusinessUpdateOneRequiredWithoutTenantDatabaseNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutTenantDatabaseInput, Prisma.BusinessUpdateWithoutTenantDatabaseInput>, Prisma.BusinessUncheckedUpdateWithoutTenantDatabaseInput>
 }
 
+export type BusinessCreateWithoutOnboardingDraftInput = {
+  id?: string
+  name: string
+  slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
+  status?: $Enums.BusinessStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenantDatabase?: Prisma.TenantDatabaseCreateNestedOneWithoutBusinessInput
+  memberships?: Prisma.BusinessMembershipCreateNestedManyWithoutBusinessInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutBusinessInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutBusinessInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutBusinessInput
+  reviewCardAssignments?: Prisma.ReviewCardAssignmentCreateNestedManyWithoutBusinessInput
+  tableRoutes?: Prisma.TableRouteCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileCreateNestedOneWithoutBusinessInput
+}
+
+export type BusinessUncheckedCreateWithoutOnboardingDraftInput = {
+  id?: string
+  name: string
+  slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
+  status?: $Enums.BusinessStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenantDatabase?: Prisma.TenantDatabaseUncheckedCreateNestedOneWithoutBusinessInput
+  memberships?: Prisma.BusinessMembershipUncheckedCreateNestedManyWithoutBusinessInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutBusinessInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutBusinessInput
+  reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedCreateNestedManyWithoutBusinessInput
+  tableRoutes?: Prisma.TableRouteUncheckedCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedCreateNestedOneWithoutBusinessInput
+}
+
+export type BusinessCreateOrConnectWithoutOnboardingDraftInput = {
+  where: Prisma.BusinessWhereUniqueInput
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingDraftInput, Prisma.BusinessUncheckedCreateWithoutOnboardingDraftInput>
+}
+
+export type BusinessUpsertWithoutOnboardingDraftInput = {
+  update: Prisma.XOR<Prisma.BusinessUpdateWithoutOnboardingDraftInput, Prisma.BusinessUncheckedUpdateWithoutOnboardingDraftInput>
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingDraftInput, Prisma.BusinessUncheckedCreateWithoutOnboardingDraftInput>
+  where?: Prisma.BusinessWhereInput
+}
+
+export type BusinessUpdateToOneWithWhereWithoutOnboardingDraftInput = {
+  where?: Prisma.BusinessWhereInput
+  data: Prisma.XOR<Prisma.BusinessUpdateWithoutOnboardingDraftInput, Prisma.BusinessUncheckedUpdateWithoutOnboardingDraftInput>
+}
+
+export type BusinessUpdateWithoutOnboardingDraftInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantDatabase?: Prisma.TenantDatabaseUpdateOneWithoutBusinessNestedInput
+  memberships?: Prisma.BusinessMembershipUpdateManyWithoutBusinessNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutBusinessNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutBusinessNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutBusinessNestedInput
+  reviewCardAssignments?: Prisma.ReviewCardAssignmentUpdateManyWithoutBusinessNestedInput
+  tableRoutes?: Prisma.TableRouteUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUpdateOneWithoutBusinessNestedInput
+}
+
+export type BusinessUncheckedUpdateWithoutOnboardingDraftInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantDatabase?: Prisma.TenantDatabaseUncheckedUpdateOneWithoutBusinessNestedInput
+  memberships?: Prisma.BusinessMembershipUncheckedUpdateManyWithoutBusinessNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutBusinessNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutBusinessNestedInput
+  reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedUpdateManyWithoutBusinessNestedInput
+  tableRoutes?: Prisma.TableRouteUncheckedUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedUpdateOneWithoutBusinessNestedInput
+}
+
+export type BusinessCreateWithoutOnboardingProfileInput = {
+  id?: string
+  name: string
+  slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
+  status?: $Enums.BusinessStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenantDatabase?: Prisma.TenantDatabaseCreateNestedOneWithoutBusinessInput
+  memberships?: Prisma.BusinessMembershipCreateNestedManyWithoutBusinessInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutBusinessInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutBusinessInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutBusinessInput
+  reviewCardAssignments?: Prisma.ReviewCardAssignmentCreateNestedManyWithoutBusinessInput
+  tableRoutes?: Prisma.TableRouteCreateNestedManyWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftCreateNestedOneWithoutBusinessInput
+}
+
+export type BusinessUncheckedCreateWithoutOnboardingProfileInput = {
+  id?: string
+  name: string
+  slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
+  status?: $Enums.BusinessStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenantDatabase?: Prisma.TenantDatabaseUncheckedCreateNestedOneWithoutBusinessInput
+  memberships?: Prisma.BusinessMembershipUncheckedCreateNestedManyWithoutBusinessInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutBusinessInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutBusinessInput
+  reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedCreateNestedManyWithoutBusinessInput
+  tableRoutes?: Prisma.TableRouteUncheckedCreateNestedManyWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedOneWithoutBusinessInput
+}
+
+export type BusinessCreateOrConnectWithoutOnboardingProfileInput = {
+  where: Prisma.BusinessWhereUniqueInput
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingProfileInput, Prisma.BusinessUncheckedCreateWithoutOnboardingProfileInput>
+}
+
+export type BusinessUpsertWithoutOnboardingProfileInput = {
+  update: Prisma.XOR<Prisma.BusinessUpdateWithoutOnboardingProfileInput, Prisma.BusinessUncheckedUpdateWithoutOnboardingProfileInput>
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingProfileInput, Prisma.BusinessUncheckedCreateWithoutOnboardingProfileInput>
+  where?: Prisma.BusinessWhereInput
+}
+
+export type BusinessUpdateToOneWithWhereWithoutOnboardingProfileInput = {
+  where?: Prisma.BusinessWhereInput
+  data: Prisma.XOR<Prisma.BusinessUpdateWithoutOnboardingProfileInput, Prisma.BusinessUncheckedUpdateWithoutOnboardingProfileInput>
+}
+
+export type BusinessUpdateWithoutOnboardingProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantDatabase?: Prisma.TenantDatabaseUpdateOneWithoutBusinessNestedInput
+  memberships?: Prisma.BusinessMembershipUpdateManyWithoutBusinessNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutBusinessNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutBusinessNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutBusinessNestedInput
+  reviewCardAssignments?: Prisma.ReviewCardAssignmentUpdateManyWithoutBusinessNestedInput
+  tableRoutes?: Prisma.TableRouteUpdateManyWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUpdateOneWithoutBusinessNestedInput
+}
+
+export type BusinessUncheckedUpdateWithoutOnboardingProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantDatabase?: Prisma.TenantDatabaseUncheckedUpdateOneWithoutBusinessNestedInput
+  memberships?: Prisma.BusinessMembershipUncheckedUpdateManyWithoutBusinessNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutBusinessNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutBusinessNestedInput
+  reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedUpdateManyWithoutBusinessNestedInput
+  tableRoutes?: Prisma.TableRouteUncheckedUpdateManyWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedUpdateOneWithoutBusinessNestedInput
+}
+
 export type BusinessCreateWithoutPurchaseOrdersInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -503,12 +812,17 @@ export type BusinessCreateWithoutPurchaseOrdersInput = {
   invoices?: Prisma.InvoiceCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutPurchaseOrdersInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -518,6 +832,8 @@ export type BusinessUncheckedCreateWithoutPurchaseOrdersInput = {
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteUncheckedCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutPurchaseOrdersInput = {
@@ -540,6 +856,9 @@ export type BusinessUpdateWithoutPurchaseOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -549,12 +868,17 @@ export type BusinessUpdateWithoutPurchaseOrdersInput = {
   invoices?: Prisma.InvoiceUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutPurchaseOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -564,12 +888,17 @@ export type BusinessUncheckedUpdateWithoutPurchaseOrdersInput = {
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUncheckedUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutInvoicesInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -579,12 +908,17 @@ export type BusinessCreateWithoutInvoicesInput = {
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutInvoicesInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -594,6 +928,8 @@ export type BusinessUncheckedCreateWithoutInvoicesInput = {
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteUncheckedCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutInvoicesInput = {
@@ -616,6 +952,9 @@ export type BusinessUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -625,12 +964,17 @@ export type BusinessUpdateWithoutInvoicesInput = {
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -640,12 +984,17 @@ export type BusinessUncheckedUpdateWithoutInvoicesInput = {
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUncheckedUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutMembershipsInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -655,12 +1004,17 @@ export type BusinessCreateWithoutMembershipsInput = {
   invoices?: Prisma.InvoiceCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutMembershipsInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -670,6 +1024,8 @@ export type BusinessUncheckedCreateWithoutMembershipsInput = {
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteUncheckedCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutMembershipsInput = {
@@ -692,6 +1048,9 @@ export type BusinessUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -701,12 +1060,17 @@ export type BusinessUpdateWithoutMembershipsInput = {
   invoices?: Prisma.InvoiceUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -716,12 +1080,17 @@ export type BusinessUncheckedUpdateWithoutMembershipsInput = {
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUncheckedUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutReviewCardAssignmentsInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -731,12 +1100,17 @@ export type BusinessCreateWithoutReviewCardAssignmentsInput = {
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutBusinessInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutReviewCardAssignmentsInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -746,6 +1120,8 @@ export type BusinessUncheckedCreateWithoutReviewCardAssignmentsInput = {
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutBusinessInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteUncheckedCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutReviewCardAssignmentsInput = {
@@ -768,6 +1144,9 @@ export type BusinessUpdateWithoutReviewCardAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -777,12 +1156,17 @@ export type BusinessUpdateWithoutReviewCardAssignmentsInput = {
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutBusinessNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutReviewCardAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -792,12 +1176,17 @@ export type BusinessUncheckedUpdateWithoutReviewCardAssignmentsInput = {
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutBusinessNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUncheckedUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutSubscriptionsInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -807,12 +1196,17 @@ export type BusinessCreateWithoutSubscriptionsInput = {
   invoices?: Prisma.InvoiceCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutSubscriptionsInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -822,6 +1216,8 @@ export type BusinessUncheckedCreateWithoutSubscriptionsInput = {
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteUncheckedCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutSubscriptionsInput = {
@@ -844,6 +1240,9 @@ export type BusinessUpdateWithoutSubscriptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -853,12 +1252,17 @@ export type BusinessUpdateWithoutSubscriptionsInput = {
   invoices?: Prisma.InvoiceUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutSubscriptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -868,12 +1272,17 @@ export type BusinessUncheckedUpdateWithoutSubscriptionsInput = {
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUncheckedUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutTableRoutesInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -883,12 +1292,17 @@ export type BusinessCreateWithoutTableRoutesInput = {
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutBusinessInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutTableRoutesInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -898,6 +1312,8 @@ export type BusinessUncheckedCreateWithoutTableRoutesInput = {
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutBusinessInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutTableRoutesInput = {
@@ -920,6 +1336,9 @@ export type BusinessUpdateWithoutTableRoutesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -929,12 +1348,17 @@ export type BusinessUpdateWithoutTableRoutesInput = {
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutBusinessNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutTableRoutesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -944,12 +1368,17 @@ export type BusinessUncheckedUpdateWithoutTableRoutesInput = {
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutBusinessNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutTenantDatabaseInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -959,12 +1388,17 @@ export type BusinessCreateWithoutTenantDatabaseInput = {
   invoices?: Prisma.InvoiceCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutTenantDatabaseInput = {
   id?: string
   name: string
   slug: string
+  legalName?: string | null
+  businessType?: $Enums.BusinessType
+  gstin?: string | null
   status?: $Enums.BusinessStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -974,6 +1408,8 @@ export type BusinessUncheckedCreateWithoutTenantDatabaseInput = {
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutBusinessInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedCreateNestedManyWithoutBusinessInput
   tableRoutes?: Prisma.TableRouteUncheckedCreateNestedManyWithoutBusinessInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedCreateNestedOneWithoutBusinessInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutTenantDatabaseInput = {
@@ -996,6 +1432,9 @@ export type BusinessUpdateWithoutTenantDatabaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1005,12 +1444,17 @@ export type BusinessUpdateWithoutTenantDatabaseInput = {
   invoices?: Prisma.InvoiceUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutTenantDatabaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.EnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType
+  gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1020,6 +1464,8 @@ export type BusinessUncheckedUpdateWithoutTenantDatabaseInput = {
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutBusinessNestedInput
   reviewCardAssignments?: Prisma.ReviewCardAssignmentUncheckedUpdateManyWithoutBusinessNestedInput
   tableRoutes?: Prisma.TableRouteUncheckedUpdateManyWithoutBusinessNestedInput
+  onboardingProfile?: Prisma.BusinessOnboardingProfileUncheckedUpdateOneWithoutBusinessNestedInput
+  onboardingDraft?: Prisma.BusinessOnboardingDraftUncheckedUpdateOneWithoutBusinessNestedInput
 }
 
 
@@ -1102,6 +1548,9 @@ export type BusinessSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   id?: boolean
   name?: boolean
   slug?: boolean
+  legalName?: boolean
+  businessType?: boolean
+  gstin?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1112,6 +1561,8 @@ export type BusinessSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   invoices?: boolean | Prisma.Business$invoicesArgs<ExtArgs>
   reviewCardAssignments?: boolean | Prisma.Business$reviewCardAssignmentsArgs<ExtArgs>
   tableRoutes?: boolean | Prisma.Business$tableRoutesArgs<ExtArgs>
+  onboardingProfile?: boolean | Prisma.Business$onboardingProfileArgs<ExtArgs>
+  onboardingDraft?: boolean | Prisma.Business$onboardingDraftArgs<ExtArgs>
   _count?: boolean | Prisma.BusinessCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["business"]>
 
@@ -1119,6 +1570,9 @@ export type BusinessSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   name?: boolean
   slug?: boolean
+  legalName?: boolean
+  businessType?: boolean
+  gstin?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1128,6 +1582,9 @@ export type BusinessSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   name?: boolean
   slug?: boolean
+  legalName?: boolean
+  businessType?: boolean
+  gstin?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1137,12 +1594,15 @@ export type BusinessSelectScalar = {
   id?: boolean
   name?: boolean
   slug?: boolean
+  legalName?: boolean
+  businessType?: boolean
+  gstin?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BusinessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
+export type BusinessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "legalName" | "businessType" | "gstin" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
 export type BusinessInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenantDatabase?: boolean | Prisma.Business$tenantDatabaseArgs<ExtArgs>
   memberships?: boolean | Prisma.Business$membershipsArgs<ExtArgs>
@@ -1151,6 +1611,8 @@ export type BusinessInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   invoices?: boolean | Prisma.Business$invoicesArgs<ExtArgs>
   reviewCardAssignments?: boolean | Prisma.Business$reviewCardAssignmentsArgs<ExtArgs>
   tableRoutes?: boolean | Prisma.Business$tableRoutesArgs<ExtArgs>
+  onboardingProfile?: boolean | Prisma.Business$onboardingProfileArgs<ExtArgs>
+  onboardingDraft?: boolean | Prisma.Business$onboardingDraftArgs<ExtArgs>
   _count?: boolean | Prisma.BusinessCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BusinessIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1166,11 +1628,16 @@ export type $BusinessPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     invoices: Prisma.$InvoicePayload<ExtArgs>[]
     reviewCardAssignments: Prisma.$ReviewCardAssignmentPayload<ExtArgs>[]
     tableRoutes: Prisma.$TableRoutePayload<ExtArgs>[]
+    onboardingProfile: Prisma.$BusinessOnboardingProfilePayload<ExtArgs> | null
+    onboardingDraft: Prisma.$BusinessOnboardingDraftPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     slug: string
+    legalName: string | null
+    businessType: $Enums.BusinessType
+    gstin: string | null
     status: $Enums.BusinessStatus
     createdAt: Date
     updatedAt: Date
@@ -1575,6 +2042,8 @@ export interface Prisma__BusinessClient<T, Null = never, ExtArgs extends runtime
   invoices<T extends Prisma.Business$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewCardAssignments<T extends Prisma.Business$reviewCardAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$reviewCardAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewCardAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tableRoutes<T extends Prisma.Business$tableRoutesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$tableRoutesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TableRoutePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  onboardingProfile<T extends Prisma.Business$onboardingProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$onboardingProfileArgs<ExtArgs>>): Prisma.Prisma__BusinessOnboardingProfileClient<runtime.Types.Result.GetResult<Prisma.$BusinessOnboardingProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  onboardingDraft<T extends Prisma.Business$onboardingDraftArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$onboardingDraftArgs<ExtArgs>>): Prisma.Prisma__BusinessOnboardingDraftClient<runtime.Types.Result.GetResult<Prisma.$BusinessOnboardingDraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1607,6 +2076,9 @@ export interface BusinessFieldRefs {
   readonly id: Prisma.FieldRef<"Business", 'String'>
   readonly name: Prisma.FieldRef<"Business", 'String'>
   readonly slug: Prisma.FieldRef<"Business", 'String'>
+  readonly legalName: Prisma.FieldRef<"Business", 'String'>
+  readonly businessType: Prisma.FieldRef<"Business", 'BusinessType'>
+  readonly gstin: Prisma.FieldRef<"Business", 'String'>
   readonly status: Prisma.FieldRef<"Business", 'BusinessStatus'>
   readonly createdAt: Prisma.FieldRef<"Business", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Business", 'DateTime'>
@@ -2163,6 +2635,44 @@ export type Business$tableRoutesArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.TableRouteScalarFieldEnum | Prisma.TableRouteScalarFieldEnum[]
+}
+
+/**
+ * Business.onboardingProfile
+ */
+export type Business$onboardingProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessOnboardingProfile
+   */
+  select?: Prisma.BusinessOnboardingProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessOnboardingProfile
+   */
+  omit?: Prisma.BusinessOnboardingProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessOnboardingProfileInclude<ExtArgs> | null
+  where?: Prisma.BusinessOnboardingProfileWhereInput
+}
+
+/**
+ * Business.onboardingDraft
+ */
+export type Business$onboardingDraftArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessOnboardingDraft
+   */
+  select?: Prisma.BusinessOnboardingDraftSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessOnboardingDraft
+   */
+  omit?: Prisma.BusinessOnboardingDraftOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessOnboardingDraftInclude<ExtArgs> | null
+  where?: Prisma.BusinessOnboardingDraftWhereInput
 }
 
 /**

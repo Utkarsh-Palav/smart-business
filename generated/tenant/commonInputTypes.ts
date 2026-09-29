@@ -36,6 +36,13 @@ export type EnumLocationStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumLocationStatusFilter<$PrismaModel> | $Enums.LocationStatus
 }
 
+export type EnumLocationOperatingModeFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocationOperatingMode | Prisma.EnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  in?: $Enums.LocationOperatingMode[] | Prisma.ListEnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocationOperatingMode[] | Prisma.ListEnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocationOperatingModeFilter<$PrismaModel> | $Enums.LocationOperatingMode
+}
+
 export type StringNullableFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
@@ -93,6 +100,16 @@ export type EnumLocationStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumLocationStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumLocationStatusFilter<$PrismaModel>
+}
+
+export type EnumLocationOperatingModeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocationOperatingMode | Prisma.EnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  in?: $Enums.LocationOperatingMode[] | Prisma.ListEnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocationOperatingMode[] | Prisma.ListEnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocationOperatingModeWithAggregatesFilter<$PrismaModel> | $Enums.LocationOperatingMode
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLocationOperatingModeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLocationOperatingModeFilter<$PrismaModel>
 }
 
 export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -342,6 +359,13 @@ export type NestedEnumLocationStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumLocationStatusFilter<$PrismaModel> | $Enums.LocationStatus
 }
 
+export type NestedEnumLocationOperatingModeFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocationOperatingMode | Prisma.EnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  in?: $Enums.LocationOperatingMode[] | Prisma.ListEnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocationOperatingMode[] | Prisma.ListEnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocationOperatingModeFilter<$PrismaModel> | $Enums.LocationOperatingMode
+}
+
 export type NestedStringNullableFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
@@ -403,6 +427,16 @@ export type NestedEnumLocationStatusWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumLocationStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumLocationStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumLocationOperatingModeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.LocationOperatingMode | Prisma.EnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  in?: $Enums.LocationOperatingMode[] | Prisma.ListEnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.LocationOperatingMode[] | Prisma.ListEnumLocationOperatingModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLocationOperatingModeWithAggregatesFilter<$PrismaModel> | $Enums.LocationOperatingMode
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumLocationOperatingModeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumLocationOperatingModeFilter<$PrismaModel>
 }
 
 export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {

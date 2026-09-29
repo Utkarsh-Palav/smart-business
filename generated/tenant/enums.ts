@@ -27,6 +27,17 @@ export const TableStatus = {
 export type TableStatus = (typeof TableStatus)[keyof typeof TableStatus]
 
 
+export const LocationOperatingMode = {
+  DINE_IN: 'DINE_IN',
+  TAKEAWAY: 'TAKEAWAY',
+  DELIVERY_ONLY: 'DELIVERY_ONLY',
+  HYBRID: 'HYBRID',
+  OTHER: 'OTHER'
+} as const
+
+export type LocationOperatingMode = (typeof LocationOperatingMode)[keyof typeof LocationOperatingMode]
+
+
 export const MenuStatus = {
   DRAFT: 'DRAFT',
   PUBLISHED: 'PUBLISHED',

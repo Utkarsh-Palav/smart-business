@@ -84,6 +84,7 @@ export const LocationScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   status: 'status',
+  operatingMode: 'operatingMode',
   addressLine1: 'addressLine1',
   addressLine2: 'addressLine2',
   city: 'city',

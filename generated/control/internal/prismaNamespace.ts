@@ -401,6 +401,10 @@ export const ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   Business: 'Business',
+  BusinessOnboardingDraft: 'BusinessOnboardingDraft',
+  BusinessOnboardingPaymentAttempt: 'BusinessOnboardingPaymentAttempt',
+  RazorpayWebhookEvent: 'RazorpayWebhookEvent',
+  BusinessOnboardingProfile: 'BusinessOnboardingProfile',
   CatalogProduct: 'CatalogProduct',
   ProductPrice: 'ProductPrice',
   PurchaseOrder: 'PurchaseOrder',
@@ -436,7 +440,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "role" | "permission" | "rolePermission" | "business" | "catalogProduct" | "productPrice" | "purchaseOrder" | "purchaseOrderItem" | "payment" | "refund" | "invoice" | "businessMembership" | "reviewCard" | "reviewCardAssignment" | "plan" | "planPrice" | "planEntitlement" | "subscription" | "subscriptionEvent" | "tableRoute" | "tenantDatabase" | "user" | "otpChallenge" | "authSession"
+    modelProps: "role" | "permission" | "rolePermission" | "business" | "businessOnboardingDraft" | "businessOnboardingPaymentAttempt" | "razorpayWebhookEvent" | "businessOnboardingProfile" | "catalogProduct" | "productPrice" | "purchaseOrder" | "purchaseOrderItem" | "payment" | "refund" | "invoice" | "businessMembership" | "reviewCard" | "reviewCardAssignment" | "plan" | "planPrice" | "planEntitlement" | "subscription" | "subscriptionEvent" | "tableRoute" | "tenantDatabase" | "user" | "otpChallenge" | "authSession"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -733,6 +737,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.BusinessCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.BusinessCountAggregateOutputType> | number
+        }
+      }
+    }
+    BusinessOnboardingDraft: {
+      payload: Prisma.$BusinessOnboardingDraftPayload<ExtArgs>
+      fields: Prisma.BusinessOnboardingDraftFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BusinessOnboardingDraftFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BusinessOnboardingDraftFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload>
+        }
+        findFirst: {
+          args: Prisma.BusinessOnboardingDraftFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BusinessOnboardingDraftFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload>
+        }
+        findMany: {
+          args: Prisma.BusinessOnboardingDraftFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload>[]
+        }
+        create: {
+          args: Prisma.BusinessOnboardingDraftCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload>
+        }
+        createMany: {
+          args: Prisma.BusinessOnboardingDraftCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BusinessOnboardingDraftCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload>[]
+        }
+        delete: {
+          args: Prisma.BusinessOnboardingDraftDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload>
+        }
+        update: {
+          args: Prisma.BusinessOnboardingDraftUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload>
+        }
+        deleteMany: {
+          args: Prisma.BusinessOnboardingDraftDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BusinessOnboardingDraftUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BusinessOnboardingDraftUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload>[]
+        }
+        upsert: {
+          args: Prisma.BusinessOnboardingDraftUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingDraftPayload>
+        }
+        aggregate: {
+          args: Prisma.BusinessOnboardingDraftAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBusinessOnboardingDraft>
+        }
+        groupBy: {
+          args: Prisma.BusinessOnboardingDraftGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessOnboardingDraftGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BusinessOnboardingDraftCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessOnboardingDraftCountAggregateOutputType> | number
+        }
+      }
+    }
+    BusinessOnboardingPaymentAttempt: {
+      payload: Prisma.$BusinessOnboardingPaymentAttemptPayload<ExtArgs>
+      fields: Prisma.BusinessOnboardingPaymentAttemptFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BusinessOnboardingPaymentAttemptFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BusinessOnboardingPaymentAttemptFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload>
+        }
+        findFirst: {
+          args: Prisma.BusinessOnboardingPaymentAttemptFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BusinessOnboardingPaymentAttemptFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload>
+        }
+        findMany: {
+          args: Prisma.BusinessOnboardingPaymentAttemptFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload>[]
+        }
+        create: {
+          args: Prisma.BusinessOnboardingPaymentAttemptCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload>
+        }
+        createMany: {
+          args: Prisma.BusinessOnboardingPaymentAttemptCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BusinessOnboardingPaymentAttemptCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload>[]
+        }
+        delete: {
+          args: Prisma.BusinessOnboardingPaymentAttemptDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload>
+        }
+        update: {
+          args: Prisma.BusinessOnboardingPaymentAttemptUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload>
+        }
+        deleteMany: {
+          args: Prisma.BusinessOnboardingPaymentAttemptDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BusinessOnboardingPaymentAttemptUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BusinessOnboardingPaymentAttemptUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload>[]
+        }
+        upsert: {
+          args: Prisma.BusinessOnboardingPaymentAttemptUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPaymentAttemptPayload>
+        }
+        aggregate: {
+          args: Prisma.BusinessOnboardingPaymentAttemptAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBusinessOnboardingPaymentAttempt>
+        }
+        groupBy: {
+          args: Prisma.BusinessOnboardingPaymentAttemptGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessOnboardingPaymentAttemptGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BusinessOnboardingPaymentAttemptCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessOnboardingPaymentAttemptCountAggregateOutputType> | number
+        }
+      }
+    }
+    RazorpayWebhookEvent: {
+      payload: Prisma.$RazorpayWebhookEventPayload<ExtArgs>
+      fields: Prisma.RazorpayWebhookEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RazorpayWebhookEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RazorpayWebhookEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload>
+        }
+        findFirst: {
+          args: Prisma.RazorpayWebhookEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RazorpayWebhookEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload>
+        }
+        findMany: {
+          args: Prisma.RazorpayWebhookEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload>[]
+        }
+        create: {
+          args: Prisma.RazorpayWebhookEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload>
+        }
+        createMany: {
+          args: Prisma.RazorpayWebhookEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RazorpayWebhookEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload>[]
+        }
+        delete: {
+          args: Prisma.RazorpayWebhookEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload>
+        }
+        update: {
+          args: Prisma.RazorpayWebhookEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.RazorpayWebhookEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RazorpayWebhookEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RazorpayWebhookEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.RazorpayWebhookEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RazorpayWebhookEventPayload>
+        }
+        aggregate: {
+          args: Prisma.RazorpayWebhookEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRazorpayWebhookEvent>
+        }
+        groupBy: {
+          args: Prisma.RazorpayWebhookEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RazorpayWebhookEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RazorpayWebhookEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RazorpayWebhookEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    BusinessOnboardingProfile: {
+      payload: Prisma.$BusinessOnboardingProfilePayload<ExtArgs>
+      fields: Prisma.BusinessOnboardingProfileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BusinessOnboardingProfileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BusinessOnboardingProfileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload>
+        }
+        findFirst: {
+          args: Prisma.BusinessOnboardingProfileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BusinessOnboardingProfileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload>
+        }
+        findMany: {
+          args: Prisma.BusinessOnboardingProfileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload>[]
+        }
+        create: {
+          args: Prisma.BusinessOnboardingProfileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload>
+        }
+        createMany: {
+          args: Prisma.BusinessOnboardingProfileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BusinessOnboardingProfileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload>[]
+        }
+        delete: {
+          args: Prisma.BusinessOnboardingProfileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload>
+        }
+        update: {
+          args: Prisma.BusinessOnboardingProfileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload>
+        }
+        deleteMany: {
+          args: Prisma.BusinessOnboardingProfileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BusinessOnboardingProfileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BusinessOnboardingProfileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload>[]
+        }
+        upsert: {
+          args: Prisma.BusinessOnboardingProfileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingProfilePayload>
+        }
+        aggregate: {
+          args: Prisma.BusinessOnboardingProfileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBusinessOnboardingProfile>
+        }
+        groupBy: {
+          args: Prisma.BusinessOnboardingProfileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessOnboardingProfileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BusinessOnboardingProfileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessOnboardingProfileCountAggregateOutputType> | number
         }
       }
     }
@@ -2294,12 +2594,102 @@ export const BusinessScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
+  legalName: 'legalName',
+  businessType: 'businessType',
+  gstin: 'gstin',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type BusinessScalarFieldEnum = (typeof BusinessScalarFieldEnum)[keyof typeof BusinessScalarFieldEnum]
+
+
+export const BusinessOnboardingDraftScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  businessId: 'businessId',
+  businessName: 'businessName',
+  businessSlug: 'businessSlug',
+  businessType: 'businessType',
+  legalName: 'legalName',
+  gstin: 'gstin',
+  firstLocationName: 'firstLocationName',
+  firstLocationSlug: 'firstLocationSlug',
+  operatingMode: 'operatingMode',
+  addressLine1: 'addressLine1',
+  addressLine2: 'addressLine2',
+  city: 'city',
+  state: 'state',
+  postalCode: 'postalCode',
+  country: 'country',
+  phone: 'phone',
+  planPriceId: 'planPriceId',
+  quotedAmountMinor: 'quotedAmountMinor',
+  quotedCurrency: 'quotedCurrency',
+  quotedInterval: 'quotedInterval',
+  quotedIntervalCount: 'quotedIntervalCount',
+  quotedUnit: 'quotedUnit',
+  quotedPriceType: 'quotedPriceType',
+  quotedAt: 'quotedAt',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BusinessOnboardingDraftScalarFieldEnum = (typeof BusinessOnboardingDraftScalarFieldEnum)[keyof typeof BusinessOnboardingDraftScalarFieldEnum]
+
+
+export const BusinessOnboardingPaymentAttemptScalarFieldEnum = {
+  id: 'id',
+  draftId: 'draftId',
+  provider: 'provider',
+  orderId: 'orderId',
+  paymentId: 'paymentId',
+  amountMinor: 'amountMinor',
+  currency: 'currency',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BusinessOnboardingPaymentAttemptScalarFieldEnum = (typeof BusinessOnboardingPaymentAttemptScalarFieldEnum)[keyof typeof BusinessOnboardingPaymentAttemptScalarFieldEnum]
+
+
+export const RazorpayWebhookEventScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  eventType: 'eventType',
+  payload: 'payload',
+  status: 'status',
+  error: 'error',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RazorpayWebhookEventScalarFieldEnum = (typeof RazorpayWebhookEventScalarFieldEnum)[keyof typeof RazorpayWebhookEventScalarFieldEnum]
+
+
+export const BusinessOnboardingProfileScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
+  firstLocationName: 'firstLocationName',
+  firstLocationSlug: 'firstLocationSlug',
+  operatingMode: 'operatingMode',
+  addressLine1: 'addressLine1',
+  addressLine2: 'addressLine2',
+  city: 'city',
+  state: 'state',
+  postalCode: 'postalCode',
+  country: 'country',
+  phone: 'phone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BusinessOnboardingProfileScalarFieldEnum = (typeof BusinessOnboardingProfileScalarFieldEnum)[keyof typeof BusinessOnboardingProfileScalarFieldEnum]
 
 
 export const CatalogProductScalarFieldEnum = {
@@ -2614,6 +3004,13 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
@@ -2689,6 +3086,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'BusinessType'
+ */
+export type EnumBusinessTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessType'>
+    
+
+
+/**
+ * Reference to a field of type 'BusinessType[]'
+ */
+export type ListEnumBusinessTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessType[]'>
+    
+
+
+/**
  * Reference to a field of type 'BusinessStatus'
  */
 export type EnumBusinessStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessStatus'>
@@ -2703,16 +3114,16 @@ export type ListEnumBusinessStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
- * Reference to a field of type 'CatalogProductType'
+ * Reference to a field of type 'LocationOperatingMode'
  */
-export type EnumCatalogProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CatalogProductType'>
+export type EnumLocationOperatingModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocationOperatingMode'>
     
 
 
 /**
- * Reference to a field of type 'CatalogProductType[]'
+ * Reference to a field of type 'LocationOperatingMode[]'
  */
-export type ListEnumCatalogProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CatalogProductType[]'>
+export type ListEnumLocationOperatingModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LocationOperatingMode[]'>
     
 
 
@@ -2727,6 +3138,118 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceInterval'
+ */
+export type EnumPlanPriceIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceInterval'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceInterval[]'
+ */
+export type ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceInterval[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceUnit'
+ */
+export type EnumPlanPriceUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceUnit'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceUnit[]'
+ */
+export type ListEnumPlanPriceUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceUnit[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceType'
+ */
+export type EnumPlanPriceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceType'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanPriceType[]'
+ */
+export type ListEnumPlanPriceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BusinessOnboardingStatus'
+ */
+export type EnumBusinessOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessOnboardingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'BusinessOnboardingStatus[]'
+ */
+export type ListEnumBusinessOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessOnboardingStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OnboardingPaymentStatus'
+ */
+export type EnumOnboardingPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OnboardingPaymentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'OnboardingPaymentStatus[]'
+ */
+export type ListEnumOnboardingPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OnboardingPaymentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'WebhookEventStatus'
+ */
+export type EnumWebhookEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WebhookEventStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'WebhookEventStatus[]'
+ */
+export type ListEnumWebhookEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WebhookEventStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CatalogProductType'
+ */
+export type EnumCatalogProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CatalogProductType'>
+    
+
+
+/**
+ * Reference to a field of type 'CatalogProductType[]'
+ */
+export type ListEnumCatalogProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CatalogProductType[]'>
     
 
 
@@ -2769,20 +3292,6 @@ export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'PaymentStatus[]'
  */
 export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -2853,48 +3362,6 @@ export type EnumReviewCardAssignmentStatusFieldRefInput<$PrismaModel> = FieldRef
  * Reference to a field of type 'ReviewCardAssignmentStatus[]'
  */
 export type ListEnumReviewCardAssignmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewCardAssignmentStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'PlanPriceInterval'
- */
-export type EnumPlanPriceIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceInterval'>
-    
-
-
-/**
- * Reference to a field of type 'PlanPriceInterval[]'
- */
-export type ListEnumPlanPriceIntervalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceInterval[]'>
-    
-
-
-/**
- * Reference to a field of type 'PlanPriceUnit'
- */
-export type EnumPlanPriceUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceUnit'>
-    
-
-
-/**
- * Reference to a field of type 'PlanPriceUnit[]'
- */
-export type ListEnumPlanPriceUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceUnit[]'>
-    
-
-
-/**
- * Reference to a field of type 'PlanPriceType'
- */
-export type EnumPlanPriceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceType'>
-    
-
-
-/**
- * Reference to a field of type 'PlanPriceType[]'
- */
-export type ListEnumPlanPriceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanPriceType[]'>
     
 
 
@@ -3164,6 +3631,10 @@ export type GlobalOmitConfig = {
   permission?: Prisma.PermissionOmit
   rolePermission?: Prisma.RolePermissionOmit
   business?: Prisma.BusinessOmit
+  businessOnboardingDraft?: Prisma.BusinessOnboardingDraftOmit
+  businessOnboardingPaymentAttempt?: Prisma.BusinessOnboardingPaymentAttemptOmit
+  razorpayWebhookEvent?: Prisma.RazorpayWebhookEventOmit
+  businessOnboardingProfile?: Prisma.BusinessOnboardingProfileOmit
   catalogProduct?: Prisma.CatalogProductOmit
   productPrice?: Prisma.ProductPriceOmit
   purchaseOrder?: Prisma.PurchaseOrderOmit
