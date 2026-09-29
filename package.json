@@ -2,14 +2,18 @@
   "name": "smart-business",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev",
+    "prebuild": "pnpm run generate:controlDB && pnpm run generate:tenantDB",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "generate:controlDB": "pnpm prisma generate --config prisma/control.config.ts",
     "generate:tenantDB": "pnpm prisma generate --config prisma/tenant.config.ts",
-    "migrate:controlDB": "pnpm prisma migrate dev -y-name init_control --config prisma/control.config.ts",
+    "migrate:controlDB": "pnpm prisma migrate dev --name init_control --config prisma/control.config.ts",
     "migrate:tenantDB": "pnpm prisma migrate dev --name init_tenant --config prisma/tenant.config.ts",
     "migrate:activeTenants": "tsx scripts/migrate-active-tenants.ts",
     "reset:controlDB": "pnpm prisma migrate reset --config prisma/control.config.ts",

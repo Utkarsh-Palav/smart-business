@@ -4,6 +4,8 @@ import { getAuthenticatedSession } from "@/lib/auth/session/get-authenticated-se
 import { OnboardingError } from "@/lib/onboarding/onboarding.service";
 import { createOnboardingCheckout } from "@/lib/onboarding/payment.service";
 
+export const runtime = "nodejs";
+
 export async function POST(
   _request: Request,
   { params }: { params: Promise<{ draftId: string }> },

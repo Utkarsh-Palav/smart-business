@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { controlPrisma } from "@/lib/db/control";
 import { verifyRazorpayWebhookSignature } from "@/lib/payments/razorpay";
 
+export const runtime = "nodejs";
+
 type RazorpayWebhookPayload = {
   event?: string;
   payload?: {
