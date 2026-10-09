@@ -195,7 +195,7 @@ export default function LandingPage() {
                   width="32"
                   height="32"
                   className="hidden rotate-180 overflow-hidden rounded-[6px] object-cover blur-sm transition-all duration-300 group-hover:block group-hover:blur-none"
-                  src="/icon/apple-touch-icon.png"
+                  src="/Icon/apple-touch-icon.png"
                 />
               </div>
 
