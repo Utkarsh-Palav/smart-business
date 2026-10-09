@@ -205,8 +205,11 @@ The draft flow currently exposes:
 | `PATCH /api/onboarding/drafts/<draftId>` | Select and snapshot an active plan price. |
 | `POST /api/onboarding/drafts/<draftId>/checkout` | Create or reuse a Razorpay Test Mode Order. |
 | `POST /api/webhooks/razorpay` | Verify and idempotently process Razorpay events. |
+| `POST /api/onboarding/drafts/<draftId>/finalize` | Convert a paid draft into a Business and provision its tenant. |
 
 The checkout endpoint calculates the amount from the selected Control DB `PlanPrice`; clients cannot submit an amount. The webhook verifies the raw request body with `RAZORPAY_WEBHOOK_SECRET` and the `X-Razorpay-Signature` header, deduplicates using `x-razorpay-event-id`, and moves the draft to `PAID` only for captured payment events. A browser callback is not treated as payment confirmation. Configure Razorpay in Test Mode and expose the webhook endpoint through a public HTTPS staging URL; localhost cannot receive Razorpay webhooks directly.
+
+> **Production warning:** After a draft is `PAID`, the finalize endpoint creates the active subscription, owner membership, Business, onboarding profile, and TenantDatabase, then runs tenant provisioning. It is idempotent for retries, but Neon project creation, migrations, Infisical storage, and health verification can take longer than a Vercel serverless request window. Before production traffic, move tenant provisioning behind a durable queue/background worker or scheduled job. Payment webhooks should acknowledge quickly and must not wait for Neon provisioning to finish.
 
 ### Provisioning Failures and Retry
 
