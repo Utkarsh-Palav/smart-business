@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  allowedDevOrigins: ["bonded-galley-crablike.ngrok-free.dev"],
 };
 
 export default nextConfig;

@@ -160,6 +160,7 @@ export default function LandingPage() {
             </div>
 
             {/* SIGN-IN BUTTON */}
+            <Link href="/register">
             <button
               type="button"
               className="group relative hidden sm:flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-white/20 bg-black py-2 pl-11 pr-4 tracking-tight"
@@ -205,6 +206,7 @@ export default function LandingPage() {
                 Sign In
               </span>
             </button>
+            </Link>
 
             <button className="flex items-center gap-2 rounded-lg border border-white/20 bg-black p-1.5 sm:hidden">
                 <Menu className="h-4.5 w-4.5 text-white" />

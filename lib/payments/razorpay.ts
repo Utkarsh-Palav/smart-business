@@ -3,6 +3,7 @@ import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 const RAZORPAY_ORDERS_URL = "https://api.razorpay.com/v1/orders";
+const RAZORPAY_PAYMENTS_URL = "https://api.razorpay.com/v1/payments";
 
 type RazorpayOrderResponse = {
   id: string;
@@ -66,6 +67,48 @@ export async function createRazorpayOrder(input: {
 
 export function getRazorpayKeyId(): string {
   return getRazorpayCredentials().keyId;
+}
+
+export function verifyRazorpayPaymentSignature(input: {
+  orderId: string;
+  paymentId: string;
+  signature: string;
+}): boolean {
+  const { keySecret } = getRazorpayCredentials();
+  const expected = createHmac("sha256", keySecret)
+    .update(`${input.orderId}|${input.paymentId}`)
+    .digest("hex");
+  const expectedBuffer = Buffer.from(expected, "utf8");
+  const receivedBuffer = Buffer.from(input.signature, "utf8");
+
+  return (
+    expectedBuffer.length === receivedBuffer.length &&
+    timingSafeEqual(expectedBuffer, receivedBuffer)
+  );
+}
+
+export async function getRazorpayPayment(paymentId: string): Promise<{
+  id: string;
+  order_id: string;
+  status: "created" | "authorized" | "captured" | "refunded" | "failed";
+}> {
+  const { keyId, keySecret } = getRazorpayCredentials();
+  const response = await fetch(`${RAZORPAY_PAYMENTS_URL}/${paymentId}`, {
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${keyId}:${keySecret}`).toString("base64")}`,
+    },
+  });
+  const body: unknown = await response.json();
+
+  if (!response.ok || !body || typeof body !== "object") {
+    throw new Error(`Razorpay payment lookup failed with status ${response.status}`);
+  }
+
+  return body as {
+    id: string;
+    order_id: string;
+    status: "created" | "authorized" | "captured" | "refunded" | "failed";
+  };
 }
 
 export function verifyRazorpayWebhookSignature(

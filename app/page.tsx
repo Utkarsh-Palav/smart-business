@@ -19,15 +19,15 @@ export default function Home() {
   const [demoModalOpen, setDemoModalOpen] = useState(false);
 
   return (
-    <main className="min-h-screen w-full bg-white dark:bg-black text-neutral-900 dark:text-white flex flex-col font-sans selection:bg-[#FF5B2E]/30 selection:text-white">
+    <main className="h-dvh w-full bg-white dark:bg-black text-neutral-900 dark:text-white pt-3 font-sans selection:bg-[#FF5B2E]/30 selection:text-white">
       {/* 1. Hero Section (Framed Dark Box with Curved Glowing Arcs & Watermark) */}
-      <AceternityHero onOpenDemo={() => setDemoModalOpen(true)} />
+      <AceternityHero />
 
       {/* 2. Ecosystem & Standards Logo Carousel */}
-      <LogoCarousel />
+      {/* <LogoCarousel /> */}
 
       {/* 3. Bento Grid: 'Replace your Fragmented Restaurant Stack' */}
-      <BentoFeatures onOpenDemo={() => setDemoModalOpen(true)} />
+      <BentoFeatures  />
 
       {/* 4. 'Operations' Visual Showcase Grid with Watermark Typography */}
       <ShowcaseGrid />

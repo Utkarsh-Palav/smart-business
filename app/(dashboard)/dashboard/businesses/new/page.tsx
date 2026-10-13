@@ -14,7 +14,11 @@ declare global {
       name: string;
       description: string;
       order_id: string;
-      handler: () => void;
+      handler: (response: {
+        razorpay_order_id: string;
+        razorpay_payment_id: string;
+        razorpay_signature: string;
+      }) => void;
       modal: { ondismiss: () => void };
     }) => { open: () => void };
   }

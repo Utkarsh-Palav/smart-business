@@ -28,6 +28,10 @@ export type VerifyRegistrationResult = {
   isNewUser: boolean;
 };
 
+export type ResendRegistrationInput = {
+  challengeId: string;
+};
+
 export class RegistrationError extends Error {
   constructor(
     message: string,
@@ -189,6 +193,37 @@ export class RegistrationService {
     return {
       userId: result.userId,
       isNewUser: true,
+    };
+  }
+
+  async resendRegistration(
+    input: ResendRegistrationInput,
+  ): Promise<StartRegistrationResult> {
+    const challenge = await controlPrisma.otpChallenge.findUnique({
+      where: { id: input.challengeId },
+      select: {
+        identifier: true,
+        channel: true,
+        userId: true,
+      },
+    });
+
+    if (!challenge?.userId) {
+      throw new RegistrationError(
+        "Registration account could not be found.",
+        "USER_NOT_FOUND",
+      );
+    }
+
+    const result = await otpService.createOtp({
+      identifier: challenge.identifier,
+      channel: challenge.channel,
+      userId: challenge.userId,
+    });
+
+    return {
+      challengeId: result.challengeId,
+      expiresAt: result.expiresAt,
     };
   }
 

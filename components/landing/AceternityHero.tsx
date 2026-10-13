@@ -1,195 +1,288 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Menu, X, ChevronRight } from "lucide-react";
+import { Menu } from "lucide-react";
 
-interface AceternityHeroProps {
-  onOpenDemo?: () => void;
-}
+const HERO_STARS = [
+  { x: 8, y: 18, delay: 0.2 },
+  { x: 14, y: 34, delay: 2.8 },
+  { x: 19, y: 12, delay: 1.4 },
+  { x: 24, y: 47, delay: 4.1 },
+  { x: 30, y: 25, delay: 0.8 },
+  { x: 34, y: 14, delay: 3.5 },
+  { x: 39, y: 38, delay: 1.9 },
+  { x: 43, y: 20, delay: 5.2 },
+  { x: 48, y: 30, delay: 2.1 },
+  { x: 52, y: 13, delay: 4.7 },
+  { x: 57, y: 42, delay: 0.5 },
+  { x: 61, y: 23, delay: 3.1 },
+  { x: 66, y: 35, delay: 1.1 },
+  { x: 71, y: 15, delay: 4.4 },
+  { x: 75, y: 44, delay: 2.5 },
+  { x: 80, y: 26, delay: 5.5 },
+  { x: 85, y: 11, delay: 1.7 },
+  { x: 89, y: 37, delay: 3.8 },
+  { x: 94, y: 20, delay: 0.9 },
+  { x: 97, y: 48, delay: 4.9 },
+  { x: 28, y: 59, delay: 2.3 },
+  { x: 63, y: 55, delay: 5.1 },
+];
 
-export default function AceternityHero({ onOpenDemo }: AceternityHeroProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+export default function AceternityHero() {
   return (
-    <div className="w-full p-2 sm:p-4 md:p-6 bg-white dark:bg-black">
-      {/* Framed Dark Container matching Aceternity Reference */}
-      <div className="relative w-full rounded-[28px] sm:rounded-[36px] bg-black border border-neutral-800 overflow-hidden flex flex-col justify-between min-h-[85vh] lg:min-h-[90vh]">
-        
-        {/* Background Ambient SVG Arcs and Glow */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Subtle Top Warm Glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-75 bg-[#FF5B2E]/10 rounded-full blur-[140px]" />
+    <div className="px-3">
+      <section className="relative flex min-h-[91vh] w-full flex-col justify-between overflow-hidden rounded-[28px] border border-neutral-800 bg-black sm:rounded-[36px] lg:min-h-[97vh]">
+        {/* BACKGROUND LAYERS */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          {/* Subtle top warm glow */}
+          <div className="absolute left-1/2 top-0 h-75 w-150 -translate-x-1/2 rounded-full bg-[#FF5B2E]/10 blur-[140px]" />
 
-          {/* Curved Golden/Orange Arcs at the Bottom (Aceternity Signature Arc) */}
-          <div className="absolute -bottom-64 left-1/2 -translate-x-1/2 w-[1600px] h-200 flex items-center justify-center opacity-60">
-            <svg viewBox="0 0 1600 800" fill="none" className="w-full h-full">
-              {/* Outer Dashed Orbit */}
-              <ellipse cx="800" cy="800" rx="750" ry="360" stroke="#FF5B2E" strokeWidth="1.5" strokeDasharray="8 8" strokeOpacity="0.3" />
-              {/* Main Glowing Solid Arc */}
-              <ellipse cx="800" cy="800" rx="640" ry="280" stroke="url(#goldArcGrad)" strokeWidth="3" />
-              {/* Soft Inner Arc */}
-              <ellipse cx="800" cy="800" rx="500" ry="200" stroke="#F6B253" strokeWidth="1" strokeOpacity="0.5" />
-              <defs>
-                <linearGradient id="goldArcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#FA9A63" stopOpacity="0" />
-                  <stop offset="30%" stopColor="#FA9A63" stopOpacity="0.8" />
-                  <stop offset="50%" stopColor="#F6B253" stopOpacity="1" />
-                  <stop offset="70%" stopColor="#FA9A63" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#FA9A63" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-            </svg>
+          {/* Eclipse horizon and its narrow atmospheric glow */}
+
+          {/* Eclipse horizon: thin center, softly fading edges */}
+          <svg
+            viewBox="0 0 1600 800"
+            preserveAspectRatio="xMidYMin meet"
+            fill="none"
+            className="absolute left-1/2 top-[10%] sm:top-[16%] h-200 w-[1600px] max-w-none -translate-x-1/2"
+            aria-hidden="true"
+          >
+            <defs>
+              {/* Soft, restrained atmospheric glow */}
+              <filter
+                id="eclipse-soft-glow"
+                x="-10%"
+                y="-20%"
+                width="120%"
+                height="140%"
+              >
+                <feGaussianBlur stdDeviation="12" />
+              </filter>
+
+              {/* Fade the line at both ends */}
+              <linearGradient
+                id="eclipse-gold-gradient"
+                x1="160"
+                y1="0"
+                x2="1440"
+                y2="0"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0%" stopColor="#FA9A63" stopOpacity="0" />
+                <stop offset="20%" stopColor="#FA9A63" stopOpacity="0.55" />
+                <stop offset="50%" stopColor="#F6B253" stopOpacity="0.95" />
+                <stop offset="80%" stopColor="#FA9A63" stopOpacity="0.55" />
+                <stop offset="100%" stopColor="#FA9A63" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+
+            {/* Glow behind the horizon */}
+            <path
+              d="M 160 800 A 640 280 0 0 1 1440 800"
+              stroke="#FA9A63"
+              strokeWidth="10"
+              strokeOpacity="0.35"
+              filter="url(#eclipse-soft-glow)"
+            />
+
+            {/* Fine, consistent horizon line */}
+            <path
+              d="M 160 800 A 640 280 0 0 1 1440 800"
+              stroke="url(#eclipse-gold-gradient)"
+              strokeWidth="1.25"
+              strokeLinecap="round"
+            />
+          </svg>
+
+          {/* Square grid */}
+          <div className="hero-grid absolute inset-0" />
+
+          {/* Fixed stars with staggered blinking */}
+          <div className="absolute inset-0">
+            {HERO_STARS.map((star, index) => (
+              <span
+                key={index}
+                className="hero-star absolute rounded-full bg-white"
+                style={{
+                  left: `${star.x}%`,
+                  top: `${star.y}%`,
+                  animationDelay: `${star.delay}s`,
+                }}
+              />
+            ))}
           </div>
-
-          {/* Micro Grid Dot Pattern */}
-          <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] bg-size-[24px_24px] opacity-40" />
         </div>
 
-        {/* Top Navbar Inside Hero */}
-        <nav className="relative z-30 w-full px-6 sm:px-10 py-5 flex items-center justify-between border-b border-white/10">
-          {/* Brand Logo */}
-          <Link href="/" className="flex">
-            <div className="relative h-8 w-36 sm:h-9 sm:w-44">
+        {/* FOREGROUND CONTENT */}
+        <div className="relative z-30 w-full px-2.5 py-5 sm:px-6 lg:px-8">
+          {/* NAVIGATION */}
+          <nav className="relative z-30 flex w-full items-center justify-between px-2.5 sm:px-6 lg:px-8">
+            <Link href="/" aria-label="Urban Kitchen home">
               <Image
-                src="/Icon/apple-touch-icon.png"
-                alt="Urban Kitchen"
-                fill
-                className="object-contain object-left"
+                src="/logo/urban-kitchen-lockup-dark-transparent.svg"
+                alt="Urban Kitchen Logo"
+                width={200}
+                height={50}
                 priority
               />
-              <Image
-                src="/logo/urban-kitchen-wordmark-dark.svg"
-                alt="Urban Kitchen"
-                fill
-                className="object-contain object-right"
-                priority
-              />
-            </div>
-          </Link>
+            </Link>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-300">
-            <a href="#features" className="hover:text-white transition-colors">Features</a>
-            <a href="#showcase" className="hover:text-white transition-colors">Operations</a>
-            <a href="#comparison" className="hover:text-white transition-colors">Comparison</a>
-            <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
-            <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
-          </div>
-
-          {/* Aceternity Style Action Button with Slide/Avatar Icon */}
-          <div className="hidden sm:flex items-center gap-4">
-            <button
-              type="button"
-              onClick={onOpenDemo}
-              className="group relative flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-white/20 bg-neutral-900/80 px-4 py-2 text-xs font-semibold tracking-tight text-white hover:border-[#FF5B2E] transition-all"
-            >
-              <span className="inline-block size-2 rounded-full bg-[#FF5B2E] animate-pulse" />
-              <span>Book Demo</span>
-            </button>
-
-            <a
-              href="#pricing"
-              className="flex items-center gap-2 rounded-lg bg-[#FF5B2E] hover:bg-[#E24A1F] px-4 py-2 text-xs font-semibold text-white transition-all shadow-md shadow-[#FF5B2E]/20"
-            >
-              <span>Get Early Access</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <div className="md:hidden flex items-center">
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 text-neutral-300 hover:text-white"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </nav>
-
-        {/* Mobile Dropdown */}
-        {mobileMenuOpen && (
-          <div className="md:hidden relative z-40 bg-neutral-950 border-b border-neutral-800 px-6 py-4 space-y-3 text-sm">
-            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block text-neutral-300 hover:text-white">Features</a>
-            <a href="#showcase" onClick={() => setMobileMenuOpen(false)} className="block text-neutral-300 hover:text-white">Operations</a>
-            <a href="#comparison" onClick={() => setMobileMenuOpen(false)} className="block text-neutral-300 hover:text-white">Comparison</a>
-            <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block text-neutral-300 hover:text-white">Pricing</a>
-            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block text-neutral-300 hover:text-white">FAQ</a>
-            <div className="pt-2 flex flex-col gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenDemo?.();
-                }}
-                className="w-full py-2.5 rounded-lg bg-neutral-800 text-white text-xs font-semibold"
-              >
-                Book Demo
-              </button>
+            <div className="hidden items-center gap-8 text-sm font-medium text-neutral-300 md:flex">
               <a
-                href="#pricing"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-2.5 rounded-lg bg-[#FF5B2E] text-white text-xs font-semibold text-center"
+                href="#features"
+                className="transition-colors hover:text-white"
               >
-                Get Early Access
+                Features
+              </a>
+              <a
+                href="#showcase"
+                className="transition-colors hover:text-white"
+              >
+                Operations
+              </a>
+              <a
+                href="#comparison"
+                className="transition-colors hover:text-white"
+              >
+                Comparison
+              </a>
+              <a href="#pricing" className="transition-colors hover:text-white">
+                Pricing
+              </a>
+              <a href="#faq" className="transition-colors hover:text-white">
+                FAQ
               </a>
             </div>
-          </div>
-        )}
 
-        {/* Hero Body Content */}
-        <div className="relative z-20 max-w-6xl mx-auto w-full px-6 sm:px-10 pt-16 sm:pt-24 pb-20 flex flex-col items-start justify-center">
-          {/* Top Pill Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full bg-neutral-900 border border-neutral-800 px-3 py-1 text-xs text-neutral-300 mb-8 backdrop-blur-md">
-            <span className="rounded-full bg-[#FF5B2E] px-2 py-0.5 text-[10px] font-bold text-white uppercase">
-              Urban Kitchen
-            </span>
-            <span className="text-[11px] text-neutral-300 font-medium">
-              The all-in-one restaurant operating system
-            </span>
-            <ChevronRight className="w-3 h-3 text-neutral-500" />
-          </div>
+            {/* SIGN-IN BUTTON */}
+            <Link href="/login" aria-label="Sign in to Urban Kitchen">
+              <button
+                type="button"
+                className="group relative hidden sm:flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-white/20 bg-black py-2 pl-11 pr-4 tracking-tight"
+              >
+                <div
+                  data-slot="button-box"
+                  className="absolute inset-y-0 left-1 z-40 my-auto flex size-8 flex-col items-center justify-center gap-px rounded-[8px] bg-[#FF5B2E]/30 transition-all duration-300 ease-out group-hover:left-[calc(100%-2.3rem)] group-hover:rotate-180"
+                >
+                  <div className="flex flex-col gap-px group-hover:hidden">
+                    {[
+                      [0, 0, 1, 0, 0],
+                      [0, 0, 0, 1, 0],
+                      [1, 1, 1, 1, 1],
+                      [0, 0, 0, 1, 0],
+                      [0, 0, 1, 0, 0],
+                    ].map((line, row) => (
+                      <div className="flex gap-px" key={row}>
+                        {line.map((active, col) => (
+                          <span
+                            key={col}
+                            className={`inline-block size-0.75 shrink-0 rounded-full ${
+                              active ? "bg-[#FF5B2E]" : "bg-[#FF5B2E]/25"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
 
-          {/* Master 2-Column Hero Structure matching reference */}
-          <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            {/* Left Headline */}
-            <div className="lg:col-span-7">
-              <h1 className="text-3xl sm:text-5xl lg:text-[64px] font-semibold text-white tracking-tight leading-[1.1]">
+                  <img
+                    alt=""
+                    loading="lazy"
+                    width="32"
+                    height="32"
+                    className="hidden rotate-180 overflow-hidden rounded-[6px] object-cover blur-sm transition-all duration-300 group-hover:block group-hover:blur-none"
+                    src="/Icon/apple-touch-icon.png"
+                  />
+                </div>
+
+                <div className="absolute -inset-px rounded-lg bg-white/20 transition-[clip-path] duration-300 [clip-path:inset(0_100%_0_0)] group-hover:[clip-path:inset(0_0%_0_0)]" />
+
+                <span className="inline-block text-white transition-transform duration-300 group-hover:-translate-x-8">
+                  Sign In
+                </span>
+              </button>
+            </Link>
+
+            <button className="flex items-center gap-2 rounded-lg border border-white/20 bg-black p-1.5 sm:hidden">
+              <Menu className="h-4.5 w-4.5 text-white" />
+            </button>
+          </nav>
+
+          {/* HERO SECTION */}
+          <section className="relative z-30 mt-16 sm:mt-32 w-full px-2.5 pt-16 sm:pt-32 sm:px-6 lg:px-20 gap-6 lg:gap-8">
+            {/* Announcement badge */}
+            <div className="flex w-fit items-center justify-center gap-3 rounded-full border border-white/5 bg-[#171717] px-2.5 py-1 text-xs text-white sm:p-1 sm:pr-4">
+              <div className="hidden w-fit items-center gap-2.5 rounded-full bg-black px-3 py-1 text-xs text-white sm:flex">
+                <p>Urban Kitchen</p>
+              </div>
+              <p>The all-in-one restaurant operating system</p>
+            </div>
+
+            {/* Heading and description */}
+            <div className="mt-6 flex flex-col items-start gap-6 md:mt-10 lg:flex-row lg:gap-10">
+              <h1 className="text-balance text-3xl font-semibold -tracking-xl text-white sm:text-4xl md:text-5xl lg:text-7xl">
                 The best restaurant operating system in the world.
               </h1>
-            </div>
 
-            {/* Right Subtitle & CTA button */}
-            <div className="lg:col-span-5 space-y-6 lg:pt-2">
-              <p className="text-sm sm:text-base text-neutral-300 leading-relaxed font-normal">
-                Consolidate Swiggy, Zomato, QR table ordering, Cloud POS, live KDS, recipe inventory, and WhatsApp CRM into one platform. No Chaos. No Tablet Juggling. Just Results.
-              </p>
+              <div className="lg:max-w-md">
+                <h2 className="text-balance text-sm font-medium text-neutral-300 sm:text-base lg:text-lg">
+                  Consolidate Swiggy, Zomato, QR table ordering, Cloud POS, live
+                  KDS, recipe inventory, and WhatsApp CRM into one platform. No
+                  Chaos. No Tablet Juggling. Just Results.
+                </h2>
 
-              <div>
-                <a
-                  href="#pricing"
-                  className="group relative inline-flex items-center gap-3 rounded-lg border border-white/20 bg-neutral-950 px-5 py-3 text-sm font-semibold tracking-tight text-white hover:border-[#FF5B2E] transition-all"
+                {/* CHAT CTA */}
+                <button
+                  type="button"
+                  className="group relative mt-6 flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-white/20 bg-black py-2 pl-11 pr-4 tracking-tight md:mt-8"
                 >
-                  <div className="size-6 rounded bg-[#FF5B2E] flex items-center justify-center text-white text-xs font-bold">
-                    →
+                  <div
+                    data-slot="button-box"
+                    className="absolute inset-y-0 left-1 z-40 my-auto flex size-8 flex-col items-center justify-center gap-px rounded-[8px] bg-[#FF5B2E]/30 transition-all duration-300 ease-out group-hover:left-[calc(100%-2.3rem)] group-hover:rotate-180"
+                  >
+                    <div className="flex flex-col gap-px group-hover:hidden">
+                      {[
+                        [0, 0, 1, 0, 0],
+                        [0, 0, 0, 1, 0],
+                        [1, 1, 1, 1, 1],
+                        [0, 0, 0, 1, 0],
+                        [0, 0, 1, 0, 0],
+                      ].map((line, row) => (
+                        <div className="flex gap-px" key={row}>
+                          {line.map((active, col) => (
+                            <span
+                              key={col}
+                              className={`inline-block size-0.75 shrink-0 rounded-full ${
+                                active ? "bg-[#FF5B2E]" : "bg-[#FF5B2E]/25"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+
+                    <img
+                      alt=""
+                      loading="lazy"
+                      width="32"
+                      height="32"
+                      className="hidden rotate-180 overflow-hidden rounded-[6px] object-cover blur-sm transition-all duration-300 group-hover:block group-hover:blur-none"
+                      src="/ProfileImage.png"
+                    />
                   </div>
-                  <span>Start 14-Day Free Access</span>
-                </a>
+
+                  <div className="absolute -inset-px rounded-lg bg-white/20 transition-[clip-path] duration-300 [clip-path:inset(0_100%_0_0)] group-hover:[clip-path:inset(0_0%_0_0)]" />
+
+                  <span className="inline-block text-white transition-transform duration-300 group-hover:-translate-x-8">
+                    Chat with Utkarsh
+                  </span>
+                </button>
               </div>
             </div>
-          </div>
+          </section>
         </div>
-
-        {/* Aceternity Giant Watermark Typography at Bottom */}
-        <div className="relative w-full h-16 sm:h-24 lg:h-32 overflow-hidden pointer-events-none select-none flex items-center justify-center border-t border-white/5">
-          <p className="absolute -bottom-4 sm:-bottom-8 lg:-bottom-10 text-center text-[48px] sm:text-[90px] lg:text-[130px] font-extrabold uppercase tracking-tight text-white/4 whitespace-nowrap">
-            URBAN KITCHEN
-          </p>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

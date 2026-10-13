@@ -47,6 +47,11 @@ export async function POST(request: Request) {
 
   const eventType = body.event ?? "unknown";
 
+  let storedEvent:
+    | { status: "RECEIVED" | "PROCESSED" | "IGNORED" | "FAILED" }
+    | null
+    | undefined;
+
   try {
     await controlPrisma.razorpayWebhookEvent.create({
       data: {
@@ -57,11 +62,26 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     if (isUniqueConstraintError(error)) {
-      return NextResponse.json({ success: true, duplicate: true }, { status: 200 });
-    }
+      storedEvent = await controlPrisma.razorpayWebhookEvent.findUnique({
+        where: { eventId },
+        select: { status: true },
+      });
 
-    console.error("Razorpay webhook persistence failed:", error);
-    return NextResponse.json({ success: false }, { status: 500 });
+      if (
+        storedEvent &&
+        (storedEvent.status === "PROCESSED" ||
+        storedEvent?.status === "IGNORED"
+        )
+      ) {
+        return NextResponse.json(
+          { success: true, duplicate: true },
+          { status: 200 },
+        );
+      }
+    } else {
+      console.error("Razorpay webhook persistence failed:", error);
+      return NextResponse.json({ success: false }, { status: 500 });
+    }
   }
 
   try {
