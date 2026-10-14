@@ -16,7 +16,7 @@ type LocationsResponse = {
 export async function getLocationsByBusinessId(
   businessId: string,
 ): Promise<Location[]> {
-  const response = await fetch(
+  const response = await authenticatedFetch(
     `/api/locations?businessId=${encodeURIComponent(businessId)}`,
     {
       method: "GET",
@@ -38,3 +38,4 @@ export async function getLocationsByBusinessId(
 
   return result.data;
 }
+import { authenticatedFetch } from "@/lib/auth/client/authenticated-fetch";

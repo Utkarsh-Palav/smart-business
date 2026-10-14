@@ -20,30 +20,30 @@ export async function POST(request: Request) {
       if (session) {
         await authSessionService.revokeSession(session.id, "LOGOUT");
       }
-
-      const response = NextResponse.json(
-        {
-          success: true,
-          data: {
-            message: "Logged out successfully.",
-          },
-        },
-        { status: 200 },
-      );
-
-      response.cookies.set(ACCESS_COOKIE_NAME, "", {
-        ...getAccessCookieOptions(),
-        maxAge: 0,
-      });
-
-      response.cookies.set(REFRESH_COOKIE_NAME, "", {
-        ...getRefreshCookieOptions(),
-        maxAge: 0,
-      });
-
-      return response;
     }
-  } catch (error) {
+
+    const response = NextResponse.json(
+      {
+        success: true,
+        data: {
+          message: "Logged out successfully.",
+        },
+      },
+      { status: 200 },
+    );
+
+    response.cookies.set(ACCESS_COOKIE_NAME, "", {
+      ...getAccessCookieOptions(),
+      maxAge: 0,
+    });
+
+    response.cookies.set(REFRESH_COOKIE_NAME, "", {
+      ...getRefreshCookieOptions(),
+      maxAge: 0,
+    });
+
+    return response;
+  } catch {
     return NextResponse.json(
       {
         success: false,

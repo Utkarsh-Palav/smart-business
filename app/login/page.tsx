@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import {
   ArrowRight,
   Check,
@@ -13,21 +13,57 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type FieldErrors = {
   email?: string;
   password?: string;
 };
 
-export default function LoginPage() {
+function LoginPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const callbackUrl = searchParams.get("callbackUrl");
+
+    if (
+      !callbackUrl ||
+      !callbackUrl.startsWith("/") ||
+      callbackUrl.startsWith("//")
+    ) {
+      return;
+    }
+
+    const safeCallbackUrl = callbackUrl;
+    let cancelled = false;
+
+    async function recoverSession() {
+      const response = await fetch("/api/auth/refresh", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).catch(() => null);
+
+      if (response?.ok && !cancelled) {
+        router.replace(safeCallbackUrl);
+        router.refresh();
+      }
+    }
+
+    void recoverSession();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [router, searchParams]);
 
   function validate() {
     const nextErrors: FieldErrors = {};
@@ -70,7 +106,13 @@ export default function LoginPage() {
         throw new Error(result?.error?.message || "Unable to sign in.");
       }
 
-      router.push("/dashboard");
+      const callbackUrl = searchParams.get("callbackUrl");
+      const destination =
+        callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
+          ? callbackUrl
+          : "/dashboard";
+
+      router.push(destination);
       router.refresh();
     } catch (error) {
       setServerError(
@@ -280,5 +322,13 @@ export default function LoginPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginPageContent />
+    </Suspense>
   );
 }

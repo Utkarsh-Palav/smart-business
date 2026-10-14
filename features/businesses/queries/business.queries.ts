@@ -22,7 +22,7 @@ type BusinessResponse = {
 };
 
 export async function getBusinesses(): Promise<Business[]> {
-  const response = await fetch("/api/businesses", {
+  const response = await authenticatedFetch("/api/businesses", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export async function getBusinesses(): Promise<Business[]> {
 export async function getBusinessById(
   businessId: string,
 ): Promise<Business> {
-  const response = await fetch(
+  const response = await authenticatedFetch(
     `/api/businesses/${businessId}`,
     {
       method: "GET",
@@ -67,3 +67,4 @@ export async function getBusinessById(
 
   return result.data;
 }
+import { authenticatedFetch } from "@/lib/auth/client/authenticated-fetch";

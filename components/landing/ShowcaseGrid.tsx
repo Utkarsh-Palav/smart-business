@@ -18,7 +18,7 @@ export default function ShowcaseGrid() {
     <section id="showcase" className="relative w-full py-24 px-4 sm:px-6 lg:px-8 bg-neutral-100 dark:bg-[#07090E] overflow-hidden">
       {/* Giant Watermark Typography in Background matching reference */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-0">
-        <span className="text-[90px] sm:text-[160px] lg:text-[220px] font-bold text-neutral-300/40 dark:text-white/[0.03] tracking-tighter uppercase whitespace-nowrap">
+        <span className="text-[90px] sm:text-[160px] lg:text-[220px] font-bold text-neutral-300/40 dark:text-white/3 tracking-tighter uppercase whitespace-nowrap">
           Operations
         </span>
       </div>
@@ -42,7 +42,7 @@ export default function ShowcaseGrid() {
           
           {/* Card 1: iPad POS & Table Ordering (Hero Image 1) */}
           <div className="rounded-2xl bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 overflow-hidden shadow-sm hover:shadow-lg transition-all group">
-            <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
+            <div className="relative aspect-4/3 w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
               <Image
                 src="/hero.jpg"
                 alt="Table Ordering Interface"
@@ -65,7 +65,7 @@ export default function ShowcaseGrid() {
 
           {/* Card 2: Smartphone QR Menu Experience (Hero Image 2) */}
           <div className="rounded-2xl bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 overflow-hidden shadow-sm hover:shadow-lg transition-all group">
-            <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
+            <div className="relative aspect-4/3 w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
               <Image
                 src="/hero2.jpg"
                 alt="Specialty Coffee & Cafe POS"
@@ -88,7 +88,7 @@ export default function ShowcaseGrid() {
 
           {/* Card 3: Kitchen Display System (Hero Image 3) */}
           <div className="rounded-2xl bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 overflow-hidden shadow-sm hover:shadow-lg transition-all group">
-            <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
+            <div className="relative aspect-4/3 w-full overflow-hidden bg-neutral-200 dark:bg-neutral-900">
               <Image
                 src="/hero3.jpg"
                 alt="Kitchen Display System Station"

@@ -1,5 +1,3 @@
-import "server-only";
-
 import { SignJWT, jwtVerify, type JWTPayload } from "jose";
 
 const ACCESS_COOKIE_NAME = "smart_business_access";
