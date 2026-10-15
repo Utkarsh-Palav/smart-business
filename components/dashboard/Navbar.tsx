@@ -131,7 +131,7 @@ export default function DashboardNavbar() {
           <Link href="/dashboard" aria-label="Go to dashboard">
             <Image
               src="/Icon/apple-touch-icon.png"
-              alt="Smart Business"
+              alt="Urban Kitchen"
               width={35}
               height={35}
             />
@@ -286,7 +286,7 @@ export default function DashboardNavbar() {
             <UtilityActions mobile />
           </div>
           <p className="mt-auto px-2 pt-8 text-center text-[11px] text-slate-400">
-            Smart Business
+            Urban Kitchen
           </p>
         </div>
       </div>
