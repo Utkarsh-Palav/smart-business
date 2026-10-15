@@ -2,12 +2,17 @@
 
 import {
   BellRing,
-  ChefHat,
+  BarChart3,
+  CircleHelp,
+  ChevronDown,
+  ArrowRight,
   ChevronsUpDown,
   Menu,
+  Settings2,
   Search,
   Settings,
   Sparkles,
+  UsersRound,
   X,
 } from "lucide-react";
 import Image from "next/image";
@@ -29,6 +34,13 @@ const navItems = [
   { name: "Help", href: "/help" },
 ];
 
+const moreIcons = {
+  Reports: BarChart3,
+  Staff: UsersRound,
+  Settings: Settings2,
+  Help: CircleHelp,
+};
+
 function isActiveRoute(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -38,13 +50,24 @@ function UtilityActions({ mobile = false }: { mobile?: boolean }) {
     <div className={mobile ? "grid grid-cols-2 gap-2" : "flex items-center gap-3"}>
       <button
         type="button"
-        className={`flex items-center justify-center gap-2 rounded-lg border border-slate-200 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 ${
-          mobile ? "h-11 px-3" : "px-2 py-1"
+        aria-label="Ask AI to get smart insights"
+        className={`group relative flex items-center justify-center gap-2 overflow-hidden rounded-xl border border-indigo-200 bg-white text-sm font-medium text-slate-900 shadow-sm shadow-indigo-100/80 transition-all duration-200 hover:-translate-y-px hover:border-indigo-300 hover:shadow-md hover:shadow-indigo-200/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 ${
+          mobile ? "h-11 px-3.5" : "h-9 px-2.5"
         }`}
       >
-        <Sparkles className="h-4 w-4 text-blue-500" />
-        <span>Ask AI</span>
-        <ChefHat className="h-4 w-4" />
+        <span className="pointer-events-none absolute inset-0 bg-linear-to-r from-indigo-50/0 via-indigo-50/70 to-violet-50/0 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+        <span className="relative flex h-6 w-6 items-center justify-center rounded-lg bg-linear-to-br from-indigo-600 to-violet-600 text-white shadow-sm shadow-indigo-300 transition-transform duration-200 group-hover:scale-105">
+          <Sparkles className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-12" />
+        </span>
+        <span className="relative flex flex-col items-start leading-none">
+          <span className="whitespace-nowrap">Ask AI</span>
+          <span className="mt-0.5 hidden text-[10px] font-normal tracking-wide text-indigo-600 sm:block">
+            Get smart insights
+          </span>
+        </span>
+        <span className="relative ml-0.5 flex h-5 w-5 items-center justify-center rounded-full text-indigo-400 transition-all duration-200 group-hover:bg-indigo-100 group-hover:text-indigo-700">
+          <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </span>
       </button>
       <button
         type="button"
@@ -126,7 +149,7 @@ export default function DashboardNavbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white">
-      <div className="flex min-h-14 items-center justify-between gap-3 px-3 sm:px-5">
+      <div className="flex min-h-14 items-center justify-between gap-3 px-3 sm:px-2.5">
         <div className="flex min-w-0 items-center gap-2 sm:gap-4">
           <Link href="/dashboard" aria-label="Go to dashboard">
             <Image
@@ -178,9 +201,18 @@ export default function DashboardNavbar() {
                 aria-expanded={isMoreOpen}
                 aria-haspopup="menu"
                 onClick={() => setIsMoreOpen((open) => !open)}
-                className="mx-0.5 border-b-2 border-transparent px-3 py-3 text-sm text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+                className={`mx-0.5 flex items-center justify-center gap-1.5 border-b-2 px-3 py-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 ${
+                  isMoreOpen
+                    ? "border-slate-800 bg-slate-50 font-medium text-slate-950"
+                    : "border-transparent text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950"
+                }`}
               >
-                More
+                <span>More</span>
+                <ChevronDown
+                  className={`h-3.5 w-3.5 transition-transform ${
+                    isMoreOpen ? "rotate-180" : ""
+                  }`}
+                />
               </button>
               {isMoreOpen ? (
                 <div
@@ -193,12 +225,16 @@ export default function DashboardNavbar() {
                       href={item.href}
                       role="menuitem"
                       onClick={() => setIsMoreOpen(false)}
-                      className={`block rounded-md px-3 py-2 text-sm transition-colors focus-visible:outline-none ${
+                      className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors focus-visible:outline-none ${
                         isActiveRoute(pathname, item.href)
                           ? "bg-slate-100 font-medium text-slate-950"
                           : "text-slate-700 hover:bg-slate-50 hover:text-slate-950"
                       }`}
                     >
+                      {(() => {
+                        const Icon = moreIcons[item.name as keyof typeof moreIcons];
+                        return <Icon className="h-4 w-4 text-slate-500" />;
+                      })()}
                       {item.name}
                     </Link>
                   ))}
