@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <main>
       <DashboardNavbar />
-      <div className="flex w-full min-h-[calc(100dvh-3.5rem)] overflow-hidden">
+      <div className="flex min-h-[calc(100dvh-3.5rem)] w-full items-start">
         {children}
       </div>
     </main>

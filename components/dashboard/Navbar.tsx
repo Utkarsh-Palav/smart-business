@@ -35,7 +35,7 @@ function isActiveRoute(pathname: string, href: string) {
 
 function UtilityActions({ mobile = false }: { mobile?: boolean }) {
   return (
-    <div className={mobile ? "grid grid-cols-2 gap-2" : "flex items-center gap-4"}>
+    <div className={mobile ? "grid grid-cols-2 gap-2" : "flex items-center gap-3"}>
       <button
         type="button"
         className={`flex items-center justify-center gap-2 rounded-lg border border-slate-200 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 ${
@@ -75,7 +75,7 @@ function UtilityActions({ mobile = false }: { mobile?: boolean }) {
       >
         <BellRing className="h-5 w-5" />
         {mobile ? <span>Notifications</span> : null}
-        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-slate-800 px-1 text-[10px] font-semibold text-white">
+        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#ef4444] px-1 text-[10px] font-semibold text-white">
           10
         </span>
       </button>
@@ -125,7 +125,7 @@ export default function DashboardNavbar() {
   }
 
   return (
-    <header className="relative z-40 w-full border-b border-slate-200 bg-white">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white">
       <div className="flex min-h-14 items-center justify-between gap-3 px-3 sm:px-5">
         <div className="flex min-w-0 items-center gap-2 sm:gap-4">
           <Link href="/dashboard" aria-label="Go to dashboard">
