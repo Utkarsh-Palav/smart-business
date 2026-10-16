@@ -6,7 +6,6 @@ import {
   CircleHelp,
   ChevronDown,
   ArrowRight,
-  ChevronsUpDown,
   Menu,
   Settings2,
   Search,
@@ -19,6 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { BusinessLocationSwitcher } from "./BusinessLocationSwitcher";
 
 const navItems = [
   { name: "Overview", href: "/dashboard" },
@@ -55,8 +55,8 @@ function UtilityActions({ mobile = false }: { mobile?: boolean }) {
           mobile ? "h-11 px-3.5" : "h-8 px-2.5"
         }`}
       >
-        <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#FF5B2E]/0 via-[#FF5B2E]/6 to-orange-400/0 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-        <span className="relative flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br from-[#FF5B2E] to-orange-500 text-white shadow-sm shadow-[#FF5B2E]/40 transition-transform duration-200 group-hover:scale-105">
+        <span className="pointer-events-none absolute inset-0 bg-linear-to-r from-[#FF5B2E]/0 via-[#FF5B2E]/6 to-orange-400/0 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+        <span className="relative flex h-5 w-5 items-center justify-center rounded-md bg-linear-to-br from-[#FF5B2E] to-orange-500 text-white shadow-sm shadow-[#FF5B2E]/40 transition-transform duration-200 group-hover:scale-105">
           <Sparkles className="h-3 w-3 transition-transform duration-300 group-hover:rotate-12" />
         </span>
         <span className="relative flex flex-col items-start leading-none">
@@ -98,7 +98,7 @@ function UtilityActions({ mobile = false }: { mobile?: boolean }) {
       >
         <BellRing className="h-4 w-4" />
         {mobile ? <span className="text-sm">Notifications</span> : null}
-        <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#FF5B2E] px-1 text-[9px] font-bold text-white shadow-sm shadow-[#FF5B2E]/50">
+        <span className="absolute -right-0.5 -top-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-[#FF5B2E] px-1 text-[9px] font-bold text-white shadow-sm shadow-[#FF5B2E]/50">
           10
         </span>
       </button>
@@ -149,7 +149,7 @@ export default function DashboardNavbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#14181F]" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-      <div className="flex min-h-14 items-center justify-between gap-3 px-3 sm:px-4">
+      <div className="flex min-h-16 items-center justify-between gap-3 px-3 sm:px-4">
         {/* Left: Logo + Store Switcher */}
         <div className="flex min-w-0 items-center gap-3 sm:gap-3.5">
           <Link href="/dashboard" aria-label="Go to dashboard" className="shrink-0">
@@ -165,24 +165,7 @@ export default function DashboardNavbar() {
           {/* Vertical divider */}
           <span className="hidden h-5 w-px bg-white/10 sm:block" aria-hidden="true" />
 
-          <button
-            type="button"
-            className="flex min-w-0 cursor-pointer items-center gap-2 rounded-lg border border-white/[0.09] bg-white/[0.05] px-2.5 py-1.5 text-left transition-all duration-200 hover:border-white/15 hover:bg-white/[0.09] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/40"
-          >
-            <span className="h-6 w-6 shrink-0 overflow-hidden rounded-full ring-1 ring-white/15">
-              <Image
-                src="/cafe_logo.png"
-                alt=""
-                width={100}
-                height={100}
-                className="h-full w-full object-cover"
-              />
-            </span>
-            <span className="max-w-28 truncate text-sm font-medium text-white/80 sm:max-w-none">
-              Munchy Krunchy
-            </span>
-            <ChevronsUpDown className="h-3.5 w-3.5 shrink-0 text-white/30" />
-          </button>
+          <BusinessLocationSwitcher />
         </div>
 
         {/* Center: Main nav */}
@@ -194,7 +177,7 @@ export default function DashboardNavbar() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className={`relative mx-0.5 block px-3 py-[14px] text-[13.5px] font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/40 ${
+                    className={`relative mx-0.5 block px-3 py-3.5 text-[13.5px] font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/40 ${
                       active
                         ? "text-white"
                         : "text-white/48 hover:text-white/82"
@@ -203,7 +186,7 @@ export default function DashboardNavbar() {
                     {item.name}
                     {active && (
                       <span
-                        className="absolute bottom-0 left-1/2 h-[2px] w-6 -translate-x-1/2 rounded-full bg-[#FF5B2E]"
+                        className="absolute bottom-0 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-[#FF5B2E]"
                         aria-hidden="true"
                       />
                     )}
@@ -217,7 +200,7 @@ export default function DashboardNavbar() {
                 aria-expanded={isMoreOpen}
                 aria-haspopup="menu"
                 onClick={() => setIsMoreOpen((open) => !open)}
-                className={`relative mx-0.5 flex cursor-pointer items-center justify-center gap-1 px-3 py-[14px] text-[13.5px] font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/40 ${
+                className={`relative mx-0.5 flex cursor-pointer items-center justify-center gap-1 px-3 py-3.5 text-[13.5px] font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/40 ${
                   isMoreOpen
                     ? "text-white"
                     : "text-white/48 hover:text-white/82"
@@ -231,7 +214,7 @@ export default function DashboardNavbar() {
                 />
                 {isMoreOpen && (
                   <span
-                    className="absolute bottom-0 left-1/2 h-[2px] w-6 -translate-x-1/2 rounded-full bg-[#FF5B2E]"
+                    className="absolute bottom-0 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-[#FF5B2E]"
                     aria-hidden="true"
                   />
                 )}
@@ -239,7 +222,7 @@ export default function DashboardNavbar() {
               {isMoreOpen ? (
                 <div
                   role="menu"
-                  className="absolute right-0 top-full mt-2 min-w-44 rounded-xl border border-white/[0.09] bg-[#1C2229] p-1.5 shadow-2xl shadow-black/50"
+                  className="absolute right-0 top-full mt-2 min-w-44 rounded-xl border border-white/9 bg-[#1C2229] p-1.5 shadow-2xl shadow-black/50"
                 >
                   {navItems.slice(7).map((item) => (
                     <Link
@@ -250,7 +233,7 @@ export default function DashboardNavbar() {
                       className={`flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors duration-150 focus-visible:outline-none ${
                         isActiveRoute(pathname, item.href)
                           ? "bg-[#FF5B2E]/12 font-medium text-white"
-                          : "text-white/55 hover:bg-white/[0.06] hover:text-white"
+                          : "text-white/55 hover:bg-white/6 hover:text-white"
                       }`}
                     >
                       {(() => {
@@ -277,14 +260,14 @@ export default function DashboardNavbar() {
         {/* Right: Utility actions + Avatar */}
         <div className="hidden items-center gap-3 lg:flex">
           <UtilityActions />
-          <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gradient-to-br from-[#FF5B2E] to-[#e04520] text-[11px] font-bold text-white shadow-sm shadow-[#FF5B2E]/30 ring-[1.5px] ring-[#FF5B2E]/25 transition-all duration-200 hover:ring-[#FF5B2E]/45">
+          <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-linear-to-br from-[#FF5B2E] to-[#e04520] text-[11px] font-bold text-white shadow-sm shadow-[#FF5B2E]/30 ring-[1.5px] ring-[#FF5B2E]/25 transition-all duration-200 hover:ring-[#FF5B2E]/45">
             MK
           </div>
         </div>
 
         {/* Mobile: Avatar + Hamburger */}
         <div className="flex items-center gap-2.5 lg:hidden">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#FF5B2E] to-[#e04520] text-[11px] font-bold text-white shadow-sm shadow-[#FF5B2E]/30">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-[#FF5B2E] to-[#e04520] text-[11px] font-bold text-white shadow-sm shadow-[#FF5B2E]/30">
             MK
           </div>
           <button
@@ -312,7 +295,7 @@ export default function DashboardNavbar() {
 
       {/* Mobile drawer */}
       <div
-        className={`fixed bottom-0 right-0 top-14 z-50 w-[min(22rem,calc(100vw-3rem))] overflow-y-auto overscroll-contain rounded-l-2xl border-l border-white/[0.08] bg-[#14181F] px-3 pb-6 pt-3 shadow-2xl shadow-black/60 transition-transform duration-300 ease-out lg:hidden ${
+        className={`fixed bottom-0 right-0 top-14 z-50 w-[min(22rem,calc(100vw-3rem))] overflow-y-auto overscroll-contain rounded-l-2xl border-l border-white/8 bg-[#14181F] px-3 pb-6 pt-3 shadow-2xl shadow-black/60 transition-transform duration-300 ease-out lg:hidden ${
           isMobileOpen ? "translate-x-0" : "translate-x-full"
         }`}
         aria-hidden={!isMobileOpen}
@@ -342,7 +325,7 @@ export default function DashboardNavbar() {
                   className={`flex min-h-10 cursor-pointer items-center rounded-lg border px-3 py-2 text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/35 ${
                     isActiveRoute(pathname, item.href)
                       ? "border-[#FF5B2E]/25 bg-[#FF5B2E]/10 font-semibold text-white"
-                      : "border-transparent text-white/50 hover:border-white/[0.09] hover:bg-white/[0.05] hover:text-white/85"
+                      : "border-transparent text-white/50 hover:border-white/9 hover:bg-white/5 hover:text-white/85"
                   }`}
                 >
                   {item.name}

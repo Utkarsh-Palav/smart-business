@@ -224,6 +224,7 @@ export type TableRouteOrderByWithRelationInput = {
 export type TableRouteWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   token?: string
+  tenantKey_tableId?: Prisma.TableRouteTenantKeyTableIdCompoundUniqueInput
   AND?: Prisma.TableRouteWhereInput | Prisma.TableRouteWhereInput[]
   OR?: Prisma.TableRouteWhereInput[]
   NOT?: Prisma.TableRouteWhereInput | Prisma.TableRouteWhereInput[]
@@ -234,7 +235,7 @@ export type TableRouteWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"TableRoute"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TableRoute"> | Date | string
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
-}, "id" | "token">
+}, "id" | "token" | "tenantKey_tableId">
 
 export type TableRouteOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -348,6 +349,11 @@ export type TableRouteListRelationFilter = {
 
 export type TableRouteOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type TableRouteTenantKeyTableIdCompoundUniqueInput = {
+  tenantKey: string
+  tableId: string
 }
 
 export type TableRouteCountOrderByAggregateInput = {

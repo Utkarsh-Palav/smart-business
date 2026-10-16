@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useDashboardBusinessLocation } from "./BusinessLocationProvider";
 import {
   ShoppingBag,
   Clock,
@@ -557,6 +558,8 @@ export function GenericSectionView({
   section: string;
   subsection: string;
 }) {
+  const { business, location } = useDashboardBusinessLocation();
+
   return (
     <div className="rounded-2xl border border-slate-200/80 bg-white p-8 shadow-xs">
       <div className="flex items-center gap-3">
@@ -568,7 +571,7 @@ export function GenericSectionView({
             {section} Operations Hub
           </h2>
           <p className="text-xs text-slate-500">
-            Managed under Munchy Krunchy Bhayandar workspace
+            Managed under {business?.name ?? "your business"}{location ? ` / ${location.name}` : ""} workspace
           </p>
         </div>
       </div>

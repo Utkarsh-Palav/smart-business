@@ -10,6 +10,7 @@ import {
   GenericSectionView,
 } from "./SectionMockViews";
 import { Store, Sparkles } from "lucide-react";
+import { useDashboardBusinessLocation } from "./BusinessLocationProvider";
 
 type DashboardSectionProps = {
   section: string;
@@ -43,6 +44,7 @@ export function DashboardSection({
   subsection,
   children,
 }: DashboardSectionProps) {
+  const { business, location } = useDashboardBusinessLocation();
   const title = labels[subsection] ?? subsection.replaceAll("-", " ");
   const normalizedSec = section.toLowerCase();
 
@@ -57,10 +59,11 @@ export function DashboardSection({
                 {section}
               </span>
               <span className="text-xs text-slate-300">•</span>
-              <span className="flex items-center gap-1 text-xs font-medium text-slate-500">
-                <Store className="h-3.5 w-3.5 text-slate-400" />
-                Munchy Krunchy Bhayandar
-              </span>
+              {business ? <span className="flex min-w-0 items-center gap-1 text-xs font-medium text-slate-500">
+                <Store className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+                <span className="max-w-48 truncate">{business.name}</span>
+                {location ? <><span aria-hidden="true">/</span><span className="max-w-40 truncate">{location.name}</span></> : null}
+              </span> : null}
             </div>
             <h1 className="mt-1 text-2xl font-bold tracking-tight capitalize text-slate-900 sm:text-3xl">
               {title}

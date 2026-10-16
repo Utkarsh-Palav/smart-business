@@ -17,7 +17,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-import { useBusinesses } from "@/features/businesses/queries/use-businesses";
+import type { Business } from "@/features/businesses/queries/business.queries";
+import { useDashboardBusinessLocation } from "@/components/dashboard/BusinessLocationProvider";
 import { SettingsSection } from "./SettingsSection";
 
 type ProfileForm = {
@@ -89,8 +90,7 @@ const inputClass =
   "h-11 w-full rounded-xl border border-slate-200/90 bg-white px-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-[#FF5B2E] focus:ring-4 focus:ring-[#FF5B2E]/10 disabled:cursor-not-allowed disabled:bg-slate-50/70 disabled:text-slate-500 font-medium";
 
 export function BusinessProfileContent() {
-  const { data: businesses, isLoading, isError } = useBusinesses();
-  const business = businesses?.[0];
+  const { business, isLoading, isError } = useDashboardBusinessLocation();
 
   return (
     <SettingsSection
@@ -136,7 +136,7 @@ export function BusinessProfileContent() {
 function BusinessProfileEditor({
   business,
 }: {
-  business: NonNullable<ReturnType<typeof useBusinesses>["data"]>[number];
+  business: Business;
 }) {
   const initialForm = getInitialForm(business);
   const [form, setForm] = useState<ProfileForm>(initialForm);
@@ -162,11 +162,11 @@ function BusinessProfileEditor({
   return (
     <div className="space-y-5 sm:space-y-6">
       <section className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm shadow-slate-200/40">
-        <div className="relative isolate overflow-hidden bg-gradient-to-br from-[#fff8f3] via-white to-[#f7f8fb] px-5 py-6 sm:px-7 sm:py-7">
+        <div className="relative isolate overflow-hidden bg-linear-to-br from-[#fff8f3] via-white to-[#f7f8fb] px-5 py-6 sm:px-7 sm:py-7">
           <div aria-hidden="true" className="absolute -right-12 -top-24 -z-10 h-64 w-64 rounded-full bg-orange-100/70 blur-3xl" />
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex min-w-0 items-center gap-4">
-              <div className="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-[22px] border border-orange-100 bg-white text-[#e8582b] shadow-sm shadow-orange-900/5">
+              <div className="flex h-18 w-18 shrink-0 items-center justify-center rounded-[22px] border border-orange-100 bg-white text-[#e8582b] shadow-sm shadow-orange-900/5">
                 <span className="text-2xl font-bold tracking-tight">{form.name.trim().slice(0, 1).toUpperCase() || <Store className="h-7 w-7" />}</span>
               </div>
               <div className="min-w-0">

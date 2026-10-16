@@ -228,7 +228,7 @@ export function RevenueVelocityChart({ timeRange }: { timeRange: string }) {
 
               {/* Bar */}
               <div
-                className={`w-full max-w-[34px] rounded-t-lg transition-all duration-200 ${
+                className={`w-full max-w-8.5 rounded-t-lg transition-all duration-200 ${
                   slot.isPeak
                     ? isHovered
                       ? "bg-[#e5491e]"
