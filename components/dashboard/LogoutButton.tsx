@@ -52,13 +52,13 @@ export function LogoutButton({ iconOnly = false }: LogoutButtonProps) {
   }
 
   return (
-    <div className="border-t p-2">
+    <div className="border-t p-2" style={{ borderColor: '#eef0f3' }}>
       <button
         type="button"
         onClick={handleLogout}
         disabled={isLoggingOut}
-        className={`flex items-center rounded-md py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-60 ${
-          iconOnly ? "justify-center px-2" : "w-full gap-2 px-3"
+        className={`flex cursor-pointer items-center rounded-lg py-2 text-sm font-medium text-slate-400 transition-colors duration-150 hover:bg-white hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/35 disabled:cursor-not-allowed disabled:opacity-60 ${
+          iconOnly ? "h-8 w-8 justify-center px-2" : "w-full gap-2 px-3"
         }`}
         aria-label={iconOnly ? "Log out" : undefined}
         title={iconOnly ? "Log out" : undefined}

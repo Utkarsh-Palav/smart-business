@@ -3,12 +3,34 @@ export type Business = {
   name: string;
   slug: string;
   status: "ACTIVE" | "SUSPENDED" | "ARCHIVED";
+  legalName: string | null;
+  businessType:
+    | "CAFE"
+    | "RESTAURANT"
+    | "QSR"
+    | "CLOUD_KITCHEN"
+    | "BAKERY"
+    | "FOOD_TRUCK"
+    | "OTHER";
+  gstin: string | null;
   createdAt: string;
   updatedAt: string;
   _count: {
-    locations: number;
-    reviewCards: number;
+    memberships: number;
+    reviewCardAssignments: number;
   };
+  onboardingProfile: {
+    firstLocationName: string;
+    firstLocationSlug: string;
+    operatingMode: string;
+    addressLine1: string;
+    addressLine2: string | null;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+    phone: string | null;
+  } | null;
 };
 
 type BusinessesResponse = {

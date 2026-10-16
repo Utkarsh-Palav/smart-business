@@ -46,637 +46,727 @@ import {
   UserCheck,
   UserPlus,
   Users,
+  UsersRound,
   WalletCards,
   XCircle,
   Zap,
+  Phone,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { LogoutButton } from "./LogoutButton";
 
-type SidebarItem = {
+export type SidebarItem = {
   label: string;
   href: string;
   icon: LucideIcon;
 };
 
-type SidebarGroup = {
+export type RailItem = {
+  id: string;
+  label: string;
+  href: string;
+  icon: LucideIcon;
+};
+
+export type SidebarGroup = {
   label: string;
   items: SidebarItem[];
 };
 
-const item = (label: string, href: string, icon: LucideIcon): SidebarItem => ({
+const railItem = (id: string, label: string, href: string, icon: LucideIcon): RailItem => ({
+  id,
   label,
   href,
   icon,
 });
 
-const railItemsBySection: Record<string, SidebarItem[]> = {
+const subItem = (label: string, href: string, icon: LucideIcon): SidebarItem => ({
+  label,
+  href,
+  icon,
+});
+
+// ==========================================
+// 1. RAIL ITEMS BY SECTION (Layer 2)
+// ==========================================
+const railItemsBySection: Record<string, RailItem[]> = {
   overview: [
-    item("Analytics", "/dashboard/analytics", BarChart3),
-    item("Alerts", "/dashboard/alerts", TriangleAlert),
-    item("Partners", "/dashboard/partners", Handshake),
-    item("Live activity", "/dashboard/live", Radio),
+    railItem("analytics", "Analytics", "/dashboard/analytics/revenue", BarChart3),
+    railItem("alerts", "Alerts", "/dashboard/alerts", TriangleAlert),
+    railItem("partners", "Partners", "/dashboard/partners/performance", Handshake),
+    railItem("live", "Live activity", "/dashboard/live/activity", Radio),
   ],
   orders: [
-    item("Order overview", "/orders/overview", ShoppingBag),
-    item("Order queue", "/orders/queue", Clock3),
-    item("Order alerts", "/orders/alerts", TriangleAlert),
-    item("Live orders", "/orders/live", Radio),
+    railItem("active", "Active orders", "/orders/overview", ShoppingBag),
+    railItem("queue", "Kitchen queue", "/orders/queue", Clock3),
+    railItem("history", "Order history", "/orders/history/completed", CheckSquare),
+    railItem("sources", "Order channels", "/orders/sources", SlidersHorizontal),
   ],
   menu: [
-    item("Menu overview", "/menu/overview", Salad),
-    item("Food items", "/menu/items", Boxes),
-    item("Availability", "/menu/availability", CheckSquare),
-    item("Live menu", "/menu/live", Radio),
+    railItem("overview", "Menu overview", "/menu/overview", LayoutDashboard),
+    railItem("items", "Food catalog", "/menu/items", Salad),
+    railItem("availability", "Availability", "/menu/availability", CheckSquare),
+    railItem("digital", "Digital menu", "/menu/digital", PanelTop),
   ],
   inventory: [
-    item("Inventory overview", "/inventory/overview", Boxes),
-    item("Stock alerts", "/inventory/alerts", TriangleAlert),
-    item("Suppliers", "/inventory/suppliers", Handshake),
-    item("Stock movement", "/inventory/movement", RefreshCw),
+    railItem("overview", "Stock overview", "/inventory/overview", LayoutDashboard),
+    railItem("stock", "Stock control", "/inventory/stock/ingredients", Boxes),
+    railItem("procure", "Procurement", "/inventory/procure/purchases", ShoppingCart),
+    railItem("recipes", "Recipes", "/inventory/recipes", BookOpen),
   ],
   customers: [
-    item("Customer overview", "/customers/overview", Users),
-    item("Customer alerts", "/customers/alerts", TriangleAlert),
-    item("Loyalty", "/customers/loyalty", HeartHandshake),
-    item("Live activity", "/customers/live", Radio),
+    railItem("directory", "Customers", "/customers/overview", Users),
+    railItem("loyalty", "Loyalty & rewards", "/customers/loyalty", HeartHandshake),
+    railItem("feedback", "Guest feedback", "/customers/feedback", MessageSquare),
+    railItem("segments", "Segments", "/customers/segments", UsersRound),
   ],
   marketing: [
-    item("Marketing overview", "/marketing/overview", Megaphone),
-    item("Campaign alerts", "/marketing/alerts", TriangleAlert),
-    item("Partners", "/marketing/partners", Handshake),
-    item("Live campaigns", "/marketing/live", Radio),
+    railItem("campaigns", "Campaigns", "/marketing/overview", Megaphone),
+    railItem("offers", "Offers & promos", "/marketing/offers", TicketPercent),
+    railItem("messages", "Customer messages", "/marketing/messages", MessageSquare),
+    railItem("analytics", "Marketing stats", "/marketing/overview/stats", BarChart3),
   ],
   finance: [
-    item("Finance overview", "/finance/overview", WalletCards),
-    item("Payment alerts", "/finance/alerts", TriangleAlert),
-    item("Settlements", "/finance/settlements", HandCoins),
-    item("Live payments", "/finance/live", Radio),
+    railItem("overview", "Finance overview", "/finance/overview", LayoutDashboard),
+    railItem("sales", "Sales & income", "/finance/sales", BarChart3),
+    railItem("settlements", "Settlements", "/finance/settlements", HandCoins),
+    railItem("records", "Invoices & taxes", "/finance/records/invoices", FileText),
   ],
   reports: [
-    item("Reports overview", "/reports/overview", BarChart3),
-    item("Report alerts", "/reports/alerts", TriangleAlert),
-    item("Shared reports", "/reports/shared", Handshake),
-    item("Live metrics", "/reports/live", Radio),
+    railItem("overview", "Reports overview", "/reports/overview", LayoutDashboard),
+    railItem("sales", "Sales reports", "/reports/sales", BarChart3),
+    railItem("performance", "Business performance", "/reports/performance/menu", Salad),
+    railItem("financial", "Financial summaries", "/reports/financial/profit", WalletCards),
   ],
   staff: [
-    item("Team overview", "/staff/overview", Users),
-    item("Staff alerts", "/staff/alerts", TriangleAlert),
-    item("Partners", "/staff/partners", Handshake),
-    item("Live activity", "/staff/live", Radio),
+    railItem("overview", "Staff overview", "/staff/overview", LayoutDashboard),
+    railItem("team", "Team members", "/staff/team", Users),
+    railItem("operations", "Shifts & attendance", "/staff/operations/schedules", CalendarDays),
+    railItem("activity", "Activity log", "/staff/activity", History),
   ],
   settings: [
-    item("Settings overview", "/settings/profile", Settings2),
-    item("Setup alerts", "/settings/staff", TriangleAlert),
-    item("Connected services", "/settings/subscription", Handshake),
-    item("System status", "/settings/advanced", Radio),
+    railItem("business", "Business", "/settings/profile", Building2),
+    railItem("operations", "Operations", "/settings/staff", Users),
+    railItem("account", "Account", "/settings/subscription", WalletCards),
+    railItem("customize", "Customize", "/settings/appearance", Palette),
   ],
   help: [
-    item("Help overview", "/help/learn", CircleHelp),
-    item("Important alerts", "/help/alerts", TriangleAlert),
-    item("Support partners", "/help/partners", Handshake),
-    item("System status", "/help/status", Radio),
+    railItem("learn", "Help center", "/help/learn", CircleHelp),
+    railItem("guides", "Guides & setup", "/help/guides/getting-started", BookOpen),
+    railItem("updates", "Release notes", "/help/updates", History),
+    railItem("support", "Contact support", "/help/support", MessageSquare),
   ],
 };
 
-const sidebarGroups: Record<string, SidebarGroup[]> = {
-  overview: [
-    {
-      label: "Analytics",
-      items: [
-        item("Revenue", "/dashboard/analytics/revenue", BarChart3),
-        item("Expenses and bills", "/dashboard/analytics/expenses", Receipt),
-        item("Online vs offline", "/dashboard/analytics/online-offline", CreditCard),
-        item("Orders and sales", "/dashboard/analytics/orders-sales", ReceiptText),
-        item("Profit summary", "/dashboard/analytics/profit", WalletCards),
-      ],
-    },
-    {
-      label: "Needs attention",
-      items: [
-        item("Alerts", "/dashboard/alerts", TriangleAlert),
-        item("Pending tasks", "/dashboard/alerts/tasks", CheckSquare),
-        item("Low stock", "/dashboard/alerts/low-stock", PackageCheck),
-      ],
-    },
-    {
-      label: "Partners",
-      items: [
-        item("Partner performance", "/dashboard/partners/performance", Handshake),
-        item("Connected channels", "/dashboard/partners/channels", ShoppingBag),
-      ],
-    },
-    {
-      label: "Live",
-      items: [
-        item("Live activity", "/dashboard/live/activity", Radio),
-        item("Recent activity", "/dashboard/live/recent", Activity),
-      ],
-    },
-  ],
-  orders: [
-    {
-      label: "Today",
-      items: [
-        item("All orders", "/orders/overview", ShoppingBag),
-        item("New orders", "/orders/overview/new", Zap),
-      ],
-    },
-    {
-      label: "Order status",
-      items: [
-        item("Preparing", "/orders/alerts/preparing", Clock3),
-        item("Ready for pickup", "/orders/alerts/ready", PackageCheck),
-        item("Completed", "/orders/alerts/completed", CheckSquare),
-        item("Cancelled", "/orders/alerts/cancelled", XCircle),
-      ],
-    },
-    {
-      label: "Order type",
-      items: [
-        item("Dine-in", "/orders/alerts/dine-in", Store),
-        item("Takeaway", "/orders/alerts/takeaway", ShoppingBag),
-        item("Delivery", "/orders/alerts/delivery", Truck),
-      ],
-    },
-    {
-      label: "Channels",
-      items: [item("Order sources", "/orders/alerts/sources", SlidersHorizontal)],
-    },
-  ],
-  menu: [
-    {
-      label: "Menu",
-      items: [
-        item("Menu overview", "/menu/overview", LayoutDashboard),
-        item("Food items", "/menu/items", Salad),
-        item("Categories", "/menu/items/categories", Tags),
-      ],
-    },
-    {
-      label: "Build your menu",
-      items: [
-        item("Add-ons", "/menu/availability/add-ons", PlusCircle),
-        item("Combos", "/menu/availability/combos", Boxes),
-        item("Availability", "/menu/availability", CheckSquare),
-      ],
-    },
-    {
-      label: "Customer access",
-      items: [item("Digital menu", "/menu/live/digital", PanelTop)],
-    },
-    {
-      label: "Configure",
-      items: [item("Menu settings", "/menu/live/settings", Settings2)],
-    },
-  ],
-  inventory: [
-    {
-      label: "Today",
-      items: [
-        item("Inventory overview", "/inventory/overview", LayoutDashboard),
-        item("Low stock", "/inventory/alerts/low-stock", Bell),
-      ],
-    },
-    {
-      label: "Stock control",
-      items: [
-        item("Ingredients", "/inventory/stock/ingredients", Salad),
-        item("Stock levels", "/inventory/stock/stock", Boxes),
-        item("Stock movement", "/inventory/stock/movement", RefreshCw),
-        item("Wastage", "/inventory/stock/wastage", XCircle),
-      ],
-    },
-    {
-      label: "Procure",
-      items: [
-        item("Purchases", "/inventory/procure/purchases", ShoppingCart),
-        item("Suppliers", "/inventory/procure/suppliers", Truck),
-      ],
-    },
-    {
-      label: "Make",
-      items: [item("Recipes", "/inventory/make/recipes", BookOpen)],
-    },
-    {
-      label: "Configure",
-      items: [item("Inventory settings", "/inventory/configure/settings", Settings2)],
-    },
-  ],
-  customers: [
-    {
-      label: "Customers",
-      items: [
-        item("All customers", "/customers/overview", Users),
-        item("New customers", "/customers/overview/new", UserPlus),
-        item("Regular customers", "/customers/overview/regular", UserCheck),
-      ],
-    },
-    {
-      label: "Relationships",
-      items: [
-        item("Feedback", "/customers/relationships/feedback", MessageSquare),
-        item("Loyalty", "/customers/relationships/loyalty", HeartHandshake),
-        item("Customer groups", "/customers/relationships/groups", Users),
-      ],
-    },
-  ],
-  marketing: [
-    {
-      label: "Marketing",
-      items: [
-        item("Marketing overview", "/marketing/overview", LayoutDashboard),
-        item("Campaigns", "/marketing/marketing/campaigns", Megaphone),
-        item("Customer messages", "/marketing/marketing/messages", MessageSquare),
-      ],
-    },
-    {
-      label: "Offers and rewards",
-      items: [
-        item("Offers", "/marketing/offers/offers", TicketPercent),
-        item("Discounts", "/marketing/offers/discounts", BadgePercent),
-        item("Loyalty rewards", "/marketing/offers/loyalty", HeartHandshake),
-      ],
-    },
-  ],
-  finance: [
-    {
-      label: "Finance",
-      items: [
-        item("Finance overview", "/finance/overview", LayoutDashboard),
-        item("Sales", "/finance/finance/sales", BarChart3),
-        item("Expenses", "/finance/finance/expenses", Receipt),
-      ],
-    },
-    {
-      label: "Money received",
-      items: [
-        item("Payments", "/finance/money/payments", CreditCard),
-        item("Settlements", "/finance/money/settlements", HandCoins),
-      ],
-    },
-    {
-      label: "Records",
-      items: [
-        item("Invoices", "/finance/records/invoices", FileText),
-        item("Taxes", "/finance/records/taxes", Percent),
-      ],
-    },
-  ],
-  reports: [
-    {
-      label: "Reports",
-      items: [
-        item("Reports overview", "/reports/overview", LayoutDashboard),
-        item("Sales reports", "/reports/reports/sales", BarChart3),
-        item("Order reports", "/reports/reports/orders", ReceiptText),
-      ],
-    },
-    {
-      label: "Business performance",
-      items: [
-        item("Menu performance", "/reports/performance/menu", Salad),
-        item("Inventory reports", "/reports/performance/inventory", Boxes),
-        item("Customer reports", "/reports/performance/customers", Users),
-        item("Profit summary", "/reports/performance/profit", WalletCards),
-      ],
-    },
-  ],
-  staff: [
-    {
-      label: "Team",
-      items: [
-        item("Staff overview", "/staff/overview", LayoutDashboard),
-        item("Team members", "/staff/team/members", Users),
-        item("Roles and permissions", "/staff/team/roles", ShieldCheck),
-      ],
-    },
-    {
-      label: "People operations",
-      items: [
-        item("Attendance", "/staff/operations/attendance", CalendarDays),
-        item("Schedules", "/staff/operations/schedules", Clock3),
-        item("Activity log", "/staff/operations/activity", History),
-      ],
-    },
-  ],
-  settings: [
-    {
-      label: "Business",
-      items: [
-        item("Business profile", "/settings/profile", Building2),
-        item("Locations", "/settings/locations", Store),
-        item("Order channels", "/settings/channels", ShoppingBag),
-      ],
-    },
-    {
-      label: "Operations",
-      items: [
-        item("Staff and roles", "/settings/staff", Users),
-        item("Payment settings", "/settings/payments", CreditCard),
-        item("Notifications", "/settings/notifications", Bell),
-      ],
-    },
-    {
-      label: "Account",
-      items: [
-        item("Subscription", "/settings/subscription", WalletCards),
-        item("Security", "/settings/security", ShieldCheck),
-      ],
-    },
-    {
-      label: "Customize",
-      items: [
-        item("Appearance", "/settings/appearance", Palette),
-        item("Advanced settings", "/settings/advanced", SlidersHorizontal),
-      ],
-    },
-  ],
-  help: [
-    {
-      label: "Learn",
-      items: [
-        item("Help center", "/help/learn", CircleHelp),
-        item("Getting started", "/help/learn/getting-started", BookOpen),
-        item("Release notes", "/help/learn/updates", History),
-      ],
-    },
-    {
-      label: "Support",
-      items: [item("Contact support", "/help/support", MessageSquare)],
-    },
-  ],
+// ==========================================
+// 2. GROUPS BY RAIL (Layer 3 Context Panel)
+// ==========================================
+const groupsBySectionAndRail: Record<string, Record<string, SidebarGroup[]>> = {
+  overview: {
+    analytics: [
+      {
+        label: "Analytics",
+        items: [
+          subItem("Revenue", "/dashboard/analytics/revenue", BarChart3),
+          subItem("Expenses and bills", "/dashboard/analytics/expenses", Receipt),
+          subItem("Online vs offline", "/dashboard/analytics/online-offline", CreditCard),
+          subItem("Orders and sales", "/dashboard/analytics/orders-sales", ReceiptText),
+          subItem("Profit summary", "/dashboard/analytics/profit", WalletCards),
+        ],
+      },
+    ],
+    alerts: [
+      {
+        label: "Needs Attention",
+        items: [
+          subItem("All alerts", "/dashboard/alerts", TriangleAlert),
+          subItem("Pending tasks", "/dashboard/alerts/tasks", CheckSquare),
+          subItem("Low stock alerts", "/dashboard/alerts/low-stock", PackageCheck),
+        ],
+      },
+    ],
+    partners: [
+      {
+        label: "Partners & Channels",
+        items: [
+          subItem("Partner performance", "/dashboard/partners/performance", Handshake),
+          subItem("Connected channels", "/dashboard/partners/channels", ShoppingBag),
+        ],
+      },
+    ],
+    live: [
+      {
+        label: "Live Stream",
+        items: [
+          subItem("Live kitchen radar", "/dashboard/live/activity", Radio),
+          subItem("Recent punch stream", "/dashboard/live/recent", Activity),
+        ],
+      },
+    ],
+  },
+  orders: {
+    active: [
+      {
+        label: "Today's Orders",
+        items: [
+          subItem("All active", "/orders/overview", ShoppingBag),
+          subItem("New orders", "/orders/overview/new", Zap),
+        ],
+      },
+    ],
+    queue: [
+      {
+        label: "Kitchen Queue",
+        items: [
+          subItem("Live queue", "/orders/queue", Clock3),
+          subItem("Preparing", "/orders/queue/preparing", Clock3),
+          subItem("Ready for pickup", "/orders/queue/ready", PackageCheck),
+        ],
+      },
+    ],
+    history: [
+      {
+        label: "Order History",
+        items: [
+          subItem("Completed orders", "/orders/history/completed", CheckSquare),
+          subItem("Cancelled & void", "/orders/history/cancelled", XCircle),
+          subItem("Dine-in tickets", "/orders/history/dine-in", Store),
+          subItem("Takeaway tickets", "/orders/history/takeaway", ShoppingBag),
+          subItem("Delivery fleet", "/orders/history/delivery", Truck),
+        ],
+      },
+    ],
+    sources: [
+      {
+        label: "Order Channels",
+        items: [
+          subItem("Order channels", "/orders/sources", SlidersHorizontal),
+          subItem("Aggregator sync", "/orders/sources/aggregators", Radio),
+        ],
+      },
+    ],
+  },
+  menu: {
+    overview: [
+      {
+        label: "Menu Performance",
+        items: [
+          subItem("Menu overview", "/menu/overview", LayoutDashboard),
+          subItem("Categories", "/menu/overview/categories", Tags),
+        ],
+      },
+    ],
+    items: [
+      {
+        label: "Food Catalog",
+        items: [
+          subItem("All food items", "/menu/items", Salad),
+          subItem("Add-ons & extras", "/menu/items/add-ons", PlusCircle),
+          subItem("Combos & bundles", "/menu/items/combos", Boxes),
+        ],
+      },
+    ],
+    availability: [
+      {
+        label: "Stock Controls",
+        items: [
+          subItem("Live availability (86)", "/menu/availability", CheckSquare),
+          subItem("Shift timings", "/menu/availability/timings", Clock3),
+        ],
+      },
+    ],
+    digital: [
+      {
+        label: "Customer Access",
+        items: [
+          subItem("Digital QR menu", "/menu/digital", PanelTop),
+          subItem("Menu settings", "/menu/digital/settings", Settings2),
+        ],
+      },
+    ],
+  },
+  inventory: {
+    overview: [
+      {
+        label: "Inventory Today",
+        items: [
+          subItem("Stock overview", "/inventory/overview", LayoutDashboard),
+          subItem("Low stock alerts", "/inventory/overview/alerts", Bell),
+        ],
+      },
+    ],
+    stock: [
+      {
+        label: "Stock Control",
+        items: [
+          subItem("Raw ingredients", "/inventory/stock/ingredients", Salad),
+          subItem("Stock levels", "/inventory/stock/levels", Boxes),
+          subItem("Stock movement", "/inventory/stock/movement", RefreshCw),
+          subItem("Kitchen wastage", "/inventory/stock/wastage", XCircle),
+        ],
+      },
+    ],
+    procure: [
+      {
+        label: "Procurement",
+        items: [
+          subItem("Purchase orders", "/inventory/procure/purchases", ShoppingCart),
+          subItem("Vendors & suppliers", "/inventory/procure/suppliers", Truck),
+        ],
+      },
+    ],
+    recipes: [
+      {
+        label: "Production",
+        items: [
+          subItem("Recipes & yield", "/inventory/recipes", BookOpen),
+          subItem("Inventory settings", "/inventory/recipes/settings", Settings2),
+        ],
+      },
+    ],
+  },
+  customers: {
+    directory: [
+      {
+        label: "Guest Directory",
+        items: [
+          subItem("All customers", "/customers/overview", Users),
+          subItem("New customers", "/customers/overview/new", UserPlus),
+          subItem("Regular customers", "/customers/overview/regular", UserCheck),
+        ],
+      },
+    ],
+    loyalty: [
+      {
+        label: "Loyalty Program",
+        items: [
+          subItem("Loyalty rewards", "/customers/loyalty", HeartHandshake),
+          subItem("Points ledger", "/customers/loyalty/points", WalletCards),
+        ],
+      },
+    ],
+    feedback: [
+      {
+        label: "Guest Experience",
+        items: [
+          subItem("Guest feedback", "/customers/feedback", MessageSquare),
+          subItem("Review card taps", "/customers/feedback/reviews", Sparkles),
+        ],
+      },
+    ],
+    segments: [
+      {
+        label: "Target Groups",
+        items: [subItem("Customer groups", "/customers/segments", UsersRound)],
+      },
+    ],
+  },
+  marketing: {
+    campaigns: [
+      {
+        label: "Campaigns",
+        items: [
+          subItem("Marketing overview", "/marketing/overview", LayoutDashboard),
+          subItem("All campaigns", "/marketing/campaigns", Megaphone),
+          subItem("Automated journeys", "/marketing/campaigns/journeys", Zap),
+        ],
+      },
+    ],
+    offers: [
+      {
+        label: "Offers & Rewards",
+        items: [
+          subItem("Promo codes", "/marketing/offers", TicketPercent),
+          subItem("Discounts", "/marketing/offers/discounts", BadgePercent),
+          subItem("Loyalty incentives", "/marketing/offers/loyalty", HeartHandshake),
+        ],
+      },
+    ],
+    messages: [
+      {
+        label: "Messaging",
+        items: [
+          subItem("WhatsApp broadcasts", "/marketing/messages", MessageSquare),
+          subItem("SMS announcements", "/marketing/messages/sms", Phone),
+        ],
+      },
+    ],
+    analytics: [
+      {
+        label: "Performance",
+        items: [subItem("Growth & stats", "/marketing/overview/stats", BarChart3)],
+      },
+    ],
+  },
+  finance: {
+    overview: [
+      {
+        label: "Financial Pulse",
+        items: [
+          subItem("Financial overview", "/finance/overview", LayoutDashboard),
+          subItem("Daily closing", "/finance/overview/closing", Receipt),
+        ],
+      },
+    ],
+    sales: [
+      {
+        label: "Sales & Income",
+        items: [
+          subItem("Sales ledger", "/finance/sales", BarChart3),
+          subItem("Expense records", "/finance/sales/expenses", ReceiptText),
+        ],
+      },
+    ],
+    settlements: [
+      {
+        label: "Money Received",
+        items: [
+          subItem("Bank settlements", "/finance/settlements", HandCoins),
+          subItem("Payment logs", "/finance/settlements/payments", CreditCard),
+        ],
+      },
+    ],
+    records: [
+      {
+        label: "Records & Taxes",
+        items: [
+          subItem("Invoices", "/finance/records/invoices", FileText),
+          subItem("Taxes & GST", "/finance/records/taxes", Percent),
+        ],
+      },
+    ],
+  },
+  reports: {
+    overview: [
+      {
+        label: "Reports",
+        items: [
+          subItem("Reports overview", "/reports/overview", LayoutDashboard),
+          subItem("Shared reports", "/reports/overview/shared", Handshake),
+        ],
+      },
+    ],
+    sales: [
+      {
+        label: "Sales Reports",
+        items: [
+          subItem("Sales reports", "/reports/sales", BarChart3),
+          subItem("Order reports", "/reports/sales/orders", ReceiptText),
+        ],
+      },
+    ],
+    performance: [
+      {
+        label: "Business Performance",
+        items: [
+          subItem("Menu performance", "/reports/performance/menu", Salad),
+          subItem("Inventory reports", "/reports/performance/inventory", Boxes),
+          subItem("Customer reports", "/reports/performance/customers", Users),
+        ],
+      },
+    ],
+    financial: [
+      {
+        label: "Financial Summaries",
+        items: [
+          subItem("Profit summary", "/reports/financial/profit", WalletCards),
+          subItem("Tax audit report", "/reports/financial/taxes", Percent),
+        ],
+      },
+    ],
+  },
+  staff: {
+    overview: [
+      {
+        label: "Team",
+        items: [
+          subItem("Staff overview", "/staff/overview", LayoutDashboard),
+          subItem("Attendance snapshot", "/staff/overview/attendance", CheckSquare),
+        ],
+      },
+    ],
+    team: [
+      {
+        label: "Team Directory",
+        items: [
+          subItem("Team members", "/staff/team", Users),
+          subItem("Roles & permissions", "/staff/team/roles", ShieldCheck),
+        ],
+      },
+    ],
+    operations: [
+      {
+        label: "People Operations",
+        items: [
+          subItem("Shift schedules", "/staff/operations/schedules", Clock3),
+          subItem("Daily attendance", "/staff/operations/attendance", CalendarDays),
+        ],
+      },
+    ],
+    activity: [
+      {
+        label: "Audit",
+        items: [
+          subItem("Activity log", "/staff/activity", History),
+          subItem("Audit trail", "/staff/activity/audit", ShieldCheck),
+        ],
+      },
+    ],
+  },
+  settings: {
+    business: [
+      {
+        label: "Business",
+        items: [
+          subItem("Business profile", "/settings/profile", Building2),
+          subItem("Locations", "/settings/locations", Store),
+          subItem("Order channels", "/settings/channels", ShoppingBag),
+        ],
+      },
+    ],
+    operations: [
+      {
+        label: "Operations",
+        items: [
+          subItem("Staff and roles", "/settings/staff", Users),
+          subItem("Payment settings", "/settings/payments", CreditCard),
+          subItem("Notifications", "/settings/notifications", Bell),
+        ],
+      },
+    ],
+    account: [
+      {
+        label: "Account",
+        items: [
+          subItem("Subscription", "/settings/subscription", WalletCards),
+          subItem("Security", "/settings/security", ShieldCheck),
+        ],
+      },
+    ],
+    customize: [
+      {
+        label: "Customize",
+        items: [
+          subItem("Appearance", "/settings/appearance", Palette),
+          subItem("Advanced settings", "/settings/advanced", SlidersHorizontal),
+        ],
+      },
+    ],
+  },
+  help: {
+    learn: [
+      {
+        label: "Learn",
+        items: [
+          subItem("Help center", "/help/learn", CircleHelp),
+          subItem("FAQ & answers", "/help/learn/faq", BookOpen),
+        ],
+      },
+    ],
+    guides: [
+      {
+        label: "Guides",
+        items: [
+          subItem("Getting started", "/help/guides/getting-started", BookOpen),
+          subItem("Hardware & POS setup", "/help/guides/hardware", SlidersHorizontal),
+        ],
+      },
+    ],
+    updates: [
+      {
+        label: "Updates",
+        items: [
+          subItem("Release notes", "/help/updates", History),
+          subItem("System status", "/help/updates/status", Radio),
+        ],
+      },
+    ],
+    support: [
+      {
+        label: "Support",
+        items: [
+          subItem("Contact support", "/help/support", MessageSquare),
+          subItem("Priority desk", "/help/support/priority", ShieldCheck),
+        ],
+      },
+    ],
+  },
 };
-
-const overviewGroupsByRail: Record<string, SidebarGroup[]> = {
-  analytics: [sidebarGroups.overview[0]],
-  alerts: [sidebarGroups.overview[1]],
-  partners: [sidebarGroups.overview[2]],
-  live: [sidebarGroups.overview[3]],
-};
-
-const routeSections = new Set([
-  "overview",
-  "orders",
-  "menu",
-  "inventory",
-  "customers",
-  "marketing",
-  "finance",
-  "reports",
-  "staff",
-  "settings",
-  "help",
-]);
 
 type PageSidebarProps = {
-  section: keyof typeof sidebarGroups;
+  section: string;
   title: string;
 };
 
-function getHash(href: string) {
-  return href.split("#")[1] ?? "";
-}
-
-function getDefaultSubsectionHash(
-  section: keyof typeof sidebarGroups,
-  railItems: SidebarItem[],
-  railHash: string,
-  defaultRail: string,
-) {
-  const railIndex = railItems.findIndex(
-    (railItem) => getHash(railItem.href) === railHash,
-  );
-  const items =
-    section === "overview"
-      ? (overviewGroupsByRail[railHash] ?? overviewGroupsByRail[defaultRail])[0]
-          ?.items
-      : sidebarGroups[section]
-          .flatMap((group) => group.items)
-          .slice(Math.max(0, railIndex) * 3, Math.max(0, railIndex) * 3 + 3);
-
-  return getHash(items?.[0]?.href ?? "");
-}
-
-function isActive(pathname: string, hash: string, href: string) {
-  const [path, itemHash] = href.split("#");
-  return path === pathname && (itemHash ? itemHash === hash : !hash);
-}
-
-function isRouteActive(pathname: string, href: string) {
-  const path = href.split("#")[0];
-  return pathname === path || pathname.startsWith(`${path}/`);
-}
-
-function isRouteItemActive(pathname: string, href: string) {
-  return pathname === href.split("#")[0];
-}
-
 export function PageSidebar({ section, title }: PageSidebarProps) {
   const pathname = usePathname();
-  const railItems = railItemsBySection[section];
-  const isRouteSection = routeSections.has(section);
-  const defaultRail = isRouteSection
-    ? railItems[0].href
-    : getHash(railItems[0].href);
-  const [currentHash, setCurrentHash] = useState("");
-  const [selectedRail, setSelectedRail] = useState(
-    isRouteSection
-      ? railItems.find((railItem) => isRouteActive(pathname, railItem.href))
-          ?.href ?? defaultRail
-      : defaultRail,
-  );
-  const activeRail = isRouteSection
-    ? railItems.find((railItem) => isRouteActive(pathname, railItem.href))
-        ?.href ?? defaultRail
-    : selectedRail;
+  const normalizedSec = section.toLowerCase();
+  const railItems = railItemsBySection[normalizedSec] ?? [];
+  const sectionGroups = groupsBySectionAndRail[normalizedSec] ?? {};
+
   const [isContextOpen, setIsContextOpen] = useState(true);
 
-  useEffect(() => {
-    if (isRouteSection) {
-      return;
-    }
-
-    const syncHash = () => {
-      const hash = window.location.hash.slice(1);
-      const railHash = railItems.some(
-        (railItem) => getHash(railItem.href) === hash,
-      )
-        ? hash
-        : defaultRail;
-
-      setSelectedRail(railHash);
-      setCurrentHash(
-        railHash === hash
-          ? getDefaultSubsectionHash(section, railItems, railHash, defaultRail)
-          : hash,
+  // Determine active rail item: check which rail item's groups contain current pathname, or starts with rail item's href
+  const activeRail =
+    railItems.find((rail) => {
+      const groups = sectionGroups[rail.id] ?? [];
+      const hasMatchingSubItem = groups.some((g) =>
+        g.items.some(
+          (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
+        ),
       );
-    };
+      if (hasMatchingSubItem) return true;
+      return pathname === rail.href || pathname.startsWith(`${rail.href}/`);
+    }) ?? railItems[0];
 
-    syncHash();
-    window.addEventListener("hashchange", syncHash);
-    window.addEventListener("popstate", syncHash);
-    return () => {
-      window.removeEventListener("hashchange", syncHash);
-      window.removeEventListener("popstate", syncHash);
-    };
-  }, [defaultRail, isRouteSection, pathname, railItems, section]);
-
-  const groups =
-    section === "overview"
-      ? overviewGroupsByRail[activeRail.split("/").pop() ?? "analytics"] ??
-        overviewGroupsByRail.analytics
-      : [
-          {
-            label:
-              railItems.find((railItem) =>
-                isRouteSection
-                  ? railItem.href === activeRail
-                  : getHash(railItem.href) === selectedRail,
-              )
-                ?.label ?? title,
-            items:
-              sidebarGroups[section].flatMap((group) => group.items).slice(
-                Math.max(
-                  0,
-                  railItems.findIndex((railItem) =>
-                    isRouteSection
-                      ? railItem.href === activeRail
-                      : getHash(railItem.href) === selectedRail,
-                  ),
-                ) * 3,
-                Math.max(
-                  0,
-                  railItems.findIndex((railItem) =>
-                    isRouteSection
-                      ? railItem.href === activeRail
-                      : getHash(railItem.href) === selectedRail,
-                  ),
-                ) * 3 + 3,
-              ),
-          },
-        ];
+  const currentGroups = activeRail ? sectionGroups[activeRail.id] ?? [] : [];
 
   return (
-    <aside className="sticky top-14 flex h-[calc(100dvh-3.5rem)] shrink-0 self-start border-r border-slate-200 bg-white">
+    <aside
+      className="sticky top-14 flex h-[calc(100dvh-3.5rem)] shrink-0 self-start bg-white"
+      style={{ borderRight: "1px solid #eef0f3" }}
+    >
+      {/* Icon Rail (Layer 2) */}
       <nav
-        aria-label="Main sections"
-        className="flex h-full w-14 flex-col items-center justify-between border-r border-slate-200 bg-slate-50 pt-4"
+        aria-label="Sub-navigation rail"
+        className="flex h-full w-13 flex-col items-center justify-between pt-3"
+        style={{ borderRight: "1px solid #eef0f3", background: "#f8f9fb" }}
       >
-        <div className="flex flex-col items-center gap-1.5">
+        <div className="flex flex-col items-center gap-1">
+          {/* Collapse toggle */}
           <button
             type="button"
             aria-label={`${isContextOpen ? "Hide" : "Show"} ${title} sidebar`}
             aria-expanded={isContextOpen}
             onClick={() => setIsContextOpen((open) => !open)}
-            className="group relative flex h-9 w-9 items-center justify-center text-slate-500 transition-colors hover:bg-white hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+            className="group relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-slate-400 transition-colors duration-150 hover:bg-white hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/40"
           >
             {isContextOpen ? (
-              <PanelLeftClose size={18} strokeWidth={1.8} />
+              <PanelLeftClose size={16} strokeWidth={1.75} />
             ) : (
-              <PanelLeftOpen size={18} strokeWidth={1.8} />
+              <PanelLeftOpen size={16} strokeWidth={1.75} />
             )}
-            <span className="pointer-events-none absolute left-full top-1/2 z-30 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity duration-100 group-hover:opacity-100 group-focus-visible:opacity-100">
+            <span className="pointer-events-none absolute left-full top-1/2 z-30 ml-2.5 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#14181F] px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-lg shadow-black/20 transition-opacity duration-100 group-hover:opacity-100 group-focus-visible:opacity-100">
               {isContextOpen ? "Hide sidebar" : "Show sidebar"}
             </span>
           </button>
-          <span aria-hidden="true" className="mb-2 h-px w-10 bg-slate-200" />
-          {railItems.map(({ label, href, icon: Icon }) => {
-            const active = isRouteSection
-              ? activeRail === href
-              : selectedRail === getHash(href);
+
+          <span aria-hidden="true" className="mb-1 mt-0.5 h-px w-8 bg-slate-200" />
+
+          {/* Rail Icons */}
+          {railItems.map((rail) => {
+            const Icon = rail.icon;
+            const isActive = activeRail?.id === rail.id;
 
             return (
               <Link
-                key={label}
-                href={href}
-                onClick={
-                  isRouteSection
-                    ? undefined
-                    : () => {
-                        const hash = getHash(href);
-                        setSelectedRail(hash);
-                        setCurrentHash(
-                          getDefaultSubsectionHash(
-                            section,
-                            railItems,
-                            hash,
-                            defaultRail,
-                          ),
-                        );
-                      }
-                }
-                aria-label={label}
-                aria-current={active ? "page" : undefined}
-                className={`group relative flex h-9 w-9 items-center justify-center rounded-md border-r-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 ${
-                  active
-                    ? "border-slate-800 bg-white text-slate-950 shadow-sm"
-                    : "border-transparent text-slate-500 hover:border-slate-300 hover:bg-white hover:text-slate-950"
+                key={rail.id}
+                href={rail.href}
+                aria-label={rail.label}
+                aria-current={isActive ? "page" : undefined}
+                className={`group relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/40 ${
+                  isActive
+                    ? "bg-white text-[#FF5B2E] shadow-sm shadow-slate-200"
+                    : "text-slate-400 hover:bg-white hover:text-slate-600"
                 }`}
               >
-                <Icon size={18} strokeWidth={1.8} />
-                <span className="pointer-events-none absolute left-full top-1/2 z-30 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity duration-100 group-hover:opacity-100 group-focus-visible:opacity-100">
-                  {label}
+                {isActive && (
+                  <span
+                    className="absolute right-0 top-1/2 h-4 w-[2.5px] -translate-y-1/2 translate-x-full rounded-l-full bg-[#FF5B2E]"
+                    aria-hidden="true"
+                  />
+                )}
+                <Icon size={16} strokeWidth={isActive ? 2 : 1.75} />
+                <span className="pointer-events-none absolute left-full top-1/2 z-30 ml-2.5 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#14181F] px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-lg shadow-black/20 transition-opacity duration-100 group-hover:opacity-100 group-focus-visible:opacity-100">
+                  {rail.label}
                 </span>
               </Link>
             );
           })}
         </div>
-        <div className="group relative">
+
+        {/* Logout at bottom */}
+        <div className="group relative mb-2">
           <LogoutButton iconOnly />
-          <span className="pointer-events-none absolute bottom-0 left-full z-30 ml-2 whitespace-nowrap rounded-md bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity duration-100 group-hover:opacity-100 group-focus-within:opacity-100">
+          <span className="pointer-events-none absolute bottom-0 left-full z-30 ml-2.5 whitespace-nowrap rounded-lg bg-[#14181F] px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-lg shadow-black/20 transition-opacity duration-100 group-hover:opacity-100 group-focus-within:opacity-100">
             Log out
           </span>
         </div>
       </nav>
 
+      {/* Context Panel (Layer 3) */}
       <section
         aria-label={`${title} actions`}
         className={`${
           isContextOpen ? "block" : "hidden"
-        } fixed bottom-0 left-14 top-14 z-30 h-[calc(100dvh-3.5rem)] w-64 overflow-y-auto border-r border-slate-200 bg-white shadow-xl shadow-slate-950/10 md:static md:z-auto md:h-full md:w-64 md:shadow-none md:transition-[width] md:duration-200 ${
+        } fixed bottom-0 left-13 top-14 z-30 h-[calc(100dvh-3.5rem)] w-60 overflow-y-auto md:static md:z-auto md:h-full md:w-60 md:transition-[width] md:duration-200 ${
           isContextOpen ? "" : "md:w-0"
         }`}
+        style={{
+          background: "#ffffff",
+          borderRight: "1px solid #eef0f3",
+          boxShadow: isContextOpen ? "4px 0 20px rgba(0,0,0,0.04)" : "none",
+        }}
       >
-        <div className="flex items-center justify-between border-b border-slate-200 px-4 py-2">
+        {/* Panel Header */}
+        <div
+          className="flex items-center justify-between px-4 py-3"
+          style={{ borderBottom: "1px solid #eef0f3" }}
+        >
           <div className="min-w-0">
-            <p className="truncate text-base font-semibold text-slate-900">{title}</p>
-            <p className="mt-0.5 text-xs text-slate-500">Dashboard sections</p>
+            <p className="truncate text-[13.5px] font-semibold text-slate-800">
+              {activeRail?.label ?? title}
+            </p>
+            <p className="mt-0.5 text-[11px] text-slate-400 capitalize">
+              {section} modules
+            </p>
           </div>
         </div>
+
+        {/* Groups */}
         <div className="space-y-5 px-3 py-4">
-          {groups.map((group) => (
+          {currentGroups.map((group) => (
             <div key={group.label}>
-              <p className="px-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+              <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400/80">
                 {group.label}
               </p>
-              <div className="mt-1.5 space-y-0.5">
+              <div className="space-y-0.5">
                 {group.items.map(({ label, href, icon: Icon }) => {
-                  const active = isRouteSection
-                    ? isRouteItemActive(pathname, href)
-                    : isActive(pathname, currentHash, href);
+                  const isActive =
+                    pathname === href || (href !== `/${normalizedSec}` && pathname.startsWith(`${href}/`));
 
                   return (
                     <Link
                       key={label}
                       href={href}
-                      onClick={
-                        isRouteSection
-                          ? undefined
-                          : () => setCurrentHash(getHash(href))
-                      }
-                      className={`flex items-center gap-2.5 rounded-md border-l-2 px-2.5 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 ${
-                        active
-                          ? "border-slate-800 bg-slate-100 font-medium text-slate-950"
-                          : "border-transparent text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950"
+                      className={`group flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-1.75 text-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/35 ${
+                        isActive
+                          ? "bg-[#FF5B2E]/8 font-medium text-[#c94b20]"
+                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                       }`}
                     >
-                      <Icon className="h-4 w-4 shrink-0" strokeWidth={1.8} />
-                      <span className="min-w-0 whitespace-normal wrap-break-word">{label}</span>
+                      <Icon
+                        className={`h-3.75 w-3.75 shrink-0 transition-colors duration-150 ${
+                          isActive
+                            ? "text-[#FF5B2E]"
+                            : "text-slate-400 group-hover:text-slate-500"
+                        }`}
+                        strokeWidth={isActive ? 2 : 1.75}
+                      />
+                      <span className="min-w-0 whitespace-normal wrap-break-word leading-snug">
+                        {label}
+                      </span>
+                      {isActive && (
+                        <span
+                          className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF5B2E]"
+                          aria-hidden="true"
+                        />
+                      )}
                     </Link>
                   );
                 })}

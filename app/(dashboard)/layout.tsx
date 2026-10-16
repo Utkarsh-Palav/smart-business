@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <main>
       <DashboardNavbar />
-      <div className="flex min-h-[calc(100dvh-3.5rem)] w-full items-start bg-slate-50">
+      <div className="flex min-h-[calc(100dvh-3.5rem)] w-full items-start" style={{ background: '#f4f5f7' }}>
         {children}
       </div>
     </main>
