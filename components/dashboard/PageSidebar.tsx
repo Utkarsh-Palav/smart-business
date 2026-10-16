@@ -76,70 +76,70 @@ const item = (label: string, href: string, icon: LucideIcon): SidebarItem => ({
 
 const railItemsBySection: Record<string, SidebarItem[]> = {
   overview: [
-    item("Analytics", "/dashboard#analytics", BarChart3),
-    item("Alerts", "/dashboard#alerts", TriangleAlert),
-    item("Partners", "/dashboard#partners", Handshake),
-    item("Live activity", "/dashboard#live", Radio),
+    item("Analytics", "/dashboard/analytics", BarChart3),
+    item("Alerts", "/dashboard/alerts", TriangleAlert),
+    item("Partners", "/dashboard/partners", Handshake),
+    item("Live activity", "/dashboard/live", Radio),
   ],
   orders: [
-    item("Order overview", "/orders", ShoppingBag),
-    item("Order queue", "/orders#queue", Clock3),
-    item("Order alerts", "/orders#alerts", TriangleAlert),
-    item("Live orders", "/orders#live", Radio),
+    item("Order overview", "/orders/overview", ShoppingBag),
+    item("Order queue", "/orders/queue", Clock3),
+    item("Order alerts", "/orders/alerts", TriangleAlert),
+    item("Live orders", "/orders/live", Radio),
   ],
   menu: [
-    item("Menu overview", "/menu", Salad),
-    item("Food items", "/menu#items", Boxes),
-    item("Availability", "/menu#availability", CheckSquare),
-    item("Live menu", "/menu#live", Radio),
+    item("Menu overview", "/menu/overview", Salad),
+    item("Food items", "/menu/items", Boxes),
+    item("Availability", "/menu/availability", CheckSquare),
+    item("Live menu", "/menu/live", Radio),
   ],
   inventory: [
-    item("Inventory overview", "/inventory", Boxes),
-    item("Stock alerts", "/inventory#alerts", TriangleAlert),
-    item("Suppliers", "/inventory#suppliers", Handshake),
-    item("Stock movement", "/inventory#movement", RefreshCw),
+    item("Inventory overview", "/inventory/overview", Boxes),
+    item("Stock alerts", "/inventory/alerts", TriangleAlert),
+    item("Suppliers", "/inventory/suppliers", Handshake),
+    item("Stock movement", "/inventory/movement", RefreshCw),
   ],
   customers: [
-    item("Customer overview", "/customers", Users),
-    item("Customer alerts", "/customers#alerts", TriangleAlert),
-    item("Loyalty", "/customers#loyalty", HeartHandshake),
-    item("Live activity", "/customers#live", Radio),
+    item("Customer overview", "/customers/overview", Users),
+    item("Customer alerts", "/customers/alerts", TriangleAlert),
+    item("Loyalty", "/customers/loyalty", HeartHandshake),
+    item("Live activity", "/customers/live", Radio),
   ],
   marketing: [
-    item("Marketing overview", "/marketing", Megaphone),
-    item("Campaign alerts", "/marketing#alerts", TriangleAlert),
-    item("Partners", "/marketing#partners", Handshake),
-    item("Live campaigns", "/marketing#live", Radio),
+    item("Marketing overview", "/marketing/overview", Megaphone),
+    item("Campaign alerts", "/marketing/alerts", TriangleAlert),
+    item("Partners", "/marketing/partners", Handshake),
+    item("Live campaigns", "/marketing/live", Radio),
   ],
   finance: [
-    item("Finance overview", "/finance", WalletCards),
-    item("Payment alerts", "/finance#alerts", TriangleAlert),
-    item("Settlements", "/finance#settlements", HandCoins),
-    item("Live payments", "/finance#live", Radio),
+    item("Finance overview", "/finance/overview", WalletCards),
+    item("Payment alerts", "/finance/alerts", TriangleAlert),
+    item("Settlements", "/finance/settlements", HandCoins),
+    item("Live payments", "/finance/live", Radio),
   ],
   reports: [
-    item("Reports overview", "/reports", BarChart3),
-    item("Report alerts", "/reports#alerts", TriangleAlert),
-    item("Shared reports", "/reports#shared", Handshake),
-    item("Live metrics", "/reports#live", Radio),
+    item("Reports overview", "/reports/overview", BarChart3),
+    item("Report alerts", "/reports/alerts", TriangleAlert),
+    item("Shared reports", "/reports/shared", Handshake),
+    item("Live metrics", "/reports/live", Radio),
   ],
   staff: [
-    item("Team overview", "/staff", Users),
-    item("Staff alerts", "/staff#alerts", TriangleAlert),
-    item("Partners", "/staff#partners", Handshake),
-    item("Live activity", "/staff#live", Radio),
+    item("Team overview", "/staff/overview", Users),
+    item("Staff alerts", "/staff/alerts", TriangleAlert),
+    item("Partners", "/staff/partners", Handshake),
+    item("Live activity", "/staff/live", Radio),
   ],
   settings: [
-    item("Settings overview", "/settings", Settings2),
-    item("Setup alerts", "/settings#alerts", TriangleAlert),
-    item("Connected services", "/settings#connected", Handshake),
-    item("System status", "/settings#status", Radio),
+    item("Settings overview", "/settings/profile", Settings2),
+    item("Setup alerts", "/settings/staff", TriangleAlert),
+    item("Connected services", "/settings/subscription", Handshake),
+    item("System status", "/settings/advanced", Radio),
   ],
   help: [
-    item("Help overview", "/help", CircleHelp),
-    item("Important alerts", "/help#alerts", TriangleAlert),
-    item("Support partners", "/help#partners", Handshake),
-    item("System status", "/help#status", Radio),
+    item("Help overview", "/help/learn", CircleHelp),
+    item("Important alerts", "/help/alerts", TriangleAlert),
+    item("Support partners", "/help/partners", Handshake),
+    item("System status", "/help/status", Radio),
   ],
 };
 
@@ -148,33 +148,33 @@ const sidebarGroups: Record<string, SidebarGroup[]> = {
     {
       label: "Analytics",
       items: [
-        item("Revenue", "/dashboard#revenue", BarChart3),
-        item("Expenses and bills", "/dashboard#expenses", Receipt),
-        item("Online vs offline", "/dashboard#online-offline", CreditCard),
-        item("Orders and sales", "/dashboard#orders-sales", ReceiptText),
-        item("Profit summary", "/dashboard#profit", WalletCards),
+        item("Revenue", "/dashboard/analytics/revenue", BarChart3),
+        item("Expenses and bills", "/dashboard/analytics/expenses", Receipt),
+        item("Online vs offline", "/dashboard/analytics/online-offline", CreditCard),
+        item("Orders and sales", "/dashboard/analytics/orders-sales", ReceiptText),
+        item("Profit summary", "/dashboard/analytics/profit", WalletCards),
       ],
     },
     {
       label: "Needs attention",
       items: [
-        item("Alerts", "/dashboard#alerts", TriangleAlert),
-        item("Pending tasks", "/dashboard#tasks", CheckSquare),
-        item("Low stock", "/dashboard#low-stock", PackageCheck),
+        item("Alerts", "/dashboard/alerts", TriangleAlert),
+        item("Pending tasks", "/dashboard/alerts/tasks", CheckSquare),
+        item("Low stock", "/dashboard/alerts/low-stock", PackageCheck),
       ],
     },
     {
       label: "Partners",
       items: [
-        item("Partner performance", "/dashboard#partners", Handshake),
-        item("Connected channels", "/dashboard#channels", ShoppingBag),
+        item("Partner performance", "/dashboard/partners/performance", Handshake),
+        item("Connected channels", "/dashboard/partners/channels", ShoppingBag),
       ],
     },
     {
       label: "Live",
       items: [
-        item("Live activity", "/dashboard#live", Radio),
-        item("Recent activity", "/dashboard#activity", Activity),
+        item("Live activity", "/dashboard/live/activity", Radio),
+        item("Recent activity", "/dashboard/live/recent", Activity),
       ],
     },
   ],
@@ -182,106 +182,106 @@ const sidebarGroups: Record<string, SidebarGroup[]> = {
     {
       label: "Today",
       items: [
-        item("All orders", "/orders", ShoppingBag),
-        item("New orders", "/orders#new", Zap),
+        item("All orders", "/orders/overview", ShoppingBag),
+        item("New orders", "/orders/overview/new", Zap),
       ],
     },
     {
       label: "Order status",
       items: [
-        item("Preparing", "/orders#preparing", Clock3),
-        item("Ready for pickup", "/orders#ready", PackageCheck),
-        item("Completed", "/orders#completed", CheckSquare),
-        item("Cancelled", "/orders#cancelled", XCircle),
+        item("Preparing", "/orders/alerts/preparing", Clock3),
+        item("Ready for pickup", "/orders/alerts/ready", PackageCheck),
+        item("Completed", "/orders/alerts/completed", CheckSquare),
+        item("Cancelled", "/orders/alerts/cancelled", XCircle),
       ],
     },
     {
       label: "Order type",
       items: [
-        item("Dine-in", "/orders#dine-in", Store),
-        item("Takeaway", "/orders#takeaway", ShoppingBag),
-        item("Delivery", "/orders#delivery", Truck),
+        item("Dine-in", "/orders/alerts/dine-in", Store),
+        item("Takeaway", "/orders/alerts/takeaway", ShoppingBag),
+        item("Delivery", "/orders/alerts/delivery", Truck),
       ],
     },
     {
       label: "Channels",
-      items: [item("Order sources", "/orders#sources", SlidersHorizontal)],
+      items: [item("Order sources", "/orders/alerts/sources", SlidersHorizontal)],
     },
   ],
   menu: [
     {
       label: "Menu",
       items: [
-        item("Menu overview", "/menu", LayoutDashboard),
-        item("Food items", "/menu#items", Salad),
-        item("Categories", "/menu#categories", Tags),
+        item("Menu overview", "/menu/overview", LayoutDashboard),
+        item("Food items", "/menu/items", Salad),
+        item("Categories", "/menu/items/categories", Tags),
       ],
     },
     {
       label: "Build your menu",
       items: [
-        item("Add-ons", "/menu#add-ons", PlusCircle),
-        item("Combos", "/menu#combos", Boxes),
-        item("Availability", "/menu#availability", CheckSquare),
+        item("Add-ons", "/menu/availability/add-ons", PlusCircle),
+        item("Combos", "/menu/availability/combos", Boxes),
+        item("Availability", "/menu/availability", CheckSquare),
       ],
     },
     {
       label: "Customer access",
-      items: [item("Digital menu", "/menu#digital", PanelTop)],
+      items: [item("Digital menu", "/menu/live/digital", PanelTop)],
     },
     {
       label: "Configure",
-      items: [item("Menu settings", "/menu#settings", Settings2)],
+      items: [item("Menu settings", "/menu/live/settings", Settings2)],
     },
   ],
   inventory: [
     {
       label: "Today",
       items: [
-        item("Inventory overview", "/inventory", LayoutDashboard),
-        item("Low stock", "/inventory#low-stock", Bell),
+        item("Inventory overview", "/inventory/overview", LayoutDashboard),
+        item("Low stock", "/inventory/alerts/low-stock", Bell),
       ],
     },
     {
       label: "Stock control",
       items: [
-        item("Ingredients", "/inventory#ingredients", Salad),
-        item("Stock levels", "/inventory#stock", Boxes),
-        item("Stock movement", "/inventory#movement", RefreshCw),
-        item("Wastage", "/inventory#wastage", XCircle),
+        item("Ingredients", "/inventory/stock/ingredients", Salad),
+        item("Stock levels", "/inventory/stock/stock", Boxes),
+        item("Stock movement", "/inventory/stock/movement", RefreshCw),
+        item("Wastage", "/inventory/stock/wastage", XCircle),
       ],
     },
     {
       label: "Procure",
       items: [
-        item("Purchases", "/inventory#purchases", ShoppingCart),
-        item("Suppliers", "/inventory#suppliers", Truck),
+        item("Purchases", "/inventory/procure/purchases", ShoppingCart),
+        item("Suppliers", "/inventory/procure/suppliers", Truck),
       ],
     },
     {
       label: "Make",
-      items: [item("Recipes", "/inventory#recipes", BookOpen)],
+      items: [item("Recipes", "/inventory/make/recipes", BookOpen)],
     },
     {
       label: "Configure",
-      items: [item("Inventory settings", "/inventory#settings", Settings2)],
+      items: [item("Inventory settings", "/inventory/configure/settings", Settings2)],
     },
   ],
   customers: [
     {
       label: "Customers",
       items: [
-        item("All customers", "/customers", Users),
-        item("New customers", "/customers#new", UserPlus),
-        item("Regular customers", "/customers#regular", UserCheck),
+        item("All customers", "/customers/overview", Users),
+        item("New customers", "/customers/overview/new", UserPlus),
+        item("Regular customers", "/customers/overview/regular", UserCheck),
       ],
     },
     {
       label: "Relationships",
       items: [
-        item("Feedback", "/customers#feedback", MessageSquare),
-        item("Loyalty", "/customers#loyalty", HeartHandshake),
-        item("Customer groups", "/customers#groups", Users),
+        item("Feedback", "/customers/relationships/feedback", MessageSquare),
+        item("Loyalty", "/customers/relationships/loyalty", HeartHandshake),
+        item("Customer groups", "/customers/relationships/groups", Users),
       ],
     },
   ],
@@ -289,17 +289,17 @@ const sidebarGroups: Record<string, SidebarGroup[]> = {
     {
       label: "Marketing",
       items: [
-        item("Marketing overview", "/marketing", LayoutDashboard),
-        item("Campaigns", "/marketing#campaigns", Megaphone),
-        item("Customer messages", "/marketing#messages", MessageSquare),
+        item("Marketing overview", "/marketing/overview", LayoutDashboard),
+        item("Campaigns", "/marketing/marketing/campaigns", Megaphone),
+        item("Customer messages", "/marketing/marketing/messages", MessageSquare),
       ],
     },
     {
       label: "Offers and rewards",
       items: [
-        item("Offers", "/marketing#offers", TicketPercent),
-        item("Discounts", "/marketing#discounts", BadgePercent),
-        item("Loyalty rewards", "/marketing#loyalty", HeartHandshake),
+        item("Offers", "/marketing/offers/offers", TicketPercent),
+        item("Discounts", "/marketing/offers/discounts", BadgePercent),
+        item("Loyalty rewards", "/marketing/offers/loyalty", HeartHandshake),
       ],
     },
   ],
@@ -307,23 +307,23 @@ const sidebarGroups: Record<string, SidebarGroup[]> = {
     {
       label: "Finance",
       items: [
-        item("Finance overview", "/finance", LayoutDashboard),
-        item("Sales", "/finance#sales", BarChart3),
-        item("Expenses", "/finance#expenses", Receipt),
+        item("Finance overview", "/finance/overview", LayoutDashboard),
+        item("Sales", "/finance/finance/sales", BarChart3),
+        item("Expenses", "/finance/finance/expenses", Receipt),
       ],
     },
     {
       label: "Money received",
       items: [
-        item("Payments", "/finance#payments", CreditCard),
-        item("Settlements", "/finance#settlements", HandCoins),
+        item("Payments", "/finance/money/payments", CreditCard),
+        item("Settlements", "/finance/money/settlements", HandCoins),
       ],
     },
     {
       label: "Records",
       items: [
-        item("Invoices", "/finance#invoices", FileText),
-        item("Taxes", "/finance#taxes", Percent),
+        item("Invoices", "/finance/records/invoices", FileText),
+        item("Taxes", "/finance/records/taxes", Percent),
       ],
     },
   ],
@@ -331,18 +331,18 @@ const sidebarGroups: Record<string, SidebarGroup[]> = {
     {
       label: "Reports",
       items: [
-        item("Reports overview", "/reports", LayoutDashboard),
-        item("Sales reports", "/reports#sales", BarChart3),
-        item("Order reports", "/reports#orders", ReceiptText),
+        item("Reports overview", "/reports/overview", LayoutDashboard),
+        item("Sales reports", "/reports/reports/sales", BarChart3),
+        item("Order reports", "/reports/reports/orders", ReceiptText),
       ],
     },
     {
       label: "Business performance",
       items: [
-        item("Menu performance", "/reports#menu", Salad),
-        item("Inventory reports", "/reports#inventory", Boxes),
-        item("Customer reports", "/reports#customers", Users),
-        item("Profit summary", "/reports#profit", WalletCards),
+        item("Menu performance", "/reports/performance/menu", Salad),
+        item("Inventory reports", "/reports/performance/inventory", Boxes),
+        item("Customer reports", "/reports/performance/customers", Users),
+        item("Profit summary", "/reports/performance/profit", WalletCards),
       ],
     },
   ],
@@ -350,17 +350,17 @@ const sidebarGroups: Record<string, SidebarGroup[]> = {
     {
       label: "Team",
       items: [
-        item("Staff overview", "/staff", LayoutDashboard),
-        item("Team members", "/staff#members", Users),
-        item("Roles and permissions", "/staff#roles", ShieldCheck),
+        item("Staff overview", "/staff/overview", LayoutDashboard),
+        item("Team members", "/staff/team/members", Users),
+        item("Roles and permissions", "/staff/team/roles", ShieldCheck),
       ],
     },
     {
       label: "People operations",
       items: [
-        item("Attendance", "/staff#attendance", CalendarDays),
-        item("Schedules", "/staff#schedules", Clock3),
-        item("Activity log", "/staff#activity", History),
+        item("Attendance", "/staff/operations/attendance", CalendarDays),
+        item("Schedules", "/staff/operations/schedules", Clock3),
+        item("Activity log", "/staff/operations/activity", History),
       ],
     },
   ],
@@ -368,31 +368,31 @@ const sidebarGroups: Record<string, SidebarGroup[]> = {
     {
       label: "Business",
       items: [
-        item("Business profile", "/settings", Building2),
-        item("Locations", "/settings#locations", Store),
-        item("Order channels", "/settings#channels", ShoppingBag),
+        item("Business profile", "/settings/profile", Building2),
+        item("Locations", "/settings/locations", Store),
+        item("Order channels", "/settings/channels", ShoppingBag),
       ],
     },
     {
       label: "Operations",
       items: [
-        item("Staff and roles", "/settings#staff", Users),
-        item("Payment settings", "/settings#payments", CreditCard),
-        item("Notifications", "/settings#notifications", Bell),
+        item("Staff and roles", "/settings/staff", Users),
+        item("Payment settings", "/settings/payments", CreditCard),
+        item("Notifications", "/settings/notifications", Bell),
       ],
     },
     {
       label: "Account",
       items: [
-        item("Subscription", "/settings#subscription", WalletCards),
-        item("Security", "/settings#security", ShieldCheck),
+        item("Subscription", "/settings/subscription", WalletCards),
+        item("Security", "/settings/security", ShieldCheck),
       ],
     },
     {
       label: "Customize",
       items: [
-        item("Appearance", "/settings#appearance", Palette),
-        item("Advanced settings", "/settings#advanced", SlidersHorizontal),
+        item("Appearance", "/settings/appearance", Palette),
+        item("Advanced settings", "/settings/advanced", SlidersHorizontal),
       ],
     },
   ],
@@ -400,14 +400,14 @@ const sidebarGroups: Record<string, SidebarGroup[]> = {
     {
       label: "Learn",
       items: [
-        item("Help center", "/help", CircleHelp),
-        item("Getting started", "/help#getting-started", BookOpen),
-        item("Release notes", "/help#updates", History),
+        item("Help center", "/help/learn", CircleHelp),
+        item("Getting started", "/help/learn/getting-started", BookOpen),
+        item("Release notes", "/help/learn/updates", History),
       ],
     },
     {
       label: "Support",
-      items: [item("Contact support", "/help#support", MessageSquare)],
+      items: [item("Contact support", "/help/support", MessageSquare)],
     },
   ],
 };
@@ -419,6 +419,20 @@ const overviewGroupsByRail: Record<string, SidebarGroup[]> = {
   live: [sidebarGroups.overview[3]],
 };
 
+const routeSections = new Set([
+  "overview",
+  "orders",
+  "menu",
+  "inventory",
+  "customers",
+  "marketing",
+  "finance",
+  "reports",
+  "staff",
+  "settings",
+  "help",
+]);
+
 type PageSidebarProps = {
   section: keyof typeof sidebarGroups;
   title: string;
@@ -428,44 +442,121 @@ function getHash(href: string) {
   return href.split("#")[1] ?? "";
 }
 
+function getDefaultSubsectionHash(
+  section: keyof typeof sidebarGroups,
+  railItems: SidebarItem[],
+  railHash: string,
+  defaultRail: string,
+) {
+  const railIndex = railItems.findIndex(
+    (railItem) => getHash(railItem.href) === railHash,
+  );
+  const items =
+    section === "overview"
+      ? (overviewGroupsByRail[railHash] ?? overviewGroupsByRail[defaultRail])[0]
+          ?.items
+      : sidebarGroups[section]
+          .flatMap((group) => group.items)
+          .slice(Math.max(0, railIndex) * 3, Math.max(0, railIndex) * 3 + 3);
+
+  return getHash(items?.[0]?.href ?? "");
+}
+
 function isActive(pathname: string, hash: string, href: string) {
   const [path, itemHash] = href.split("#");
   return path === pathname && (itemHash ? itemHash === hash : !hash);
 }
 
+function isRouteActive(pathname: string, href: string) {
+  const path = href.split("#")[0];
+  return pathname === path || pathname.startsWith(`${path}/`);
+}
+
+function isRouteItemActive(pathname: string, href: string) {
+  return pathname === href.split("#")[0];
+}
+
 export function PageSidebar({ section, title }: PageSidebarProps) {
   const pathname = usePathname();
   const railItems = railItemsBySection[section];
+  const isRouteSection = routeSections.has(section);
+  const defaultRail = isRouteSection
+    ? railItems[0].href
+    : getHash(railItems[0].href);
   const [currentHash, setCurrentHash] = useState("");
-  const [selectedRail, setSelectedRail] = useState(getHash(railItems[0].href));
+  const [selectedRail, setSelectedRail] = useState(
+    isRouteSection
+      ? railItems.find((railItem) => isRouteActive(pathname, railItem.href))
+          ?.href ?? defaultRail
+      : defaultRail,
+  );
+  const activeRail = isRouteSection
+    ? railItems.find((railItem) => isRouteActive(pathname, railItem.href))
+        ?.href ?? defaultRail
+    : selectedRail;
   const [isContextOpen, setIsContextOpen] = useState(true);
 
   useEffect(() => {
+    if (isRouteSection) {
+      return;
+    }
+
     const syncHash = () => {
       const hash = window.location.hash.slice(1);
-      setCurrentHash(hash);
-      if (railItems.some((railItem) => getHash(railItem.href) === hash)) {
-        setSelectedRail(hash);
-      }
+      const railHash = railItems.some(
+        (railItem) => getHash(railItem.href) === hash,
+      )
+        ? hash
+        : defaultRail;
+
+      setSelectedRail(railHash);
+      setCurrentHash(
+        railHash === hash
+          ? getDefaultSubsectionHash(section, railItems, railHash, defaultRail)
+          : hash,
+      );
     };
 
     syncHash();
     window.addEventListener("hashchange", syncHash);
-    return () => window.removeEventListener("hashchange", syncHash);
-  }, [railItems]);
+    window.addEventListener("popstate", syncHash);
+    return () => {
+      window.removeEventListener("hashchange", syncHash);
+      window.removeEventListener("popstate", syncHash);
+    };
+  }, [defaultRail, isRouteSection, pathname, railItems, section]);
 
   const groups =
     section === "overview"
-      ? overviewGroupsByRail[selectedRail] ?? overviewGroupsByRail.analytics
+      ? overviewGroupsByRail[activeRail.split("/").pop() ?? "analytics"] ??
+        overviewGroupsByRail.analytics
       : [
           {
             label:
-              railItems.find((railItem) => getHash(railItem.href) === selectedRail)
+              railItems.find((railItem) =>
+                isRouteSection
+                  ? railItem.href === activeRail
+                  : getHash(railItem.href) === selectedRail,
+              )
                 ?.label ?? title,
             items:
               sidebarGroups[section].flatMap((group) => group.items).slice(
-                Math.max(0, railItems.findIndex((railItem) => getHash(railItem.href) === selectedRail)) * 3,
-                Math.max(0, railItems.findIndex((railItem) => getHash(railItem.href) === selectedRail)) * 3 + 3,
+                Math.max(
+                  0,
+                  railItems.findIndex((railItem) =>
+                    isRouteSection
+                      ? railItem.href === activeRail
+                      : getHash(railItem.href) === selectedRail,
+                  ),
+                ) * 3,
+                Math.max(
+                  0,
+                  railItems.findIndex((railItem) =>
+                    isRouteSection
+                      ? railItem.href === activeRail
+                      : getHash(railItem.href) === selectedRail,
+                  ),
+                ) * 3 + 3,
               ),
           },
         ];
@@ -495,13 +586,30 @@ export function PageSidebar({ section, title }: PageSidebarProps) {
           </button>
           <span aria-hidden="true" className="mb-2 h-px w-10 bg-slate-200" />
           {railItems.map(({ label, href, icon: Icon }) => {
-            const active = selectedRail === getHash(href);
+            const active = isRouteSection
+              ? activeRail === href
+              : selectedRail === getHash(href);
 
             return (
               <Link
                 key={label}
                 href={href}
-                onClick={() => setSelectedRail(getHash(href))}
+                onClick={
+                  isRouteSection
+                    ? undefined
+                    : () => {
+                        const hash = getHash(href);
+                        setSelectedRail(hash);
+                        setCurrentHash(
+                          getDefaultSubsectionHash(
+                            section,
+                            railItems,
+                            hash,
+                            defaultRail,
+                          ),
+                        );
+                      }
+                }
                 aria-label={label}
                 aria-current={active ? "page" : undefined}
                 className={`group relative flex h-9 w-9 items-center justify-center rounded-md border-r-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 ${
@@ -548,12 +656,19 @@ export function PageSidebar({ section, title }: PageSidebarProps) {
               </p>
               <div className="mt-1.5 space-y-0.5">
                 {group.items.map(({ label, href, icon: Icon }) => {
-                  const active = isActive(pathname, currentHash, href);
+                  const active = isRouteSection
+                    ? isRouteItemActive(pathname, href)
+                    : isActive(pathname, currentHash, href);
 
                   return (
                     <Link
                       key={label}
                       href={href}
+                      onClick={
+                        isRouteSection
+                          ? undefined
+                          : () => setCurrentHash(getHash(href))
+                      }
                       className={`flex items-center gap-2.5 rounded-md border-l-2 px-2.5 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 ${
                         active
                           ? "border-slate-800 bg-slate-100 font-medium text-slate-950"

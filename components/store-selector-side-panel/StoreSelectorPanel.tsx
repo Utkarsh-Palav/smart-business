@@ -1,6 +1,5 @@
-import { BellRing, CircleUser, MessageSquareMore } from "lucide-react";
+import { BellRing, MessageSquareMore } from "lucide-react";
 import Image from "next/image";
-import React from "react";
 
 const StoreSelectorPanel = () => {
   return (
