@@ -5,6 +5,12 @@ CREATE TYPE "UserStatus" AS ENUM ('ACTIVE', 'SUSPENDED', 'ARCHIVED');
 CREATE TYPE "BusinessStatus" AS ENUM ('ACTIVE', 'SUSPENDED', 'ARCHIVED');
 
 -- CreateEnum
+CREATE TYPE "BusinessType" AS ENUM ('CAFE', 'RESTAURANT', 'QSR', 'CLOUD_KITCHEN', 'BAKERY', 'FOOD_TRUCK', 'OTHER');
+
+-- CreateEnum
+CREATE TYPE "LocationOperatingMode" AS ENUM ('DINE_IN', 'TAKEAWAY', 'DELIVERY_ONLY', 'HYBRID', 'OTHER');
+
+-- CreateEnum
 CREATE TYPE "TenantDatabaseProvider" AS ENUM ('NEON');
 
 -- CreateEnum
@@ -17,7 +23,25 @@ CREATE TYPE "MembershipStatus" AS ENUM ('ACTIVE', 'INVITED', 'SUSPENDED', 'REMOV
 CREATE TYPE "SubscriptionStatus" AS ENUM ('TRIAL', 'ACTIVE', 'PAST_DUE', 'PAUSED', 'CANCELED', 'EXPIRED');
 
 -- CreateEnum
+CREATE TYPE "OnboardingPaymentStatus" AS ENUM ('CREATED', 'AUTHORIZED', 'CAPTURED', 'FAILED', 'CANCELED', 'EXPIRED');
+
+-- CreateEnum
+CREATE TYPE "WebhookEventStatus" AS ENUM ('RECEIVED', 'PROCESSED', 'IGNORED', 'FAILED');
+
+-- CreateEnum
 CREATE TYPE "SubscriptionEventType" AS ENUM ('CREATED', 'ACTIVATED', 'RENEWED', 'PLAN_CHANGED', 'PAYMENT_FAILED', 'PAUSED', 'RESUMED', 'CANCEL_REQUESTED', 'CANCELED', 'EXPIRED');
+
+-- CreateEnum
+CREATE TYPE "BusinessOnboardingStatus" AS ENUM ('DRAFT', 'PENDING_PAYMENT', 'PAYMENT_FAILED', 'PAID', 'PROVISIONING', 'PROVISIONING_FAILED', 'COMPLETED', 'EXPIRED');
+
+-- CreateEnum
+CREATE TYPE "PlanPriceInterval" AS ENUM ('MONTH', 'YEAR');
+
+-- CreateEnum
+CREATE TYPE "PlanPriceUnit" AS ENUM ('BUSINESS', 'LOCATION');
+
+-- CreateEnum
+CREATE TYPE "PlanPriceType" AS ENUM ('FIXED', 'STARTING_AT');
 
 -- CreateEnum
 CREATE TYPE "ReviewCardStatus" AS ENUM ('AVAILABLE', 'RESERVED', 'ASSIGNED', 'INACTIVE', 'RETIRED');
@@ -42,6 +66,12 @@ CREATE TYPE "RefundStatus" AS ENUM ('PENDING', 'PROCESSED', 'FAILED', 'CANCELED'
 
 -- CreateEnum
 CREATE TYPE "InvoiceStatus" AS ENUM ('DRAFT', 'ISSUED', 'PAID', 'VOID', 'CANCELED');
+
+-- CreateEnum
+CREATE TYPE "PublicRouteStatus" AS ENUM ('ACTIVE', 'INACTIVE', 'RETIRED');
+
+-- CreateEnum
+CREATE TYPE "OtpChannel" AS ENUM ('EMAIL', 'PHONE');
 
 -- CreateTable
 CREATE TABLE "Role" (
@@ -83,11 +113,101 @@ CREATE TABLE "Business" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
+    "legalName" TEXT,
+    "businessType" "BusinessType" NOT NULL DEFAULT 'OTHER',
+    "gstin" TEXT,
     "status" "BusinessStatus" NOT NULL DEFAULT 'ACTIVE',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Business_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BusinessOnboardingDraft" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "businessId" TEXT,
+    "businessName" TEXT NOT NULL,
+    "businessSlug" TEXT NOT NULL,
+    "businessType" "BusinessType" NOT NULL,
+    "legalName" TEXT,
+    "gstin" TEXT,
+    "firstLocationName" TEXT NOT NULL,
+    "firstLocationSlug" TEXT NOT NULL,
+    "operatingMode" "LocationOperatingMode" NOT NULL,
+    "addressLine1" TEXT NOT NULL,
+    "addressLine2" TEXT,
+    "city" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
+    "postalCode" TEXT NOT NULL,
+    "country" TEXT NOT NULL DEFAULT 'IN',
+    "phone" TEXT,
+    "planPriceId" TEXT,
+    "quotedAmountMinor" INTEGER,
+    "quotedCurrency" TEXT,
+    "quotedInterval" "PlanPriceInterval",
+    "quotedIntervalCount" INTEGER,
+    "quotedUnit" "PlanPriceUnit",
+    "quotedPriceType" "PlanPriceType",
+    "quotedAt" TIMESTAMP(3),
+    "status" "BusinessOnboardingStatus" NOT NULL DEFAULT 'DRAFT',
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "BusinessOnboardingDraft_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BusinessOnboardingPaymentAttempt" (
+    "id" TEXT NOT NULL,
+    "draftId" TEXT NOT NULL,
+    "provider" TEXT NOT NULL DEFAULT 'RAZORPAY',
+    "orderId" TEXT NOT NULL,
+    "paymentId" TEXT,
+    "amountMinor" INTEGER NOT NULL,
+    "currency" TEXT NOT NULL,
+    "status" "OnboardingPaymentStatus" NOT NULL DEFAULT 'CREATED',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "BusinessOnboardingPaymentAttempt_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RazorpayWebhookEvent" (
+    "id" TEXT NOT NULL,
+    "eventId" TEXT NOT NULL,
+    "eventType" TEXT NOT NULL,
+    "payload" JSONB NOT NULL,
+    "status" "WebhookEventStatus" NOT NULL DEFAULT 'RECEIVED',
+    "error" TEXT,
+    "processedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "RazorpayWebhookEvent_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BusinessOnboardingProfile" (
+    "id" TEXT NOT NULL,
+    "businessId" TEXT NOT NULL,
+    "firstLocationName" TEXT NOT NULL,
+    "firstLocationSlug" TEXT NOT NULL,
+    "operatingMode" "LocationOperatingMode" NOT NULL,
+    "addressLine1" TEXT NOT NULL,
+    "addressLine2" TEXT,
+    "city" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
+    "postalCode" TEXT NOT NULL,
+    "country" TEXT NOT NULL DEFAULT 'IN',
+    "phone" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "BusinessOnboardingProfile_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -253,6 +373,23 @@ CREATE TABLE "Plan" (
 );
 
 -- CreateTable
+CREATE TABLE "PlanPrice" (
+    "id" TEXT NOT NULL,
+    "planId" TEXT NOT NULL,
+    "currency" TEXT NOT NULL DEFAULT 'INR',
+    "amountMinor" INTEGER NOT NULL,
+    "interval" "PlanPriceInterval" NOT NULL,
+    "intervalCount" INTEGER NOT NULL DEFAULT 1,
+    "unit" "PlanPriceUnit" NOT NULL DEFAULT 'BUSINESS',
+    "priceType" "PlanPriceType" NOT NULL DEFAULT 'FIXED',
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PlanPrice_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "PlanEntitlement" (
     "id" TEXT NOT NULL,
     "planId" TEXT NOT NULL,
@@ -292,17 +429,37 @@ CREATE TABLE "SubscriptionEvent" (
 );
 
 -- CreateTable
+CREATE TABLE "TableRoute" (
+    "id" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "businessId" TEXT NOT NULL,
+    "tenantKey" TEXT NOT NULL,
+    "tableId" TEXT NOT NULL,
+    "status" "PublicRouteStatus" NOT NULL DEFAULT 'ACTIVE',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TableRoute_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "TenantDatabase" (
     "id" TEXT NOT NULL,
     "businessId" TEXT NOT NULL,
+    "tenantKey" TEXT NOT NULL,
     "provider" "TenantDatabaseProvider" NOT NULL DEFAULT 'NEON',
+    "neonProjectId" TEXT,
+    "neonBranchId" TEXT,
     "databaseName" TEXT NOT NULL,
-    "databaseHost" TEXT NOT NULL,
+    "databaseHost" TEXT,
     "connectionSecretRef" TEXT,
     "status" "TenantDatabaseStatus" NOT NULL DEFAULT 'PROVISIONING',
     "schemaVersion" TEXT,
     "provisionedAt" TIMESTAMP(3),
     "lastMigrationAt" TIMESTAMP(3),
+    "lastProvisioningError" TEXT,
+    "provisioningLeaseId" TEXT,
+    "provisioningLeaseExpiresAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -322,6 +479,39 @@ CREATE TABLE "User" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "OtpChallenge" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT,
+    "channel" "OtpChannel" NOT NULL,
+    "identifier" TEXT NOT NULL,
+    "codeHash" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "verifiedAt" TIMESTAMP(3),
+    "attempts" INTEGER NOT NULL DEFAULT 0,
+    "maxAttempts" INTEGER NOT NULL DEFAULT 5,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "OtpChallenge_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "AuthSession" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "refreshTokenHash" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUsedAt" TIMESTAMP(3),
+    "revokedAt" TIMESTAMP(3),
+    "revokedReason" TEXT,
+    "userAgent" TEXT,
+    "ipAddress" TEXT,
+
+    CONSTRAINT "AuthSession_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -344,6 +534,33 @@ CREATE UNIQUE INDEX "Business_slug_key" ON "Business"("slug");
 
 -- CreateIndex
 CREATE INDEX "Business_status_idx" ON "Business"("status");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "BusinessOnboardingDraft_businessId_key" ON "BusinessOnboardingDraft"("businessId");
+
+-- CreateIndex
+CREATE INDEX "BusinessOnboardingDraft_userId_status_idx" ON "BusinessOnboardingDraft"("userId", "status");
+
+-- CreateIndex
+CREATE INDEX "BusinessOnboardingDraft_status_expiresAt_idx" ON "BusinessOnboardingDraft"("status", "expiresAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "BusinessOnboardingPaymentAttempt_orderId_key" ON "BusinessOnboardingPaymentAttempt"("orderId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "BusinessOnboardingPaymentAttempt_paymentId_key" ON "BusinessOnboardingPaymentAttempt"("paymentId");
+
+-- CreateIndex
+CREATE INDEX "BusinessOnboardingPaymentAttempt_draftId_status_idx" ON "BusinessOnboardingPaymentAttempt"("draftId", "status");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RazorpayWebhookEvent_eventId_key" ON "RazorpayWebhookEvent"("eventId");
+
+-- CreateIndex
+CREATE INDEX "RazorpayWebhookEvent_eventType_status_idx" ON "RazorpayWebhookEvent"("eventType", "status");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "BusinessOnboardingProfile_businessId_key" ON "BusinessOnboardingProfile"("businessId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "CatalogProduct_slug_key" ON "CatalogProduct"("slug");
@@ -451,6 +668,12 @@ CREATE INDEX "ReviewCardAssignment_status_idx" ON "ReviewCardAssignment"("status
 CREATE UNIQUE INDEX "Plan_slug_key" ON "Plan"("slug");
 
 -- CreateIndex
+CREATE INDEX "PlanPrice_planId_isActive_idx" ON "PlanPrice"("planId", "isActive");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PlanPrice_planId_currency_interval_intervalCount_unit_price_key" ON "PlanPrice"("planId", "currency", "interval", "intervalCount", "unit", "priceType");
+
+-- CreateIndex
 CREATE INDEX "PlanEntitlement_key_idx" ON "PlanEntitlement"("key");
 
 -- CreateIndex
@@ -475,10 +698,34 @@ CREATE INDEX "SubscriptionEvent_type_idx" ON "SubscriptionEvent"("type");
 CREATE INDEX "SubscriptionEvent_createdAt_idx" ON "SubscriptionEvent"("createdAt");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "TableRoute_token_key" ON "TableRoute"("token");
+
+-- CreateIndex
+CREATE INDEX "TableRoute_businessId_idx" ON "TableRoute"("businessId");
+
+-- CreateIndex
+CREATE INDEX "TableRoute_tenantKey_idx" ON "TableRoute"("tenantKey");
+
+-- CreateIndex
+CREATE INDEX "TableRoute_tableId_idx" ON "TableRoute"("tableId");
+
+-- CreateIndex
+CREATE INDEX "TableRoute_status_idx" ON "TableRoute"("status");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "TableRoute_tenantKey_tableId_key" ON "TableRoute"("tenantKey", "tableId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "TenantDatabase_businessId_key" ON "TenantDatabase"("businessId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "TenantDatabase_tenantKey_key" ON "TenantDatabase"("tenantKey");
+
+-- CreateIndex
 CREATE INDEX "TenantDatabase_status_idx" ON "TenantDatabase"("status");
+
+-- CreateIndex
+CREATE INDEX "TenantDatabase_status_provisioningLeaseExpiresAt_idx" ON "TenantDatabase"("status", "provisioningLeaseExpiresAt");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
@@ -489,11 +736,47 @@ CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
 -- CreateIndex
 CREATE INDEX "User_status_idx" ON "User"("status");
 
+-- CreateIndex
+CREATE INDEX "OtpChallenge_identifier_channel_createdAt_idx" ON "OtpChallenge"("identifier", "channel", "createdAt");
+
+-- CreateIndex
+CREATE INDEX "OtpChallenge_userId_idx" ON "OtpChallenge"("userId");
+
+-- CreateIndex
+CREATE INDEX "OtpChallenge_expiresAt_idx" ON "OtpChallenge"("expiresAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "AuthSession_refreshTokenHash_key" ON "AuthSession"("refreshTokenHash");
+
+-- CreateIndex
+CREATE INDEX "AuthSession_userId_idx" ON "AuthSession"("userId");
+
+-- CreateIndex
+CREATE INDEX "AuthSession_expiresAt_idx" ON "AuthSession"("expiresAt");
+
+-- CreateIndex
+CREATE INDEX "AuthSession_revokedAt_idx" ON "AuthSession"("revokedAt");
+
 -- AddForeignKey
 ALTER TABLE "RolePermission" ADD CONSTRAINT "RolePermission_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RolePermission" ADD CONSTRAINT "RolePermission_permissionId_fkey" FOREIGN KEY ("permissionId") REFERENCES "Permission"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BusinessOnboardingDraft" ADD CONSTRAINT "BusinessOnboardingDraft_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BusinessOnboardingDraft" ADD CONSTRAINT "BusinessOnboardingDraft_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "Business"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BusinessOnboardingDraft" ADD CONSTRAINT "BusinessOnboardingDraft_planPriceId_fkey" FOREIGN KEY ("planPriceId") REFERENCES "PlanPrice"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BusinessOnboardingPaymentAttempt" ADD CONSTRAINT "BusinessOnboardingPaymentAttempt_draftId_fkey" FOREIGN KEY ("draftId") REFERENCES "BusinessOnboardingDraft"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BusinessOnboardingProfile" ADD CONSTRAINT "BusinessOnboardingProfile_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "Business"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ProductPrice" ADD CONSTRAINT "ProductPrice_productId_fkey" FOREIGN KEY ("productId") REFERENCES "CatalogProduct"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -535,6 +818,9 @@ ALTER TABLE "ReviewCardAssignment" ADD CONSTRAINT "ReviewCardAssignment_reviewCa
 ALTER TABLE "ReviewCardAssignment" ADD CONSTRAINT "ReviewCardAssignment_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "Business"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "PlanPrice" ADD CONSTRAINT "PlanPrice_planId_fkey" FOREIGN KEY ("planId") REFERENCES "Plan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "PlanEntitlement" ADD CONSTRAINT "PlanEntitlement_planId_fkey" FOREIGN KEY ("planId") REFERENCES "Plan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -547,4 +833,13 @@ ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_planId_fkey" FOREIGN KEY
 ALTER TABLE "SubscriptionEvent" ADD CONSTRAINT "SubscriptionEvent_subscriptionId_fkey" FOREIGN KEY ("subscriptionId") REFERENCES "Subscription"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "TableRoute" ADD CONSTRAINT "TableRoute_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "Business"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "TenantDatabase" ADD CONSTRAINT "TenantDatabase_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "Business"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OtpChallenge" ADD CONSTRAINT "OtpChallenge_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "AuthSession" ADD CONSTRAINT "AuthSession_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

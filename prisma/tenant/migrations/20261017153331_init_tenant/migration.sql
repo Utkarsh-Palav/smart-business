@@ -5,6 +5,9 @@ CREATE TYPE "LocationStatus" AS ENUM ('ACTIVE', 'INACTIVE', 'ARCHIVED');
 CREATE TYPE "TableStatus" AS ENUM ('ACTIVE', 'INACTIVE', 'ARCHIVED');
 
 -- CreateEnum
+CREATE TYPE "LocationOperatingMode" AS ENUM ('DINE_IN', 'TAKEAWAY', 'DELIVERY_ONLY', 'HYBRID', 'OTHER');
+
+-- CreateEnum
 CREATE TYPE "MenuStatus" AS ENUM ('DRAFT', 'PUBLISHED', 'ARCHIVED');
 
 -- CreateEnum
@@ -25,6 +28,7 @@ CREATE TABLE "Location" (
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "status" "LocationStatus" NOT NULL DEFAULT 'ACTIVE',
+    "operatingMode" "LocationOperatingMode" NOT NULL DEFAULT 'DINE_IN',
     "addressLine1" TEXT,
     "addressLine2" TEXT,
     "city" TEXT,
