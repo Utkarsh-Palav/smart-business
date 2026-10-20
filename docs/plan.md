@@ -1,54 +1,37 @@
-# Next Product Milestone: Location and Table Management
+# Product implementation status and next slices
 
-## Problem and approach
+## Implemented foundation
 
-The platform foundation, onboarding, tenant provisioning, and initial-location creation are implemented. The tenant schema already contains `Location` and `Table`, and the control database contains `TableRoute`, but there is no authenticated location/table management API or dashboard workflow. The next vertical slice should make the first outlet operational and create the routing foundation required by QR/NFC ordering.
+- Business onboarding, tenant provisioning, membership checks, and tenant database resolution.
+- Location and table management, including active public table routes.
+- Menu, category, and product management, menu publishing, and product availability.
+- Public QR table menu at `/t/[token]`.
+- Public customer table order submission with a cart, server-side validation/pricing, item snapshots, and idempotent retries.
+- Authenticated order queue with guarded order status transitions.
 
-Implement the feature from the server boundary outward:
+## QR table ordering MVP behavior
 
-1. Resolve the authenticated user's active business membership and tenant safely on every protected endpoint.
-2. Add location read/update support and table CRUD within the tenant database.
-3. Create and persist a control-plane `TableRoute` when a table is created, with deterministic ownership and public token handling.
-4. Add dashboard UI for viewing locations, managing tables, generating/copying table links, and enabling/disabling tables.
-5. Add validation, authorization, error responses, and focused tests before connecting later menu/order work.
+- Public order requests use `POST /api/public/tables/[token]/orders` and do not require a customer account.
+- The route token resolves through the control database. The business, tenant, table, location, and published menu are validated before accepting an order.
+- The server derives item names, prices, currency, and totals from the active menu and location availability. Prices follow menu override, location override, then base price.
+- Order items preserve product-name and unit-price snapshots. The MVP currently sets discounts and tax to zero because pricing configuration is not implemented.
+- An idempotency key and request hash prevent repeated submissions from creating duplicate orders or replaying the same key with changed items.
+- Staff use `GET /api/orders` and `PATCH /api/orders/[orderId]`; each request checks membership and tenant access. Allowed transitions are enforced by the service.
+- The dashboard queue is at `/orders/queue` and refreshes periodically while open.
 
-## Scope
+## Remaining work before production rollout
 
-- `GET /api/locations` for the active business, with the current first location included.
-- `POST /api/locations` for adding another location.
-- `PATCH /api/locations/[locationId]` for editable location details and active/inactive state.
-- `GET /api/locations/[locationId]/tables`.
-- `POST /api/locations/[locationId]/tables` to create a table and its public route.
-- `PATCH /api/locations/[locationId]/tables/[tableId]` for name, capacity, and status.
-- `DELETE` or archive semantics only if consistent with the existing status model; do not hard-delete tables that may later have orders.
-- Route response containing a public customer URL, never tenant credentials or internal database details.
-- Dashboard location/table management UI under the existing three-layer navigation.
-- Query hooks and cache invalidation for the existing `features/locations` pattern.
-- Focused API/service/schema tests and build/type validation.
+1. Apply the new tenant migration `20261019000000_add_order_idempotency` to every active tenant using the established tenant migration workflow.
+2. Run an end-to-end check with a real active table: add items, submit once, retry with the same key, verify one order in the queue, and move it through the service statuses.
+3. Verify inactive table links and unavailable products are rejected, and verify a staff account without business access cannot read or update orders.
+4. Add a shared distributed rate limiter for public order submission before exposing QR ordering broadly. The repository does not currently have a shared rate-limit store; process-local counters would not be reliable across instances.
+5. Decide and implement tax, discount, payment, and customer receipt behavior in later slices.
 
-## Explicitly out of scope
+## Suggested next feature slices
 
-- Customer menu rendering and cart.
-- Ordering, POS, payments, KDS, inventory, or analytics.
-- NFC provider integration.
-- Physical review-card commerce.
-- Final visual polish of unrelated dashboard pages.
+1. Improve order operations: filters, order history, cancellation policy, and live updates beyond periodic refresh.
+2. Add waiter-assisted ordering using the same order service and snapshots.
+3. Add taxes, discounts, payment selection, settlement, and billing before expanding into POS.
+4. Add kitchen display workflows and inventory integration after the order lifecycle is established.
 
-## Important implementation notes
-
-- Do not trust a browser-supplied `businessId` without verifying active membership and role.
-- Keep tenant database resolution server-only through the existing tenant resolver/client helpers.
-- Treat `TableRoute` as control-plane routing metadata and the tenant `Table.publicToken` as the tenant-side table identity; define the relationship explicitly before coding.
-- Make table creation idempotency and duplicate names/codes predictable.
-- Preserve historical tables by archiving/deactivating instead of destructive deletion once orders can exist.
-- Use the existing Zod and Prisma patterns; do not introduce a second data-access style.
-
-## Follow-up sequence
-
-After this milestone is verified:
-
-1. Menu management CRUD and publishing.
-2. Public table route and customer menu.
-3. Cart and customer ordering.
-4. Order management and lifecycle.
-
+See `docs/architecture.md` for code boundaries and `docs/smart-business-product-specification.md` for the full product requirements and roadmap.

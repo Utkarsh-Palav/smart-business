@@ -830,7 +830,7 @@ export type $TablePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type TableGetPayload<S extends boolean | null | undefined | TableDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$TablePayload, S>
 
 export type TableCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<TableFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<TableFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: TableCountAggregateInputType | true
   }
 
@@ -1281,6 +1281,7 @@ export type TableFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Filter, which Table to fetch.
    */
   where: Prisma.TableWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1303,6 +1304,7 @@ export type TableFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which Table to fetch.
    */
   where: Prisma.TableWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1355,6 +1357,7 @@ export type TableFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter by unique combinations of Tables.
    */
   distinct?: Prisma.TableScalarFieldEnum | Prisma.TableScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1407,6 +1410,7 @@ export type TableFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of Tables.
    */
   distinct?: Prisma.TableScalarFieldEnum | Prisma.TableScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1459,6 +1463,7 @@ export type TableFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Filter by unique combinations of Tables.
    */
   distinct?: Prisma.TableScalarFieldEnum | Prisma.TableScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1481,6 +1486,7 @@ export type TableCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * The data needed to create a Table.
    */
   data: Prisma.XOR<Prisma.TableCreateInput, Prisma.TableUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1541,6 +1547,7 @@ export type TableUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Choose, which Table to update.
    */
   where: Prisma.TableWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1619,6 +1626,7 @@ export type TableUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * In case the Table was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.TableUpdateInput, Prisma.TableUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1641,6 +1649,7 @@ export type TableDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Filter which Table to delete.
    */
   where: Prisma.TableWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

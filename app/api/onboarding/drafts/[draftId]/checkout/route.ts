@@ -1,8 +1,10 @@
-import { NextResponse } from "next/server";
-
 import { getAuthenticatedSession } from "@/lib/auth/session/get-authenticated-session";
-import { OnboardingError } from "@/lib/onboarding/onboarding.service";
 import { createOnboardingCheckout } from "@/lib/onboarding/payment.service";
+import {
+  handleApiError,
+  successResponse,
+  unauthorizedResponse,
+} from "@/lib/api/responses";
 
 export const runtime = "nodejs";
 
@@ -13,36 +15,20 @@ export async function POST(
   const session = await getAuthenticatedSession();
 
   if (!session) {
-    return NextResponse.json(
-      { success: false, error: { code: "UNAUTHORIZED", message: "Authentication is required." } },
-      { status: 401 },
-    );
+    return unauthorizedResponse();
   }
 
   try {
     const { draftId } = await params;
     const checkout = await createOnboardingCheckout(session.userId, draftId);
 
-    return NextResponse.json({ success: true, data: checkout }, { status: 201 });
+    return successResponse(checkout, 201);
   } catch (error) {
-    if (error instanceof OnboardingError) {
-      return NextResponse.json(
-        { success: false, error: { code: error.code, message: error.message } },
-        { status: error.status },
-      );
-    }
-
-    console.error("Razorpay checkout creation failed:", error);
-
-    return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: "CHECKOUT_CREATION_FAILED",
-          message: "Unable to start payment checkout.",
-        },
-      },
-      { status: 502 },
+    return handleApiError(
+      error,
+      "CHECKOUT_CREATION_FAILED",
+      "Unable to start payment checkout.",
+      502,
     );
   }
 }

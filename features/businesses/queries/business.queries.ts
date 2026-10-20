@@ -1,3 +1,5 @@
+import { apiRequest } from "@/lib/api/client";
+
 export type Business = {
   id: string;
   name: string;
@@ -33,60 +35,12 @@ export type Business = {
   } | null;
 };
 
-type BusinessesResponse = {
-  success: boolean;
-  data: Business[];
-};
-
-type BusinessResponse = {
-  success: boolean;
-  data: Business;
-};
-
 export async function getBusinesses(): Promise<Business[]> {
-  const response = await authenticatedFetch("/api/businesses", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch businesses");
-  }
-
-  const result: BusinessesResponse = await response.json();
-
-  if (!result.success) {
-    throw new Error("Failed to fetch businesses");
-  }
-
-  return result.data;
+  return apiRequest<Business[]>("/api/businesses");
 }
 
 export async function getBusinessById(
   businessId: string,
 ): Promise<Business> {
-  const response = await authenticatedFetch(
-    `/api/businesses/${businessId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch business");
-  }
-
-  const result: BusinessResponse = await response.json();
-
-  if (!result.success) {
-    throw new Error("Failed to fetch business");
-  }
-
-  return result.data;
+  return apiRequest<Business>(`/api/businesses/${encodeURIComponent(businessId)}`);
 }
-import { authenticatedFetch } from "@/lib/auth/client/authenticated-fetch";

@@ -1168,7 +1168,7 @@ export type $LocationPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type LocationGetPayload<S extends boolean | null | undefined | LocationDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$LocationPayload, S>
 
 export type LocationCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<LocationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<LocationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: LocationCountAggregateInputType | true
   }
 
@@ -1626,6 +1626,7 @@ export type LocationFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter, which Location to fetch.
    */
   where: Prisma.LocationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1648,6 +1649,7 @@ export type LocationFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    * Filter, which Location to fetch.
    */
   where: Prisma.LocationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1700,6 +1702,7 @@ export type LocationFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter by unique combinations of Locations.
    */
   distinct?: Prisma.LocationScalarFieldEnum | Prisma.LocationScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1752,6 +1755,7 @@ export type LocationFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extension
    * Filter by unique combinations of Locations.
    */
   distinct?: Prisma.LocationScalarFieldEnum | Prisma.LocationScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1804,6 +1808,7 @@ export type LocationFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Filter by unique combinations of Locations.
    */
   distinct?: Prisma.LocationScalarFieldEnum | Prisma.LocationScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1826,6 +1831,7 @@ export type LocationCreateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data needed to create a Location.
    */
   data: Prisma.XOR<Prisma.LocationCreateInput, Prisma.LocationUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1882,6 +1888,7 @@ export type LocationUpdateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Choose, which Location to update.
    */
   where: Prisma.LocationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1956,6 +1963,7 @@ export type LocationUpsertArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * In case the Location was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.LocationUpdateInput, Prisma.LocationUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1978,6 +1986,7 @@ export type LocationDeleteArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter which Location to delete.
    */
   where: Prisma.LocationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

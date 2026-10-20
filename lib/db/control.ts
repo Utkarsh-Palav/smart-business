@@ -1,5 +1,6 @@
 import { PrismaClient } from "@/generated/control/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { normalizePostgresConnectionUrl } from "./connection-url";
 import "server-only";
 
 const databaseUrl = process.env.CONTROL_DATABASE_URL;
@@ -8,7 +9,7 @@ if (!databaseUrl) {
   throw new Error("CONTROL_DATABASE_URL is not configured");
 }
 
-const adapter = new PrismaPg(databaseUrl);
+const adapter = new PrismaPg(normalizePostgresConnectionUrl(databaseUrl));
 
 const globalForControlPrisma = globalThis as unknown as {
   controlPrisma: PrismaClient | undefined;

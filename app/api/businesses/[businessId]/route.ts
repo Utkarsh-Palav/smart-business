@@ -1,7 +1,11 @@
-import { NextResponse } from "next/server";
-
 import { getAuthenticatedSession } from "@/lib/auth/session/get-authenticated-session";
 import { controlPrisma } from "@/lib/db/control";
+import {
+  handleApiError,
+  successResponse,
+  unauthorizedResponse,
+  errorResponse,
+} from "@/lib/api/responses";
 
 export async function GET(
   _request: Request,
@@ -11,10 +15,7 @@ export async function GET(
     const session = await getAuthenticatedSession();
 
     if (!session) {
-      return NextResponse.json(
-        { success: false, error: { code: "UNAUTHORIZED", message: "Authentication is required." } },
-        { status: 401 },
-      );
+      return unauthorizedResponse();
     }
 
     const { businessId } = await params;
@@ -62,18 +63,11 @@ export async function GET(
     });
 
     if (!business) {
-      return NextResponse.json(
-        { success: false, error: { code: "BUSINESS_NOT_FOUND", message: "Business not found." } },
-        { status: 404 },
-      );
+      return errorResponse("BUSINESS_NOT_FOUND", "Business not found.", 404);
     }
 
-    return NextResponse.json({ success: true, data: business }, { status: 200 });
+    return successResponse(business);
   } catch (error) {
-    console.error("Business detail retrieval failed:", error);
-    return NextResponse.json(
-      { success: false, error: { code: "BUSINESS_DETAIL_FAILED", message: "Unable to retrieve the business." } },
-      { status: 500 },
-    );
+    return handleApiError(error, "BUSINESS_DETAIL_FAILED", "Unable to retrieve the business.");
   }
 }

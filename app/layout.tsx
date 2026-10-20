@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { cn } from "@/lib/utils/utils";
 import { Providers } from "./providers";
@@ -7,16 +7,21 @@ import { cookies } from "next/headers";
 import { ACCESS_COOKIE_NAME } from "@/lib/auth/session/session";
 import { AuthProvider } from "@/lib/providers/auth-provider";
 
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
+const plexMono = localFont({
+  src: [
+    { path: "../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2", weight: "400" },
+    { path: "../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2", weight: "500" },
+    { path: "../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2", weight: "600" },
+  ],
   variable: "--font-ibm-plex-mono",
-  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
-const plexSans = IBM_Plex_Sans({
+const plexSans = localFont({
+  src: "../node_modules/@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2",
   variable: "--font-ibm-plex-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: "100 700",
+  display: "swap",
 });
 
 export const metadata: Metadata = {

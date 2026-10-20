@@ -4,6 +4,8 @@ Smart Business is a multi-tenant business operations application built with Next
 
 ## Architecture
 
+For folder responsibilities and conventions for adding features, see [Codebase Structure](docs/architecture.md).
+
 - **Control database** stores users, OTP challenges, sessions, businesses, memberships, plans, subscriptions, and tenant lifecycle metadata. Its Prisma schema is in [`prisma/control`](prisma/control).
 - **Tenant database** stores operational data for one business. Each tenant gets a Neon project and a tenant-named database; its multi-file Prisma schema is in [`prisma/tenant`](prisma/tenant).
 - **Infisical** stores each tenant's database connection URL at `/tenants/<tenantKey>/DATABASE_URL`.

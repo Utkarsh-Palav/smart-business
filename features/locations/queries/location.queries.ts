@@ -1,4 +1,4 @@
-import { authenticatedFetch } from "@/lib/auth/client/authenticated-fetch";
+import { apiRequest } from "@/lib/api/client";
 
 export type Location = {
   id: string;
@@ -32,21 +32,8 @@ export type Table = {
   _count: { orders: number };
 };
 
-type ApiResponse<T> = { success: boolean; data?: T; error?: { message?: string } };
 type LocationInput = Partial<Omit<Location, "id" | "businessId" | "createdAt" | "updatedAt" | "_count">> & { name: string; slug: string };
 type TableInput = { name?: string; capacity?: number | null; status?: "ACTIVE" | "INACTIVE" };
-
-async function apiRequest<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await authenticatedFetch(url, {
-    ...init,
-    headers: { "Content-Type": "application/json", ...init?.headers },
-  });
-  const result = (await response.json().catch(() => null)) as ApiResponse<T> | null;
-  if (!response.ok || !result?.success || result.data === undefined) {
-    throw new Error(result?.error?.message ?? "The request could not be completed.");
-  }
-  return result.data;
-}
 
 function locationUrl(businessId: string) {
   return `/api/locations?businessId=${encodeURIComponent(businessId)}`;

@@ -1225,6 +1225,14 @@ export const LocationScalarFieldEnum = {
 export type LocationScalarFieldEnum = (typeof LocationScalarFieldEnum)[keyof typeof LocationScalarFieldEnum]
 
 
+export const RelationLoadStrategy = {
+  query: 'query',
+  join: 'join'
+} as const
+
+export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
+
+
 export const CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1313,6 +1321,8 @@ export type ProductAvailabilityScalarFieldEnum = (typeof ProductAvailabilityScal
 export const OrderScalarFieldEnum = {
   id: 'id',
   orderNumber: 'orderNumber',
+  idempotencyKey: 'idempotencyKey',
+  requestHash: 'requestHash',
   locationId: 'locationId',
   tableId: 'tableId',
   source: 'source',

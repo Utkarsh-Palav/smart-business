@@ -1,6 +1,5 @@
-import { NextResponse } from "next/server";
-
 import { controlPrisma } from "@/lib/db/control";
+import { handleApiError, successResponse } from "@/lib/api/responses";
 
 export async function GET() {
   try {
@@ -38,25 +37,12 @@ export async function GET() {
       orderBy: { name: "asc" },
     });
 
-    return NextResponse.json(
-      {
-        success: true,
-        data: plans,
-      },
-      { status: 200 },
-    );
+    return successResponse(plans);
   } catch (error) {
-    console.error("Plan catalog request failed:", error);
-
-    return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: "PLAN_CATALOG_UNAVAILABLE",
-          message: "Unable to load plans.",
-        },
-      },
-      { status: 500 },
+    return handleApiError(
+      error,
+      "PLAN_CATALOG_UNAVAILABLE",
+      "Unable to load plans.",
     );
   }
 }

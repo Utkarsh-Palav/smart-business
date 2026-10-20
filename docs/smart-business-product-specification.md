@@ -3188,10 +3188,29 @@ Brand
 ---
 
 # 117. Feature Matrix
-FeatureStatusUser RegistrationImplementedEmail OTPImplementedLoginImplementedLogoutImplementedRefresh SessionsImplementedRBAC FoundationImplementedBusiness CreationImplementedOwner MembershipImplementedStarter PlanImplementedTrial SubscriptionImplementedTenant ProvisioningImplementedNeon IntegrationImplementedInfisical IntegrationImplementedTenant Health CheckImplementedProvisioning RetryImplementedProvisioning LeaseImplementedInitial LocationImplementedReview CardsPlannedReview StandsPlannedQR/NFC Review RoutingPlannedTable ManagementPlannedQR/NFC Table RoutingFoundation exists / Operational UI plannedDigital MenuPlannedMenu PublishingPlannedProduct ManagementPlannedCustomer OrderingPlannedWaiter OrderingPlannedCounter POSPlannedKDSPlannedSwiggy IntegrationPlannedZomato IntegrationPlannedUber Eats IntegrationPlannedGlobal Menu Kill-SwitchPlannedInventoryPlannedRecipe EnginePlannedAuto Stock DeductionPlannedWastage TrackingPlannedFood Cost AnalyticsPlannedCustomer CRMPlannedWhatsApp CRMPlannedDigital BillsPlannedWin-Back CampaignsPlannedAbandoned Cart RecoveryPlannedCustomer 360PlannedPayment IntegrationNot SelectedAggregator ReconciliationPlannedMulti-BrandPlannedFranchise ManagementPlannedRoyalty ManagementPlannedCentralized Financial RollupsPlannedAdvanced AnalyticsPlanned
+
+| Feature | Status |
+| --- | --- |
+| User registration, email OTP, login, logout, refresh sessions | Implemented |
+| RBAC foundation and business membership | Implemented |
+| Business creation, plans, subscriptions, tenant provisioning | Implemented |
+| Tenant health check and provisioning retry | Implemented |
+| Initial location and location management | Implemented |
+| Table management and QR table routing | Implemented |
+| Digital menu, categories, products, availability, publishing | Implemented |
+| Public customer menu at table routes | Implemented |
+| Customer table cart and order submission | MVP implemented; payments and tax configuration are not included |
+| Staff order queue and core order status transitions | MVP implemented |
+| Waiter-assisted ordering, counter POS, KDS | Planned |
+| Review cards, review stands, and review routing | Planned |
+| Aggregator integrations | Planned |
+| Inventory, recipes, stock deduction, wastage, food-cost analytics | Planned |
+| Customer CRM, WhatsApp CRM, digital bills, retention campaigns | Planned |
+| Payment integration | Not selected |
+| Multi-brand and franchise management | Planned |
+| Advanced analytics | Planned |
 
 ---
-
 # 118. Product Flywheel
 The core Smart Business flywheel is:
 

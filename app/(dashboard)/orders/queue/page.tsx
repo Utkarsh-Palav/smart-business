@@ -1,10 +1,5 @@
-import { DashboardSection } from "@/components/dashboard/DashboardSection";
+import { OrdersQueueContent } from "@/components/orders/OrdersQueueContent";
 
 export default function OrdersQueuePage() {
-  return (
-    <DashboardSection
-      section="Orders"
-      subsection="queue"
-    />
-  );
+  return <OrdersQueueContent />;
 }

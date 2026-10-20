@@ -2,6 +2,7 @@ import "server-only";
 
 import { PrismaClient } from "@/generated/tenant/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { normalizePostgresConnectionUrl } from "./connection-url";
 
 const databaseUrl = process.env.TENANT_DATABASE_URL;
 
@@ -9,7 +10,7 @@ if (!databaseUrl) {
   throw new Error("TENANT_DATABASE_URL is not configured");
 }
 
-const adapter = new PrismaPg(databaseUrl);
+const adapter = new PrismaPg(normalizePostgresConnectionUrl(databaseUrl));
 
 const globalForTenantPrisma = globalThis as unknown as {
   tenantPrisma: PrismaClient | undefined;

@@ -713,7 +713,7 @@ export type $MenuCategoryPayload<ExtArgs extends runtime.Types.Extensions.Intern
 export type MenuCategoryGetPayload<S extends boolean | null | undefined | MenuCategoryDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$MenuCategoryPayload, S>
 
 export type MenuCategoryCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<MenuCategoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<MenuCategoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: MenuCategoryCountAggregateInputType | true
   }
 
@@ -1161,6 +1161,7 @@ export type MenuCategoryFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which MenuCategory to fetch.
    */
   where: Prisma.MenuCategoryWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1183,6 +1184,7 @@ export type MenuCategoryFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which MenuCategory to fetch.
    */
   where: Prisma.MenuCategoryWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1235,6 +1237,7 @@ export type MenuCategoryFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of MenuCategories.
    */
   distinct?: Prisma.MenuCategoryScalarFieldEnum | Prisma.MenuCategoryScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1287,6 +1290,7 @@ export type MenuCategoryFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of MenuCategories.
    */
   distinct?: Prisma.MenuCategoryScalarFieldEnum | Prisma.MenuCategoryScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1339,6 +1343,7 @@ export type MenuCategoryFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of MenuCategories.
    */
   distinct?: Prisma.MenuCategoryScalarFieldEnum | Prisma.MenuCategoryScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1361,6 +1366,7 @@ export type MenuCategoryCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data needed to create a MenuCategory.
    */
   data: Prisma.XOR<Prisma.MenuCategoryCreateInput, Prisma.MenuCategoryUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1421,6 +1427,7 @@ export type MenuCategoryUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Choose, which MenuCategory to update.
    */
   where: Prisma.MenuCategoryWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1499,6 +1506,7 @@ export type MenuCategoryUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * In case the MenuCategory was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.MenuCategoryUpdateInput, Prisma.MenuCategoryUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1521,6 +1529,7 @@ export type MenuCategoryDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter which MenuCategory to delete.
    */
   where: Prisma.MenuCategoryWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

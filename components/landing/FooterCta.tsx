@@ -55,6 +55,7 @@ export default function FooterCta({ onOpenDemo }: FooterCtaProps) {
                   src="/logo/urban-kitchen-lockup-dark.svg"
                   alt="Urban Kitchen"
                   fill
+                  sizes="160px"
                   className="object-contain object-left"
                 />
               </div>

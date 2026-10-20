@@ -18,6 +18,7 @@ export default function LandingFooter() {
                   src="/logo/urban-kitchen-lockup-dark.svg"
                   alt="Urban Kitchen"
                   fill
+                  sizes="160px"
                   className="object-contain object-left"
                 />
               </div>

@@ -753,7 +753,7 @@ export type $ProductAvailabilityPayload<ExtArgs extends runtime.Types.Extensions
 export type ProductAvailabilityGetPayload<S extends boolean | null | undefined | ProductAvailabilityDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ProductAvailabilityPayload, S>
 
 export type ProductAvailabilityCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<ProductAvailabilityFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<ProductAvailabilityFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: ProductAvailabilityCountAggregateInputType | true
   }
 
@@ -1202,6 +1202,7 @@ export type ProductAvailabilityFindUniqueArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which ProductAvailability to fetch.
    */
   where: Prisma.ProductAvailabilityWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1224,6 +1225,7 @@ export type ProductAvailabilityFindUniqueOrThrowArgs<ExtArgs extends runtime.Typ
    * Filter, which ProductAvailability to fetch.
    */
   where: Prisma.ProductAvailabilityWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1276,6 +1278,7 @@ export type ProductAvailabilityFindFirstArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of ProductAvailabilities.
    */
   distinct?: Prisma.ProductAvailabilityScalarFieldEnum | Prisma.ProductAvailabilityScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1328,6 +1331,7 @@ export type ProductAvailabilityFindFirstOrThrowArgs<ExtArgs extends runtime.Type
    * Filter by unique combinations of ProductAvailabilities.
    */
   distinct?: Prisma.ProductAvailabilityScalarFieldEnum | Prisma.ProductAvailabilityScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1380,6 +1384,7 @@ export type ProductAvailabilityFindManyArgs<ExtArgs extends runtime.Types.Extens
    * Filter by unique combinations of ProductAvailabilities.
    */
   distinct?: Prisma.ProductAvailabilityScalarFieldEnum | Prisma.ProductAvailabilityScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1402,6 +1407,7 @@ export type ProductAvailabilityCreateArgs<ExtArgs extends runtime.Types.Extensio
    * The data needed to create a ProductAvailability.
    */
   data: Prisma.XOR<Prisma.ProductAvailabilityCreateInput, Prisma.ProductAvailabilityUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1462,6 +1468,7 @@ export type ProductAvailabilityUpdateArgs<ExtArgs extends runtime.Types.Extensio
    * Choose, which ProductAvailability to update.
    */
   where: Prisma.ProductAvailabilityWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1540,6 +1547,7 @@ export type ProductAvailabilityUpsertArgs<ExtArgs extends runtime.Types.Extensio
    * In case the ProductAvailability was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.ProductAvailabilityUpdateInput, Prisma.ProductAvailabilityUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1562,6 +1570,7 @@ export type ProductAvailabilityDeleteArgs<ExtArgs extends runtime.Types.Extensio
    * Filter which ProductAvailability to delete.
    */
   where: Prisma.ProductAvailabilityWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

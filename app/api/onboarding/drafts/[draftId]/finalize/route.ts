@@ -1,11 +1,15 @@
-import { NextResponse } from "next/server";
-
 import { getAuthenticatedSession } from "@/lib/auth/session/get-authenticated-session";
+import { ApiError } from "@/lib/api/api-error";
 import { controlPrisma } from "@/lib/db/control";
 import { finalizePaidOnboarding } from "@/lib/onboarding/finalization.service";
-import { OnboardingError } from "@/lib/onboarding/onboarding.service";
 import { initialLocationService } from "@/lib/location";
 import { tenantProvisioner } from "@/lib/tenancy/provisioning";
+import {
+  errorResponse,
+  handleApiError,
+  successResponse,
+  unauthorizedResponse,
+} from "@/lib/api/responses";
 
 export const runtime = "nodejs";
 
@@ -16,10 +20,7 @@ export async function POST(
   const session = await getAuthenticatedSession();
 
   if (!session) {
-    return NextResponse.json(
-      { success: false, error: { code: "UNAUTHORIZED", message: "Authentication is required." } },
-      { status: 401 },
-    );
+    return unauthorizedResponse();
   }
 
   try {
@@ -38,23 +39,21 @@ export async function POST(
       data: { status: "COMPLETED" },
     });
 
-    return NextResponse.json(
+    return successResponse(
       {
-        success: true,
-        data: {
           business,
           tenant: provisioning,
           location,
           onboarding: { status: "COMPLETED" },
-        },
       },
-      { status: 201 },
+      201,
     );
   } catch (error) {
-    if (error instanceof OnboardingError) {
-      return NextResponse.json(
-        { success: false, error: { code: error.code, message: error.message } },
-        { status: error.status },
+    if (error instanceof ApiError) {
+      return handleApiError(
+        error,
+        "PAID_ONBOARDING_FINALIZATION_FAILED",
+        "Payment is confirmed, but business provisioning did not complete.",
       );
     }
 
@@ -74,15 +73,11 @@ export async function POST(
       console.error("Unable to persist paid onboarding failure:", statusError);
     }
 
-    return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: "PAID_ONBOARDING_FINALIZATION_FAILED",
-          message: "Payment is confirmed, but business provisioning did not complete.",
-        },
-      },
-      { status: 202 },
+    return errorResponse(
+      "PAID_ONBOARDING_FINALIZATION_FAILED",
+      "Payment is confirmed, but business provisioning did not complete.",
+      202,
+      { onboarding: { status: "PROVISIONING_FAILED" } },
     );
   }
 }

@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { canManageBusinessLocations, canReadBusinessLocations } from "./location-management.policy";
+import {
+  canManageBusinessLocations,
+  canReadBusinessLocations,
+} from "../business/business-access.policy";
 
 test("active business owners and managers can read and manage locations", () => {
   for (const roleSlug of ["owner", "manager", "location-manager"]) {

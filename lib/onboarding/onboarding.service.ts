@@ -1,11 +1,12 @@
 import "server-only";
 
+import { ApiError } from "@/lib/api/api-error";
 import { controlPrisma } from "@/lib/db/control";
 import type { CreateBusinessRequest } from "@/lib/business/business.schemas";
 
 const ONBOARDING_DRAFT_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
-export class OnboardingError extends Error {
+export class OnboardingError extends ApiError {
   constructor(
     message: string,
     public readonly code:
@@ -18,8 +19,7 @@ export class OnboardingError extends Error {
       | "DRAFT_UPDATE_CONFLICT",
     public readonly status: 400 | 403 | 404 | 409 | 410,
   ) {
-    super(message);
-    this.name = "OnboardingError";
+    super(message, code, status);
   }
 }
 

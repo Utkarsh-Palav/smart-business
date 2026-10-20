@@ -891,7 +891,7 @@ export type $MenuProductPayload<ExtArgs extends runtime.Types.Extensions.Interna
 export type MenuProductGetPayload<S extends boolean | null | undefined | MenuProductDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$MenuProductPayload, S>
 
 export type MenuProductCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<MenuProductFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<MenuProductFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: MenuProductCountAggregateInputType | true
   }
 
@@ -1343,6 +1343,7 @@ export type MenuProductFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter, which MenuProduct to fetch.
    */
   where: Prisma.MenuProductWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1365,6 +1366,7 @@ export type MenuProductFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter, which MenuProduct to fetch.
    */
   where: Prisma.MenuProductWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1417,6 +1419,7 @@ export type MenuProductFindFirstArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of MenuProducts.
    */
   distinct?: Prisma.MenuProductScalarFieldEnum | Prisma.MenuProductScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1469,6 +1472,7 @@ export type MenuProductFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extens
    * Filter by unique combinations of MenuProducts.
    */
   distinct?: Prisma.MenuProductScalarFieldEnum | Prisma.MenuProductScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1521,6 +1525,7 @@ export type MenuProductFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter by unique combinations of MenuProducts.
    */
   distinct?: Prisma.MenuProductScalarFieldEnum | Prisma.MenuProductScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1543,6 +1548,7 @@ export type MenuProductCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data needed to create a MenuProduct.
    */
   data: Prisma.XOR<Prisma.MenuProductCreateInput, Prisma.MenuProductUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1603,6 +1609,7 @@ export type MenuProductUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Choose, which MenuProduct to update.
    */
   where: Prisma.MenuProductWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1681,6 +1688,7 @@ export type MenuProductUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * In case the MenuProduct was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.MenuProductUpdateInput, Prisma.MenuProductUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1703,6 +1711,7 @@ export type MenuProductDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter which MenuProduct to delete.
    */
   where: Prisma.MenuProductWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

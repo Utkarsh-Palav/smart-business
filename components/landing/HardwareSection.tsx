@@ -70,6 +70,7 @@ export default function HardwareSection() {
                         src="/logo/urban-kitchen-lockup-dark.svg"
                         alt="Urban Kitchen"
                         fill
+                        sizes="128px"
                         className="object-contain object-left"
                       />
                     </div>

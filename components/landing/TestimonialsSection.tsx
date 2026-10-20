@@ -116,7 +116,13 @@ export default function TestimonialsSection() {
               {/* Author Footer */}
               <div className="mt-6 pt-4 border-t border-white/10 flex items-center gap-3.5">
                 <div className="w-11 h-11 rounded-full overflow-hidden relative border border-white/20 shrink-0">
-                  <Image src={t.avatar} alt={t.name} fill className="object-cover" />
+                  <Image
+                    src={t.avatar}
+                    alt={t.name}
+                    fill
+                    sizes="44px"
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-white flex items-center gap-1.5">

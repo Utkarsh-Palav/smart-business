@@ -1,23 +1,24 @@
-import { NextResponse } from "next/server";
-
 import { getAuthenticatedSession } from "@/lib/auth/session/get-authenticated-session";
-import { BusinessError } from "@/lib/business/business.errors";
 import { businessService } from "@/lib/business/business.service";
 import { createBusinessSchema } from "@/lib/business/business.schemas";
 import { controlPrisma } from "@/lib/db/control";
 import { tenantProvisioner } from "@/lib/tenancy/provisioning";
 import { TenantProvisioningConflictError } from "@/lib/tenancy/provisioning/tenant-provisioner";
 import { initialLocationService } from "@/lib/location";
+import {
+  errorResponse,
+  handleApiError,
+  successResponse,
+  unauthorizedResponse,
+  validationResponse,
+} from "@/lib/api/responses";
 
 export async function GET() {
   try {
     const session = await getAuthenticatedSession();
 
     if (!session) {
-      return NextResponse.json(
-        { success: false, error: { code: "UNAUTHORIZED", message: "Authentication is required." } },
-        { status: 401 },
-      );
+      return unauthorizedResponse();
     }
 
     const businesses = await controlPrisma.business.findMany({
@@ -63,13 +64,9 @@ export async function GET() {
       orderBy: { createdAt: "asc" },
     });
 
-    return NextResponse.json({ success: true, data: businesses }, { status: 200 });
+    return successResponse(businesses);
   } catch (error) {
-    console.error("Business list retrieval failed:", error);
-    return NextResponse.json(
-      { success: false, error: { code: "BUSINESS_LIST_FAILED", message: "Unable to retrieve businesses." } },
-      { status: 500 },
-    );
+    return handleApiError(error, "BUSINESS_LIST_FAILED", "Unable to retrieve businesses.");
   }
 }
 
@@ -78,28 +75,15 @@ export async function POST(request: Request) {
     const session = await getAuthenticatedSession();
 
     if (!session) {
-      return NextResponse.json(
-        {
-          error: "Unauthorized",
-          code: "UNAUTHORIZED",
-        },
-        { status: 401 },
-      );
+      return unauthorizedResponse();
     }
 
-    const body: unknown = await request.json();
+    const body: unknown = await request.json().catch(() => null);
 
     const parsed = createBusinessSchema.safeParse(body);
 
     if (!parsed.success) {
-      return NextResponse.json(
-        {
-          error: "Invalid request",
-          code: "VALIDATION_ERROR",
-          details: parsed.error.flatten(),
-        },
-        { status: 400 },
-      );
+      return validationResponse("Invalid request", parsed.error.flatten());
     }
 
     /*
@@ -143,10 +127,11 @@ export async function POST(request: Request) {
       }
 
       if (error instanceof TenantProvisioningConflictError) {
-        return NextResponse.json(
+        return errorResponse(
+          "TENANT_PROVISIONING_CONFLICT",
+          "Tenant provisioning is already in progress or unavailable",
+          409,
           {
-            error: "Tenant provisioning is already in progress or unavailable",
-            code: "TENANT_PROVISIONING_CONFLICT",
             business: {
               id: business.businessId,
               name: business.businessName,
@@ -160,15 +145,15 @@ export async function POST(request: Request) {
               status: "PENDING",
             },
           },
-          { status: 409 },
         );
       }
 
       if (persistedTenant?.status !== "FAILED") {
-        return NextResponse.json(
+        return errorResponse(
+          "TENANT_PROVISIONING_STATE_UNKNOWN",
+          "Business created, but tenant provisioning outcome could not be verified",
+          503,
           {
-            error: "Business created, but tenant provisioning outcome could not be verified",
-            code: "TENANT_PROVISIONING_STATE_UNKNOWN",
             business: {
               id: business.businessId,
               name: business.businessName,
@@ -182,7 +167,6 @@ export async function POST(request: Request) {
               status: "UNKNOWN",
             },
           },
-          { status: 503 },
         );
       }
 
@@ -191,10 +175,11 @@ export async function POST(request: Request) {
        * provisioning failed. The TenantDatabase record
        * is now FAILED and can be retried later.
        */
-      return NextResponse.json(
+      return errorResponse(
+        "TENANT_PROVISIONING_FAILED",
+        "Business created, but tenant provisioning failed",
+        202,
         {
-          error: "Business created, but tenant provisioning failed",
-          code: "TENANT_PROVISIONING_FAILED",
           business: {
             id: business.businessId,
             name: business.businessName,
@@ -208,7 +193,6 @@ export async function POST(request: Request) {
             status: "FAILED",
           },
         },
-        { status: 202 },
       );
     }
 
@@ -222,9 +206,8 @@ export async function POST(request: Request) {
         ...business.firstLocation,
       });
 
-      return NextResponse.json(
+      return successResponse(
         {
-          success: true,
           business: {
             id: business.businessId,
             name: business.businessName,
@@ -248,15 +231,16 @@ export async function POST(request: Request) {
             status: "COMPLETED",
           },
         },
-        { status: 201 },
+        201,
       );
     } catch (error) {
       console.error("Initial location creation failed:", error);
 
-      return NextResponse.json(
+      return errorResponse(
+        "INITIAL_LOCATION_CREATION_FAILED",
+        "Business and tenant created, but initial location creation failed",
+        202,
         {
-          error: "Business and tenant created, but initial location creation failed",
-          code: "INITIAL_LOCATION_CREATION_FAILED",
           business: {
             id: business.businessId,
             name: business.businessName,
@@ -275,38 +259,9 @@ export async function POST(request: Request) {
             status: "LOCATION_CREATION_FAILED",
           },
         },
-        { status: 202 },
       );
     }
   } catch (error) {
-    if (error instanceof BusinessError) {
-      const status =
-        error.code === "BUSINESS_SLUG_EXISTS"
-          ? 409
-          : error.code === "OWNER_ROLE_NOT_FOUND" ||
-              error.code === "STARTER_PLAN_NOT_FOUND"
-            ? 500
-            : error.code === "USER_NOT_FOUND"
-              ? 401
-              : 400;
-
-      return NextResponse.json(
-        {
-          error: error.message,
-          code: error.code,
-        },
-        { status },
-      );
-    }
-
-    console.error("Business creation failed:", error);
-
-    return NextResponse.json(
-      {
-        error: "Unable to create business",
-        code: "BUSINESS_CREATION_FAILED",
-      },
-      { status: 500 },
-    );
+    return handleApiError(error, "BUSINESS_CREATION_FAILED", "Unable to create business.");
   }
 }

@@ -1,10 +1,5 @@
-import { DashboardSection } from "@/components/dashboard/DashboardSection";
+import { MenuManagementContent } from "@/components/menu/MenuManagementContent";
 
 export default function MenuOverviewPage() {
-  return (
-    <DashboardSection
-      section="Menu"
-      subsection="overview"
-    />
-  );
+  return <MenuManagementContent />;
 }

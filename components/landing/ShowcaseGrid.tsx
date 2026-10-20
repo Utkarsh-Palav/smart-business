@@ -47,6 +47,7 @@ export default function ShowcaseGrid() {
                 src="/hero.jpg"
                 alt="Table Ordering Interface"
                 fill
+                sizes="(min-width: 1280px) 368px, (min-width: 1024px) calc((100vw - 112px) / 3), (min-width: 768px) calc((100vw - 72px) / 2), calc(100vw - 32px)"
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/70 backdrop-blur-md text-[10px] font-mono font-bold text-white">
@@ -70,6 +71,7 @@ export default function ShowcaseGrid() {
                 src="/hero2.jpg"
                 alt="Specialty Coffee & Cafe POS"
                 fill
+                sizes="(min-width: 1280px) 368px, (min-width: 1024px) calc((100vw - 112px) / 3), (min-width: 768px) calc((100vw - 72px) / 2), calc(100vw - 32px)"
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/70 backdrop-blur-md text-[10px] font-mono font-bold text-[#FF5B2E]">
@@ -93,6 +95,7 @@ export default function ShowcaseGrid() {
                 src="/hero3.jpg"
                 alt="Kitchen Display System Station"
                 fill
+                sizes="(min-width: 1280px) 368px, (min-width: 1024px) calc((100vw - 112px) / 3), (min-width: 768px) calc((100vw - 72px) / 2), calc(100vw - 32px)"
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/70 backdrop-blur-md text-[10px] font-mono font-bold text-emerald-400">

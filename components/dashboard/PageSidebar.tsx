@@ -254,18 +254,18 @@ const groupsBySectionAndRail: Record<string, Record<string, SidebarGroup[]>> = {
   menu: {
     overview: [
       {
-        label: "Menu Performance",
+        label: "Menu setup",
         items: [
-          subItem("Menu overview", "/menu/overview", LayoutDashboard),
+          subItem("Menus and publishing", "/menu/overview", LayoutDashboard),
           subItem("Categories", "/menu/overview/categories", Tags),
         ],
       },
     ],
     items: [
       {
-        label: "Food Catalog",
+        label: "Product catalog",
         items: [
-          subItem("All food items", "/menu/items", Salad),
+          subItem("Products", "/menu/items", Salad),
           subItem("Add-ons & extras", "/menu/items/add-ons", PlusCircle),
           subItem("Combos & bundles", "/menu/items/combos", Boxes),
         ],
@@ -611,20 +611,22 @@ export function PageSidebar({ section, title }: PageSidebarProps) {
 
   const [isContextOpen, setIsContextOpen] = useState(true);
 
-  // Determine active rail item: check which rail item's groups contain current pathname, or starts with rail item's href
-  const activeRail =
-    railItems.find((rail) => {
-      const groups = sectionGroups[rail.id] ?? [];
-      const hasMatchingSubItem = groups.some((g) =>
-        g.items.some(
-          (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
-        ),
-      );
-      if (hasMatchingSubItem) return true;
-      return pathname === rail.href || pathname.startsWith(`${rail.href}/`);
-    }) ?? railItems[0];
+  const matchesPath = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const activeRail = railItems
+    .flatMap((rail) => [
+      { rail, href: rail.href },
+      ...(sectionGroups[rail.id] ?? []).flatMap((group) =>
+        group.items.map((item) => ({ rail, href: item.href })),
+      ),
+    ])
+    .filter(({ href }) => matchesPath(href))
+    .sort((left, right) => right.href.length - left.href.length)[0]?.rail ?? railItems[0];
 
   const currentGroups = activeRail ? sectionGroups[activeRail.id] ?? [] : [];
+  const activeSubItemHref = currentGroups
+    .flatMap((group) => group.items)
+    .filter((item) => matchesPath(item.href))
+    .sort((left, right) => right.href.length - left.href.length)[0]?.href;
 
   return (
     <aside
@@ -737,13 +739,13 @@ export function PageSidebar({ section, title }: PageSidebarProps) {
               </p>
               <div className="space-y-0.5">
                 {group.items.map(({ label, href, icon: Icon }) => {
-                  const isActive =
-                    pathname === href || (href !== `/${normalizedSec}` && pathname.startsWith(`${href}/`));
+                  const isActive = href === activeSubItemHref;
 
                   return (
                     <Link
                       key={label}
                       href={href}
+                      aria-current={isActive ? "page" : undefined}
                       className={`group flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-1.75 text-sm transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B2E]/35 ${
                         isActive
                           ? "bg-[#FF5B2E]/8 font-medium text-[#c94b20]"

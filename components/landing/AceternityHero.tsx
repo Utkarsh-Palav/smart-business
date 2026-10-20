@@ -123,7 +123,7 @@ export default function AceternityHero() {
                 src="/logo/urban-kitchen-lockup-dark-transparent.svg"
                 alt="Urban Kitchen Logo"
                 width={200}
-                height={50}
+                height={43}
                 priority
               />
             </Link>

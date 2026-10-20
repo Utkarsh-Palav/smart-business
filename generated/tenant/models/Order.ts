@@ -43,6 +43,8 @@ export type OrderSumAggregateOutputType = {
 export type OrderMinAggregateOutputType = {
   id: string | null
   orderNumber: string | null
+  idempotencyKey: string | null
+  requestHash: string | null
   locationId: string | null
   tableId: string | null
   source: $Enums.OrderSource | null
@@ -66,6 +68,8 @@ export type OrderMinAggregateOutputType = {
 export type OrderMaxAggregateOutputType = {
   id: string | null
   orderNumber: string | null
+  idempotencyKey: string | null
+  requestHash: string | null
   locationId: string | null
   tableId: string | null
   source: $Enums.OrderSource | null
@@ -89,6 +93,8 @@ export type OrderMaxAggregateOutputType = {
 export type OrderCountAggregateOutputType = {
   id: number
   orderNumber: number
+  idempotencyKey: number
+  requestHash: number
   locationId: number
   tableId: number
   source: number
@@ -128,6 +134,8 @@ export type OrderSumAggregateInputType = {
 export type OrderMinAggregateInputType = {
   id?: true
   orderNumber?: true
+  idempotencyKey?: true
+  requestHash?: true
   locationId?: true
   tableId?: true
   source?: true
@@ -151,6 +159,8 @@ export type OrderMinAggregateInputType = {
 export type OrderMaxAggregateInputType = {
   id?: true
   orderNumber?: true
+  idempotencyKey?: true
+  requestHash?: true
   locationId?: true
   tableId?: true
   source?: true
@@ -174,6 +184,8 @@ export type OrderMaxAggregateInputType = {
 export type OrderCountAggregateInputType = {
   id?: true
   orderNumber?: true
+  idempotencyKey?: true
+  requestHash?: true
   locationId?: true
   tableId?: true
   source?: true
@@ -284,6 +296,8 @@ export type OrderGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type OrderGroupByOutputType = {
   id: string
   orderNumber: string
+  idempotencyKey: string | null
+  requestHash: string | null
   locationId: string
   tableId: string | null
   source: $Enums.OrderSource
@@ -330,6 +344,8 @@ export type OrderWhereInput = {
   NOT?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
   id?: Prisma.StringFilter<"Order"> | string
   orderNumber?: Prisma.StringFilter<"Order"> | string
+  idempotencyKey?: Prisma.StringNullableFilter<"Order"> | string | null
+  requestHash?: Prisma.StringNullableFilter<"Order"> | string | null
   locationId?: Prisma.StringFilter<"Order"> | string
   tableId?: Prisma.StringNullableFilter<"Order"> | string | null
   source?: Prisma.EnumOrderSourceFilter<"Order"> | $Enums.OrderSource
@@ -356,6 +372,8 @@ export type OrderWhereInput = {
 export type OrderOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   orderNumber?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  requestHash?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrder
   tableId?: Prisma.SortOrderInput | Prisma.SortOrder
   source?: Prisma.SortOrder
@@ -382,9 +400,11 @@ export type OrderOrderByWithRelationInput = {
 export type OrderWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   orderNumber?: string
+  idempotencyKey?: string
   AND?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
   OR?: Prisma.OrderWhereInput[]
   NOT?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
+  requestHash?: Prisma.StringNullableFilter<"Order"> | string | null
   locationId?: Prisma.StringFilter<"Order"> | string
   tableId?: Prisma.StringNullableFilter<"Order"> | string | null
   source?: Prisma.EnumOrderSourceFilter<"Order"> | $Enums.OrderSource
@@ -406,11 +426,13 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   location?: Prisma.XOR<Prisma.LocationScalarRelationFilter, Prisma.LocationWhereInput>
   table?: Prisma.XOR<Prisma.TableNullableScalarRelationFilter, Prisma.TableWhereInput> | null
   items?: Prisma.OrderItemListRelationFilter
-}, "id" | "orderNumber">
+}, "id" | "orderNumber" | "idempotencyKey">
 
 export type OrderOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   orderNumber?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  requestHash?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrder
   tableId?: Prisma.SortOrderInput | Prisma.SortOrder
   source?: Prisma.SortOrder
@@ -442,6 +464,8 @@ export type OrderScalarWhereWithAggregatesInput = {
   NOT?: Prisma.OrderScalarWhereWithAggregatesInput | Prisma.OrderScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Order"> | string
   orderNumber?: Prisma.StringWithAggregatesFilter<"Order"> | string
+  idempotencyKey?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
+  requestHash?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   locationId?: Prisma.StringWithAggregatesFilter<"Order"> | string
   tableId?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   source?: Prisma.EnumOrderSourceWithAggregatesFilter<"Order"> | $Enums.OrderSource
@@ -465,6 +489,8 @@ export type OrderScalarWhereWithAggregatesInput = {
 export type OrderCreateInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   source: $Enums.OrderSource
   status?: $Enums.OrderStatus
   subtotalMinor: number
@@ -489,6 +515,8 @@ export type OrderCreateInput = {
 export type OrderUncheckedCreateInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   locationId: string
   tableId?: string | null
   source: $Enums.OrderSource
@@ -513,6 +541,8 @@ export type OrderUncheckedCreateInput = {
 export type OrderUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   subtotalMinor?: Prisma.IntFieldUpdateOperationsInput | number
@@ -537,6 +567,8 @@ export type OrderUpdateInput = {
 export type OrderUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
@@ -561,6 +593,8 @@ export type OrderUncheckedUpdateInput = {
 export type OrderCreateManyInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   locationId: string
   tableId?: string | null
   source: $Enums.OrderSource
@@ -584,6 +618,8 @@ export type OrderCreateManyInput = {
 export type OrderUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   subtotalMinor?: Prisma.IntFieldUpdateOperationsInput | number
@@ -605,6 +641,8 @@ export type OrderUpdateManyMutationInput = {
 export type OrderUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
@@ -638,6 +676,8 @@ export type OrderOrderByRelationAggregateInput = {
 export type OrderCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderNumber?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
+  requestHash?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
   tableId?: Prisma.SortOrder
   source?: Prisma.SortOrder
@@ -668,6 +708,8 @@ export type OrderAvgOrderByAggregateInput = {
 export type OrderMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderNumber?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
+  requestHash?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
   tableId?: Prisma.SortOrder
   source?: Prisma.SortOrder
@@ -691,6 +733,8 @@ export type OrderMaxOrderByAggregateInput = {
 export type OrderMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderNumber?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
+  requestHash?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
   tableId?: Prisma.SortOrder
   source?: Prisma.SortOrder
@@ -836,6 +880,8 @@ export type OrderUncheckedUpdateManyWithoutTableNestedInput = {
 export type OrderCreateWithoutLocationInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   source: $Enums.OrderSource
   status?: $Enums.OrderStatus
   subtotalMinor: number
@@ -859,6 +905,8 @@ export type OrderCreateWithoutLocationInput = {
 export type OrderUncheckedCreateWithoutLocationInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   tableId?: string | null
   source: $Enums.OrderSource
   status?: $Enums.OrderStatus
@@ -911,6 +959,8 @@ export type OrderScalarWhereInput = {
   NOT?: Prisma.OrderScalarWhereInput | Prisma.OrderScalarWhereInput[]
   id?: Prisma.StringFilter<"Order"> | string
   orderNumber?: Prisma.StringFilter<"Order"> | string
+  idempotencyKey?: Prisma.StringNullableFilter<"Order"> | string | null
+  requestHash?: Prisma.StringNullableFilter<"Order"> | string | null
   locationId?: Prisma.StringFilter<"Order"> | string
   tableId?: Prisma.StringNullableFilter<"Order"> | string | null
   source?: Prisma.EnumOrderSourceFilter<"Order"> | $Enums.OrderSource
@@ -934,6 +984,8 @@ export type OrderScalarWhereInput = {
 export type OrderCreateWithoutItemsInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   source: $Enums.OrderSource
   status?: $Enums.OrderStatus
   subtotalMinor: number
@@ -957,6 +1009,8 @@ export type OrderCreateWithoutItemsInput = {
 export type OrderUncheckedCreateWithoutItemsInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   locationId: string
   tableId?: string | null
   source: $Enums.OrderSource
@@ -996,6 +1050,8 @@ export type OrderUpdateToOneWithWhereWithoutItemsInput = {
 export type OrderUpdateWithoutItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   subtotalMinor?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1019,6 +1075,8 @@ export type OrderUpdateWithoutItemsInput = {
 export type OrderUncheckedUpdateWithoutItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.StringFieldUpdateOperationsInput | string
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
@@ -1042,6 +1100,8 @@ export type OrderUncheckedUpdateWithoutItemsInput = {
 export type OrderCreateWithoutTableInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   source: $Enums.OrderSource
   status?: $Enums.OrderStatus
   subtotalMinor: number
@@ -1065,6 +1125,8 @@ export type OrderCreateWithoutTableInput = {
 export type OrderUncheckedCreateWithoutTableInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   source: $Enums.OrderSource
   status?: $Enums.OrderStatus
   subtotalMinor: number
@@ -1113,6 +1175,8 @@ export type OrderUpdateManyWithWhereWithoutTableInput = {
 export type OrderCreateManyLocationInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   tableId?: string | null
   source: $Enums.OrderSource
   status?: $Enums.OrderStatus
@@ -1135,6 +1199,8 @@ export type OrderCreateManyLocationInput = {
 export type OrderUpdateWithoutLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   subtotalMinor?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1158,6 +1224,8 @@ export type OrderUpdateWithoutLocationInput = {
 export type OrderUncheckedUpdateWithoutLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -1181,6 +1249,8 @@ export type OrderUncheckedUpdateWithoutLocationInput = {
 export type OrderUncheckedUpdateManyWithoutLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tableId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
@@ -1203,6 +1273,8 @@ export type OrderUncheckedUpdateManyWithoutLocationInput = {
 export type OrderCreateManyTableInput = {
   id?: string
   orderNumber: string
+  idempotencyKey?: string | null
+  requestHash?: string | null
   source: $Enums.OrderSource
   status?: $Enums.OrderStatus
   subtotalMinor: number
@@ -1224,6 +1296,8 @@ export type OrderCreateManyTableInput = {
 export type OrderUpdateWithoutTableInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   subtotalMinor?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1247,6 +1321,8 @@ export type OrderUpdateWithoutTableInput = {
 export type OrderUncheckedUpdateWithoutTableInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   subtotalMinor?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1269,6 +1345,8 @@ export type OrderUncheckedUpdateWithoutTableInput = {
 export type OrderUncheckedUpdateManyWithoutTableInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.EnumOrderSourceFieldUpdateOperationsInput | $Enums.OrderSource
   status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   subtotalMinor?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1321,6 +1399,8 @@ export type OrderCountOutputTypeCountItemsArgs<ExtArgs extends runtime.Types.Ext
 export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   orderNumber?: boolean
+  idempotencyKey?: boolean
+  requestHash?: boolean
   locationId?: boolean
   tableId?: boolean
   source?: boolean
@@ -1348,6 +1428,8 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   orderNumber?: boolean
+  idempotencyKey?: boolean
+  requestHash?: boolean
   locationId?: boolean
   tableId?: boolean
   source?: boolean
@@ -1373,6 +1455,8 @@ export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   orderNumber?: boolean
+  idempotencyKey?: boolean
+  requestHash?: boolean
   locationId?: boolean
   tableId?: boolean
   source?: boolean
@@ -1398,6 +1482,8 @@ export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type OrderSelectScalar = {
   id?: boolean
   orderNumber?: boolean
+  idempotencyKey?: boolean
+  requestHash?: boolean
   locationId?: boolean
   tableId?: boolean
   source?: boolean
@@ -1418,7 +1504,7 @@ export type OrderSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderNumber" | "locationId" | "tableId" | "source" | "status" | "subtotalMinor" | "discountMinor" | "taxMinor" | "totalMinor" | "currency" | "customerName" | "customerPhone" | "notes" | "placedAt" | "acceptedAt" | "completedAt" | "canceledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderNumber" | "idempotencyKey" | "requestHash" | "locationId" | "tableId" | "source" | "status" | "subtotalMinor" | "discountMinor" | "taxMinor" | "totalMinor" | "currency" | "customerName" | "customerPhone" | "notes" | "placedAt" | "acceptedAt" | "completedAt" | "canceledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   location?: boolean | Prisma.LocationDefaultArgs<ExtArgs>
   table?: boolean | Prisma.Order$tableArgs<ExtArgs>
@@ -1444,6 +1530,8 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     orderNumber: string
+    idempotencyKey: string | null
+    requestHash: string | null
     locationId: string
     tableId: string | null
     source: $Enums.OrderSource
@@ -1469,7 +1557,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type OrderGetPayload<S extends boolean | null | undefined | OrderDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$OrderPayload, S>
 
 export type OrderCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<OrderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<OrderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: OrderCountAggregateInputType | true
   }
 
@@ -1890,6 +1978,8 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface OrderFieldRefs {
   readonly id: Prisma.FieldRef<"Order", 'String'>
   readonly orderNumber: Prisma.FieldRef<"Order", 'String'>
+  readonly idempotencyKey: Prisma.FieldRef<"Order", 'String'>
+  readonly requestHash: Prisma.FieldRef<"Order", 'String'>
   readonly locationId: Prisma.FieldRef<"Order", 'String'>
   readonly tableId: Prisma.FieldRef<"Order", 'String'>
   readonly source: Prisma.FieldRef<"Order", 'OrderSource'>
@@ -1932,6 +2022,7 @@ export type OrderFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Filter, which Order to fetch.
    */
   where: Prisma.OrderWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1954,6 +2045,7 @@ export type OrderFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which Order to fetch.
    */
   where: Prisma.OrderWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2006,6 +2098,7 @@ export type OrderFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter by unique combinations of Orders.
    */
   distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2058,6 +2151,7 @@ export type OrderFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of Orders.
    */
   distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2110,6 +2204,7 @@ export type OrderFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Filter by unique combinations of Orders.
    */
   distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2132,6 +2227,7 @@ export type OrderCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * The data needed to create a Order.
    */
   data: Prisma.XOR<Prisma.OrderCreateInput, Prisma.OrderUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2192,6 +2288,7 @@ export type OrderUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Choose, which Order to update.
    */
   where: Prisma.OrderWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2270,6 +2367,7 @@ export type OrderUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * In case the Order was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.OrderUpdateInput, Prisma.OrderUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -2292,6 +2390,7 @@ export type OrderDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Filter which Order to delete.
    */
   where: Prisma.OrderWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

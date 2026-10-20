@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-
 import { getAuthenticatedSession } from "@/lib/auth/session/get-authenticated-session";
 import { controlPrisma } from "@/lib/db/control";
 import { initialLocationService } from "@/lib/location";
@@ -8,6 +6,12 @@ import {
   TenantProvisioningError,
 } from "@/lib/tenancy/provisioning/tenant-provisioner";
 import { tenantProvisioner } from "@/lib/tenancy/provisioning";
+import {
+  errorResponse,
+  handleApiError,
+  successResponse,
+  unauthorizedResponse,
+} from "@/lib/api/responses";
 
 export async function POST(
   _request: Request,
@@ -17,10 +21,7 @@ export async function POST(
     const session = await getAuthenticatedSession();
 
     if (!session) {
-      return NextResponse.json(
-        { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 },
-      );
+      return unauthorizedResponse();
     }
 
     const { businessId } = await params;
@@ -68,30 +69,24 @@ export async function POST(
     });
 
     if (!business) {
-      return NextResponse.json(
-        { error: "Business not found", code: "BUSINESS_NOT_FOUND" },
-        { status: 404 },
-      );
+      return errorResponse("BUSINESS_NOT_FOUND", "Business not found", 404);
     }
 
     if (!business.tenantDatabase) {
-      return NextResponse.json(
-        { error: "Tenant database not found", code: "TENANT_NOT_FOUND" },
-        { status: 404 },
-      );
+      return errorResponse("TENANT_NOT_FOUND", "Tenant database not found", 404);
     }
 
     if (business.tenantDatabase.status !== "FAILED") {
-      return NextResponse.json(
+      return errorResponse(
+        "TENANT_NOT_RETRYABLE",
+        "Only failed tenant provisioning can be retried",
+        409,
         {
-          error: "Only failed tenant provisioning can be retried",
-          code: "TENANT_NOT_RETRYABLE",
           tenant: {
             id: business.tenantDatabase.id,
             status: business.tenantDatabase.status,
           },
         },
-        { status: 409 },
       );
     }
 
@@ -103,16 +98,16 @@ export async function POST(
       const tenant = await tenantProvisioner.getTenantDatabaseStatus(businessId);
 
       if (error instanceof TenantProvisioningConflictError) {
-        return NextResponse.json(
+        return errorResponse(
+          "TENANT_PROVISIONING_CONFLICT",
+          "Tenant provisioning is already in progress",
+          409,
           {
-            error: "Tenant provisioning is already in progress",
-            code: "TENANT_PROVISIONING_CONFLICT",
             tenant: {
               id: business.tenantDatabase.id,
               status: tenant?.status ?? "UNKNOWN",
             },
           },
-          { status: 409 },
         );
       }
 
@@ -120,29 +115,29 @@ export async function POST(
         !(error instanceof TenantProvisioningError) ||
         tenant?.status !== "FAILED"
       ) {
-        return NextResponse.json(
+        return errorResponse(
+          "TENANT_PROVISIONING_STATE_UNKNOWN",
+          "Tenant provisioning outcome could not be verified",
+          503,
           {
-            error: "Tenant provisioning outcome could not be verified",
-            code: "TENANT_PROVISIONING_STATE_UNKNOWN",
             tenant: {
               id: business.tenantDatabase.id,
               status: tenant?.status ?? "UNKNOWN",
             },
           },
-          { status: 503 },
         );
       }
 
-      return NextResponse.json(
+      return errorResponse(
+        "TENANT_PROVISIONING_FAILED",
+        "Tenant provisioning failed",
+        202,
         {
-          error: "Tenant provisioning failed",
-          code: "TENANT_PROVISIONING_FAILED",
           tenant: {
             id: business.tenantDatabase.id,
             status: "FAILED",
           },
         },
-        { status: 202 },
       );
     }
 
@@ -163,7 +158,7 @@ export async function POST(
       });
       const subscription = business.subscriptions[0];
 
-      return NextResponse.json(
+      return successResponse(
         {
           business: {
             id: business.id,
@@ -185,7 +180,6 @@ export async function POST(
           },
           onboarding: { status: "COMPLETED" },
         },
-        { status: 200 },
       );
     } catch (error) {
       console.error("Initial location creation failed during provisioning retry:", {
@@ -193,10 +187,11 @@ export async function POST(
         error,
       });
 
-      return NextResponse.json(
+      return errorResponse(
+        "INITIAL_LOCATION_CREATION_FAILED",
+        "Tenant is active, but initial location creation failed",
+        202,
         {
-          error: "Tenant is active, but initial location creation failed",
-          code: "INITIAL_LOCATION_CREATION_FAILED",
           tenant: {
             id: provisioning.tenantDatabaseId,
             key: provisioning.tenantKey,
@@ -204,15 +199,9 @@ export async function POST(
           },
           onboarding: { status: "LOCATION_CREATION_FAILED" },
         },
-        { status: 202 },
       );
     }
   } catch (error) {
-    console.error("Tenant provisioning retry failed:", error);
-
-    return NextResponse.json(
-      { error: "Unable to retry tenant provisioning", code: "RETRY_FAILED" },
-      { status: 500 },
-    );
+    return handleApiError(error, "RETRY_FAILED", "Unable to retry tenant provisioning");
   }
 }

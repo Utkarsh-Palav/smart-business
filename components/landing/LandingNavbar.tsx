@@ -110,6 +110,7 @@ export default function LandingNavbar({ onOpenDemo }: LandingNavbarProps) {
                 src="/logo/urban-kitchen-lockup-dark.svg"
                 alt="Urban Kitchen"
                 fill
+                sizes="(min-width: 640px) 176px, 144px"
                 className="object-contain object-left"
                 priority
               />
