@@ -1,6 +1,11 @@
 import { createPublicOrderSchema } from "@/features/orders/schemas/order.schema";
 import { handleApiError, successResponse, validationResponse } from "@/lib/api/responses";
-import { encodePublicOrderAccess, publicOrderCookieName } from "@/lib/orders/public-order-access";
+import {
+  decodePublicOrderAccess,
+  encodePublicOrderAccess,
+  publicOrderCookieName,
+  readRequestCookie,
+} from "@/lib/orders/public-order-access";
 import { orderService } from "@/lib/orders/order.service";
 
 type PublicOrderRouteContext = { params: Promise<{ token: string }> };
@@ -52,9 +57,15 @@ export async function POST(request: Request, { params }: PublicOrderRouteContext
     const { token } = await params;
     const order = await orderService.createPublicTableOrder(token, parsed.data);
     const response = successResponse(order, "duplicate" in order && order.duplicate ? 200 : 201);
+    const cookieName = publicOrderCookieName(token);
+    const existingAccesses = decodePublicOrderAccess(readRequestCookie(request, cookieName));
+    const accesses = [
+      { orderNumber: order.orderNumber, accessKey: parsed.data.idempotencyKey },
+      ...existingAccesses.filter((access) => access.orderNumber !== order.orderNumber),
+    ];
     response.cookies.set(
-      publicOrderCookieName(token),
-      encodePublicOrderAccess({ orderNumber: order.orderNumber, accessKey: parsed.data.idempotencyKey }),
+      cookieName,
+      encodePublicOrderAccess(accesses),
       {
         httpOnly: true,
         secure: new URL(request.url).protocol === "https:",

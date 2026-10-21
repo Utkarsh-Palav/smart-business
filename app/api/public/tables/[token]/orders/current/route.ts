@@ -10,18 +10,20 @@ type CurrentOrderRouteContext = { params: Promise<{ token: string }> };
 
 export async function GET(request: Request, { params }: CurrentOrderRouteContext) {
   const { token } = await params;
-  const access = decodePublicOrderAccess(
+  const accesses = decodePublicOrderAccess(
     readRequestCookie(request, publicOrderCookieName(token)),
   );
-  if (!access) {
-    const response = errorResponse("ORDER_NOT_FOUND", "No saved order was found on this device.", 404);
+  if (!accesses.length) {
+    const response = errorResponse("ORDER_NOT_FOUND", "No saved orders were found on this device.", 404);
     response.headers.set("Cache-Control", "no-store");
     return response;
   }
 
   try {
-    const order = await orderService.getPublicTableOrder(token, access.orderNumber, access.accessKey);
-    const response = successResponse(order);
+    const orders = await orderService.getPublicTableOrders(token, accesses);
+    const response = orders.length
+      ? successResponse({ orders })
+      : errorResponse("ORDER_NOT_FOUND", "No saved orders were found on this device.", 404);
     response.headers.set("Cache-Control", "no-store");
     return response;
   } catch (error) {

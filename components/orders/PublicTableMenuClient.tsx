@@ -6,10 +6,17 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  CheckCircle2,
+  ChevronRight,
+  CircleX,
+  ClipboardList,
   Clock3,
   CreditCard,
+  MapPin,
   Minus,
+  PackageCheck,
   Plus,
+  ReceiptText,
   ShieldCheck,
   ShoppingBag,
   Sparkles,
@@ -55,8 +62,6 @@ type CreatedOrder = {
   items: OrderReceipt[];
 };
 
-type SavedOrderAccess = { orderNumber: string; accessKey: string };
-
 type PublicTableMenu = {
   businessName: string;
   tableName: string;
@@ -95,15 +100,37 @@ function orderStatusLabel(status: string) {
   return labels[status] ?? "Status updated";
 }
 
+function orderStatusStyle(status: string) {
+  if (status === "PENDING") return "border-amber-200 bg-amber-50 text-amber-900";
+  if (status === "ACCEPTED" || status === "PREPARING") return "border-sky-200 bg-sky-50 text-sky-900";
+  if (status === "READY") return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  if (status === "SERVED" || status === "COMPLETED") return "border-stone-200 bg-stone-100 text-stone-700";
+  if (status === "CANCELED") return "border-rose-200 bg-rose-50 text-rose-800";
+  return "border-stone-200 bg-stone-100 text-stone-700";
+}
+
+function orderStatusIcon(status: string) {
+  if (status === "CANCELED") return CircleX;
+  if (status === "SERVED" || status === "COMPLETED") return CheckCircle2;
+  if (status === "READY") return PackageCheck;
+  return Clock3;
+}
+
+function isOrderInProgress(status: string) {
+  return !["SERVED", "COMPLETED", "CANCELED"].includes(status);
+}
+
 export function PublicTableMenuClient({ data, token }: { data: PublicTableMenu; token: string }) {
   const [cart, setCart] = useState<CartLine[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [orderLookupMessage, setOrderLookupMessage] = useState("");
+  const [orders, setOrders] = useState<CreatedOrder[]>([]);
   const [createdOrder, setCreatedOrder] = useState<CreatedOrder | null>(null);
   const [showingOrder, setShowingOrder] = useState(false);
-  const [orderAccessKey, setOrderAccessKey] = useState<string | null>(null);
+  const [showingOrderHistory, setShowingOrderHistory] = useState(false);
+  const [orderHistoryFilter, setOrderHistoryFilter] = useState<"ALL" | "ACTIVE" | "PAST">("ALL");
   const [isRestoringOrder, setIsRestoringOrder] = useState(true);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [customerName, setCustomerName] = useState("");
@@ -123,40 +150,33 @@ export function PublicTableMenuClient({ data, token }: { data: PublicTableMenu; 
   const currency = cartItems[0]?.item.product.currency ?? "INR";
   const totalMinor = cartItems.reduce((sum, line) => sum + itemPrice(line.item) * line.quantity, 0);
   const restaurantInitials = initials(data.businessName);
-  const savedOrderKey = `smart-business:table-order:${token}`;
   const currentOrderNumber = createdOrder?.orderNumber;
-  const currentOrderStatus = createdOrder?.status;
+  const activeOrdersSignature = orders
+    .filter((order) => !["SERVED", "COMPLETED", "CANCELED"].includes(order.status))
+    .map((order) => `${order.orderNumber}:${order.status}`)
+    .join("|");
+  const visibleOrders = orders.filter((order) => orderHistoryFilter === "ALL"
+    || (orderHistoryFilter === "ACTIVE" ? isOrderInProgress(order.status) : !isOrderInProgress(order.status)));
+  const activeOrderCount = orders.filter((order) => isOrderInProgress(order.status)).length;
 
   const restoreOrder = useCallback(async (showUnavailableMessage = false) => {
     try {
-      let access: SavedOrderAccess | null = null;
-      try {
-        const saved = localStorage.getItem(savedOrderKey);
-        if (saved) access = JSON.parse(saved) as SavedOrderAccess;
-      } catch {
-        access = null;
-      }
-
-      const response = access?.orderNumber && access.accessKey
-        ? await fetch(
-          `/api/public/tables/${encodeURIComponent(token)}/orders/${encodeURIComponent(access.orderNumber)}`,
-          { headers: { "x-order-access-key": access.accessKey }, cache: "no-store" },
-        )
-        : await fetch(`/api/public/tables/${encodeURIComponent(token)}/orders/current`, { cache: "no-store" });
-      const body = await response.json().catch(() => null) as { success?: boolean; data?: CreatedOrder } | null;
-      if (response.ok && body?.success && body.data) {
-        setCreatedOrder(body.data);
-        setOrderAccessKey(access?.accessKey ?? null);
+      const response = await fetch(`/api/public/tables/${encodeURIComponent(token)}/orders/current`, { cache: "no-store" });
+      const body = await response.json().catch(() => null) as { success?: boolean; data?: { orders?: CreatedOrder[] } } | null;
+      const recoveredOrders = body?.data?.orders ?? [];
+      if (response.ok && body?.success && recoveredOrders.length) {
+        setOrders(recoveredOrders);
+        setCreatedOrder(recoveredOrders[0]);
         setShowingOrder(true);
       } else if (response.status === 404 && showUnavailableMessage) {
-        setOrderLookupMessage("No saved order was found on this device. Orders placed here in the future will be available from this button.");
+        setOrderLookupMessage("No saved orders were found on this device yet.");
       }
     } catch {
       if (showUnavailableMessage) setOrderLookupMessage("We couldn't load your order just now. Please try again.");
     } finally {
       setIsRestoringOrder(false);
     }
-  }, [savedOrderKey, token]);
+  }, [token]);
 
   useEffect(() => {
     const restoreTimer = window.setTimeout(() => void restoreOrder(), 0);
@@ -164,25 +184,24 @@ export function PublicTableMenuClient({ data, token }: { data: PublicTableMenu; 
   }, [restoreOrder]);
 
   useEffect(() => {
-    if (!currentOrderNumber || !currentOrderStatus || !orderAccessKey || ["SERVED", "COMPLETED", "CANCELED"].includes(currentOrderStatus)) return;
+    if (!orders.length || !activeOrdersSignature) return;
     let active = true;
     const refreshStatus = async () => {
       try {
-        const response = orderAccessKey
-          ? await fetch(
-            `/api/public/tables/${encodeURIComponent(token)}/orders/${encodeURIComponent(currentOrderNumber)}`,
-            { headers: { "x-order-access-key": orderAccessKey }, cache: "no-store" },
-          )
-          : await fetch(`/api/public/tables/${encodeURIComponent(token)}/orders/current`, { cache: "no-store" });
-        const body = await response.json().catch(() => null) as { success?: boolean; data?: CreatedOrder } | null;
-        if (active && response.ok && body?.success && body.data) setCreatedOrder(body.data);
+        const response = await fetch(`/api/public/tables/${encodeURIComponent(token)}/orders/current`, { cache: "no-store" });
+        const body = await response.json().catch(() => null) as { success?: boolean; data?: { orders?: CreatedOrder[] } } | null;
+        const refreshedOrders = body?.data?.orders ?? [];
+        if (active && response.ok && body?.success && refreshedOrders.length) {
+          setOrders(refreshedOrders);
+          setCreatedOrder(refreshedOrders.find((order) => order.orderNumber === currentOrderNumber) ?? refreshedOrders[0]);
+        }
       } catch {
         // Preserve the last known status during brief network interruptions.
       }
     };
     const interval = window.setInterval(() => void refreshStatus(), 20_000);
     return () => { active = false; window.clearInterval(interval); };
-  }, [currentOrderNumber, currentOrderStatus, orderAccessKey, token]);
+  }, [activeOrdersSignature, currentOrderNumber, orders.length, token]);
 
   useEffect(() => {
     if (!detailsOpen) return;
@@ -227,7 +246,6 @@ export function PublicTableMenuClient({ data, token }: { data: PublicTableMenu; 
     if (!attemptRef.current || attemptRef.current.fingerprint !== fingerprint) {
       attemptRef.current = { fingerprint, key: crypto.randomUUID() };
     }
-    const accessKey = attemptRef.current.key;
     try {
       const response = await fetch(`/api/public/tables/${encodeURIComponent(token)}/orders`, {
         method: "POST",
@@ -242,8 +260,9 @@ export function PublicTableMenuClient({ data, token }: { data: PublicTableMenu; 
       if (!response.ok || !body?.success || !body.data) {
         throw new Error(body?.error?.message ?? "We could not place your order. Please try again.");
       }
-      setOrderAccessKey(accessKey);
+      setOrders((current) => [body.data!, ...current.filter((order) => order.orderNumber !== body.data!.orderNumber)]);
       setCreatedOrder(body.data);
+      setShowingOrderHistory(false);
       setShowingOrder(true);
       setCart([]);
       setCartOpen(false);
@@ -270,20 +289,57 @@ export function PublicTableMenuClient({ data, token }: { data: PublicTableMenu; 
     return <main className="table-menu-shell min-h-screen px-4 py-8 text-stone-900 sm:px-6"><div className="mx-auto max-w-lg"><BrandHeader businessName={data.businessName} locationName={data.locationName} initials={restaurantInitials} /><section role="status" className="mt-6 rounded-3xl border border-white bg-white p-7 text-center shadow-sm"><div className="mx-auto h-8 w-8 animate-spin motion-reduce:animate-none rounded-full border-2 border-stone-200 border-t-emerald-700" /><p className="mt-4 text-sm font-medium text-stone-700">Checking for your latest order...</p></section></div></main>;
   }
 
+  if (showingOrderHistory) {
+    return (
+      <main className="table-menu-shell min-h-screen px-4 py-6 text-stone-900 sm:px-6 sm:py-8">
+        <div className="mx-auto max-w-3xl">
+          <BrandHeader businessName={data.businessName} locationName={data.locationName} initials={restaurantInitials} />
+          <section className="mt-6 overflow-hidden rounded-[1.8rem] bg-[#202b24] p-5 text-white shadow-[0_22px_60px_-35px_rgba(23,34,27,0.7)] sm:p-7">
+            <div className="flex flex-wrap items-end justify-between gap-5">
+              <div><p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.17em] text-emerald-200"><ClipboardList className="h-4 w-4" /> Your table</p><h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Order history</h1><p className="mt-2 text-sm text-white/70">Every order you’ve placed from this device, in one place.</p></div>
+              <div className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.08] px-3.5 py-2.5 text-sm text-white/85"><MapPin className="h-4 w-4 text-emerald-200" /><span>{data.tableName}</span></div>
+            </div>
+            <div className="mt-6 flex items-center gap-3 border-t border-white/10 pt-4 text-sm"><span className="grid h-9 w-9 place-items-center rounded-xl bg-white/10"><ReceiptText className="h-4 w-4 text-emerald-200" /></span><span><strong className="font-semibold text-white">{orders.length}</strong> {orders.length === 1 ? "order" : "orders"} on this device</span>{activeOrderCount > 0 ? <span className="ml-auto rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-semibold text-emerald-100">{activeOrderCount} in progress</span> : null}</div>
+          </section>
+
+          {orders.length ? <>
+            <div className="mt-5 flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Filter order history">
+              {([{ id: "ALL", label: "All orders", count: orders.length }, { id: "ACTIVE", label: "In progress", count: activeOrderCount }, { id: "PAST", label: "Past orders", count: orders.length - activeOrderCount }] as const).map((filter) => <button key={filter.id} type="button" role="tab" aria-selected={orderHistoryFilter === filter.id} onClick={() => setOrderHistoryFilter(filter.id)} className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 ${orderHistoryFilter === filter.id ? "border-[#202b24] bg-[#202b24] text-white shadow-sm" : "border-white/80 bg-white/75 text-stone-600 hover:border-emerald-200 hover:text-stone-900"}`}><span>{filter.label}</span><span className={`rounded-full px-2 py-0.5 text-xs tabular-nums ${orderHistoryFilter === filter.id ? "bg-white/15 text-white" : "bg-stone-100 text-stone-500"}`}>{filter.count}</span></button>)}
+            </div>
+            <div className="mt-3 space-y-3" role="tabpanel">
+              {visibleOrders.length ? visibleOrders.map((order) => {
+                const itemCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
+                const StatusIcon = orderStatusIcon(order.status);
+                return <button key={order.orderNumber} type="button" onClick={() => { setCreatedOrder(order); setShowingOrderHistory(false); setShowingOrder(true); }} className="group w-full rounded-2xl border border-white/80 bg-white p-4 text-left shadow-[0_10px_30px_-24px_rgba(28,35,29,0.5)] transition duration-200 hover:-translate-y-0.5 hover:border-emerald-100 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 sm:p-5">
+                  <div className="flex items-start gap-3 sm:gap-4"><span className={`mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl border ${orderStatusStyle(order.status)}`}><StatusIcon className="h-[1.1rem] w-[1.1rem]" /></span><div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2"><div className="min-w-0"><p className="font-mono text-sm font-bold tracking-wide text-stone-900">{order.orderNumber}</p><p className="mt-1 text-xs text-stone-500">{new Date(order.placedAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</p></div><span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${orderStatusStyle(order.status)}`}>{orderStatusLabel(order.status)}</span></div>
+                    <p className="mt-3 line-clamp-1 text-sm text-stone-600">{order.items.slice(0, 3).map((item) => `${item.quantity} × ${item.productName}`).join(" · ")}{order.items.length > 3 ? ` · +${order.items.length - 3} more` : ""}</p>
+                    <div className="mt-3 flex items-center justify-between border-t border-stone-100 pt-3"><div className="flex items-center gap-2 text-xs text-stone-500"><span>{itemCount} {itemCount === 1 ? "item" : "items"}</span><span aria-hidden="true" className="text-stone-300">•</span><span>{order.table?.name ?? data.tableName}</span></div><div className="flex items-center gap-2"><span className="text-sm font-bold text-stone-900">{formatPrice(order.totalMinor, order.currency)}</span><ChevronRight className="h-4 w-4 text-stone-400 transition group-hover:translate-x-0.5 group-hover:text-emerald-800" /></div></div>
+                  </div></div>
+                </button>;
+              }) : <div className="rounded-2xl border border-dashed border-stone-300 bg-white/70 px-5 py-10 text-center"><p className="font-semibold text-stone-800">No {orderHistoryFilter === "ACTIVE" ? "orders in progress" : "past orders"}</p><p className="mt-1 text-sm text-stone-500">Your orders will appear here as their status changes.</p></div>}
+            </div>
+          </> : <section className="mt-5 rounded-2xl border border-white/80 bg-white px-6 py-10 text-center shadow-sm"><span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-stone-100 text-stone-500"><ReceiptText className="h-5 w-5" /></span><h2 className="mt-4 font-semibold text-stone-900">No orders yet</h2><p className="mx-auto mt-1 max-w-sm text-sm leading-6 text-stone-500">Once you place an order from this table, you can follow its progress here.</p></section>}
+          <button type="button" onClick={() => setShowingOrderHistory(false)} className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#202b24] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#2b3b31] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"><ArrowLeft className="h-4 w-4" /> Back to menu</button>
+        </div>
+      </main>
+    );
+  }
+
   if (createdOrder && showingOrder) {
     return (
-      <main className="table-menu-shell min-h-screen px-4 py-8 text-stone-900 sm:px-6">
+      <main className="table-menu-shell min-h-screen px-4 py-5 text-stone-900 sm:px-6 sm:py-8">
         <div className="mx-auto max-w-lg">
           <BrandHeader businessName={data.businessName} locationName={data.locationName} initials={restaurantInitials} />
           <section className="order-confirmation-enter relative mt-6 overflow-hidden rounded-[2rem] border border-white/70 bg-white p-6 text-center shadow-[0_24px_70px_-35px_rgba(28,35,29,0.35)] sm:p-9">
             <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-emerald-300 via-emerald-500 to-lime-300" />
-            <div className="confirmation-check mx-auto grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full bg-emerald-50 text-emerald-700 ring-8 ring-emerald-50/70">
-              <Check className="h-9 w-9" strokeWidth={2.5} />
+            <div className={`confirmation-check mx-auto grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full ring-8 ${createdOrder.status === "CANCELED" ? "bg-rose-50 text-rose-700 ring-rose-50/70" : "bg-emerald-50 text-emerald-700 ring-emerald-50/70"}`}>
+              {createdOrder.status === "CANCELED" ? <CircleX className="h-9 w-9" strokeWidth={2.2} /> : createdOrder.status === "READY" ? <PackageCheck className="h-9 w-9" strokeWidth={2.2} /> : createdOrder.status === "SERVED" || createdOrder.status === "COMPLETED" ? <CheckCircle2 className="h-9 w-9" strokeWidth={2.2} /> : <Check className="h-9 w-9" strokeWidth={2.5} />}
             </div>
-            <p className="mt-7 text-xs font-bold uppercase tracking-[0.19em] text-emerald-700">Order received</p>
-            <h1 className="mt-2 text-[2rem] font-bold tracking-tight text-[#1d2721] sm:text-4xl">You’re all set.</h1>
+            <p className="mt-7 text-xs font-bold uppercase tracking-[0.19em] text-emerald-700">{createdOrder.status === "PENDING" ? "Order received" : "Order update"}</p>
+            <h1 className="mt-2 text-[2rem] font-bold tracking-tight text-[#1d2721] sm:text-4xl">{createdOrder.status === "PENDING" ? "You’re all set." : orderStatusLabel(createdOrder.status)}</h1>
             <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-stone-600">
-              Your order has been sent to <strong className="font-semibold text-stone-800">{data.businessName}</strong>. The team has everything noted and will confirm it shortly.
+              {createdOrder.status === "PENDING" ? <>Your order has been sent to <strong className="font-semibold text-stone-800">{data.businessName}</strong>. The team has everything noted and will confirm it shortly.</> : <>Your order at <strong className="font-semibold text-stone-800">{data.businessName}</strong> is {orderStatusLabel(createdOrder.status).toLowerCase()}.</>}
             </p>
 
             <div className="mt-7 rounded-2xl bg-[#f7f8f5] px-4 py-4 text-left">
@@ -292,7 +348,7 @@ export function PublicTableMenuClient({ data, token }: { data: PublicTableMenu; 
                   <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-stone-500">Your reference</p>
                   <p className="mt-1 font-mono text-lg font-bold tracking-wide text-stone-900">{createdOrder.orderNumber}</p>
                 </div>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">
+                <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${orderStatusStyle(createdOrder.status)}`}>
                     <Clock3 className="h-3.5 w-3.5" /> {orderStatusLabel(createdOrder.status)}
                 </span>
               </div>
@@ -315,7 +371,10 @@ export function PublicTableMenuClient({ data, token }: { data: PublicTableMenu; 
             </div>
             <p className="mt-5 inline-flex items-center justify-center gap-1.5 text-xs text-stone-500"><ShieldCheck className="h-4 w-4 text-emerald-700" /> Saved securely with the restaurant. Keep your reference handy.</p>
           </section>
-          <button type="button" onClick={() => setShowingOrder(false)} className="mx-auto mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#202b24] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#2b3b31] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"><ArrowLeft className="h-4 w-4" /> Place another order</button>
+          <div className={`mx-auto mt-5 grid max-w-lg gap-2.5 ${orders.length > 1 ? "sm:grid-cols-2" : ""}`}>
+            <button type="button" onClick={() => setShowingOrder(false)} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#202b24] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#2b3b31] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"><ArrowLeft className="h-4 w-4" /> Place another order</button>
+            {orders.length > 1 ? <button type="button" onClick={() => setShowingOrderHistory(true)} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white/80 px-4 py-3 text-sm font-semibold text-stone-700 shadow-sm transition hover:-translate-y-0.5 hover:border-stone-300 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"><ClipboardList className="h-4 w-4" /> All orders <span className="rounded-full bg-stone-100 px-2 py-0.5 text-xs tabular-nums text-stone-600">{orders.length}</span></button> : null}
+          </div>
           {detailsOpen ? <OrderDetailsDialog order={createdOrder} onClose={() => setDetailsOpen(false)} onPlaceAnotherOrder={() => { setDetailsOpen(false); setShowingOrder(false); }} /> : null}
         </div>
       </main>
@@ -326,7 +385,7 @@ export function PublicTableMenuClient({ data, token }: { data: PublicTableMenu; 
     <main className="table-menu-shell min-h-screen px-4 pb-32 pt-5 text-stone-900 sm:px-6 sm:pb-12 sm:pt-8">
       <div className="mx-auto max-w-5xl">
         <BrandHeader businessName={data.businessName} locationName={data.locationName} initials={restaurantInitials} onViewOrder={() => {
-          if (createdOrder) setShowingOrder(true);
+          if (orders.length) setShowingOrderHistory(true);
           else {
             setIsRestoringOrder(true);
             setOrderLookupMessage("");
@@ -393,8 +452,8 @@ export function PublicTableMenuClient({ data, token }: { data: PublicTableMenu; 
       </>}
       </div>
 
-      {cartCount > 0 ? <div className="cart-dock-enter fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-[#202b24] p-3 text-white shadow-[0_-12px_40px_-18px_rgba(20,30,23,0.6)] sm:inset-x-auto sm:bottom-5 sm:right-5 sm:w-[min(28rem,calc(100vw-2.5rem))] sm:rounded-2xl sm:border sm:border-white/15 sm:p-4">
-        {!cartOpen ? <button type="button" onClick={() => setCartOpen(true)} className="flex min-h-12 w-full items-center justify-between gap-4 rounded-xl bg-[#d94a16] px-4 py-3 font-semibold text-white transition hover:bg-[#c43e0f]"><span className="inline-flex items-center gap-2"><ShoppingBag className="h-5 w-5" /><span>Review order <span className="ml-1 rounded-full bg-white/20 px-2 py-0.5 text-xs">{cartCount}</span></span></span><span>{formatPrice(totalMinor, currency)} <ArrowRight className="ml-1 inline h-4 w-4" /></span></button> : <section>
+      {cartCount > 0 ? <div className="cart-dock-enter fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-[#202b24] p-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] text-white shadow-[0_-12px_40px_-18px_rgba(20,30,23,0.6)] sm:inset-x-auto sm:bottom-5 sm:right-5 sm:w-[min(28rem,calc(100vw-2.5rem))] sm:rounded-2xl sm:border sm:border-white/15 sm:p-4">
+        {!cartOpen ? <button type="button" onClick={() => setCartOpen(true)} className="flex min-h-12 w-full items-center justify-between gap-4 rounded-xl bg-[#d94a16] px-4 py-3 font-semibold text-white transition hover:bg-[#c43e0f] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"><span className="inline-flex items-center gap-2"><ShoppingBag className="h-5 w-5" /><span>Review order <span className="ml-1 rounded-full bg-white/20 px-2 py-0.5 text-xs">{cartCount}</span></span></span><span className="shrink-0">{formatPrice(totalMinor, currency)} <ArrowRight className="ml-1 inline h-4 w-4" /></span></button> : <section className="max-h-[min(82dvh,36rem)] overflow-y-auto overscroll-contain">
           <div className="flex items-center justify-between"><div><p className="text-[0.62rem] font-bold uppercase tracking-[0.16em] text-emerald-200">Your selection</p><h2 className="mt-0.5 text-lg font-bold">Review your order</h2></div><button type="button" className="rounded-full p-2 text-white/70 transition hover:bg-white/10 hover:text-white" aria-label="Close cart" onClick={() => setCartOpen(false)}><X className="h-5 w-5" /></button></div>
           <div className="mt-3 max-h-36 space-y-2 overflow-auto pr-1">{cartItems.map(({ item, quantity }) => <div key={item.product.id} className="flex items-center justify-between gap-3 text-sm"><span className="min-w-0 flex-1 truncate text-white/85">{quantity} × {item.displayName || item.product.name}</span><span className="shrink-0 font-medium">{formatPrice(itemPrice(item) * quantity, item.product.currency)}</span></div>)}</div>
           <div className="mt-3 flex justify-between border-t border-white/15 pt-3 font-bold"><span>Total</span><span>{formatPrice(totalMinor, currency)}</span></div>
@@ -417,7 +476,7 @@ function BrandHeader({ businessName, locationName, initials: brandInitials, onVi
       <div aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[#202b24] text-sm font-bold tracking-wide text-emerald-100 shadow-inner">{brandInitials}</div>
       <div className="min-w-0"><p className="truncate text-sm font-bold text-stone-900 sm:text-base">{businessName}</p><p className="mt-0.5 truncate text-xs text-stone-500">{locationName}</p></div>
     </div>
-    <div className="flex shrink-0 items-center gap-2"><div className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.13em] text-emerald-800">Dine in</div>{onViewOrder ? <button type="button" onClick={onViewOrder} className="rounded-full bg-[#202b24] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#2b3b31]">My order</button> : null}</div>
+    <div className="flex shrink-0 items-center gap-2"><div className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.13em] text-emerald-800">Dine in</div>{onViewOrder ? <button type="button" onClick={onViewOrder} className="rounded-full bg-[#202b24] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#2b3b31]">My orders</button> : null}</div>
   </header>;
 }
 

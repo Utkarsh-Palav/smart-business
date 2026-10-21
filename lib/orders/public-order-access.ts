@@ -7,27 +7,33 @@ export type PublicOrderAccess = {
   accessKey: string;
 };
 
+const MAX_SAVED_ORDERS = 20;
+
 export function publicOrderCookieName(tableToken: string) {
   const suffix = createHash("sha256").update(tableToken).digest("hex").slice(0, 20);
   return `sb_order_${suffix}`;
 }
 
-export function encodePublicOrderAccess(access: PublicOrderAccess) {
-  return Buffer.from(JSON.stringify(access)).toString("base64url");
+export function encodePublicOrderAccess(accesses: PublicOrderAccess[]) {
+  return Buffer.from(JSON.stringify(accesses.slice(0, MAX_SAVED_ORDERS))).toString("base64url");
 }
 
-export function decodePublicOrderAccess(value: string | undefined): PublicOrderAccess | null {
-  if (!value) return null;
+export function decodePublicOrderAccess(value: string | undefined): PublicOrderAccess[] {
+  if (!value) return [];
   try {
-    const parsed = JSON.parse(Buffer.from(value, "base64url").toString("utf8")) as Partial<PublicOrderAccess>;
-    if (
-      typeof parsed.orderNumber !== "string" ||
-      typeof parsed.accessKey !== "string" ||
-      !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(parsed.accessKey)
-    ) return null;
-    return { orderNumber: parsed.orderNumber, accessKey: parsed.accessKey };
+    const parsed = JSON.parse(Buffer.from(value, "base64url").toString("utf8")) as unknown;
+    // Accept the original single-order cookie format so existing customers keep access.
+    const entries = Array.isArray(parsed) ? parsed : [parsed];
+    const valid = entries.filter((entry): entry is PublicOrderAccess => {
+      if (typeof entry !== "object" || entry === null) return false;
+      const candidate = entry as Partial<PublicOrderAccess>;
+      return typeof candidate.orderNumber === "string" &&
+        typeof candidate.accessKey === "string" &&
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(candidate.accessKey);
+    });
+    return valid.slice(0, MAX_SAVED_ORDERS);
   } catch {
-    return null;
+    return [];
   }
 }
 

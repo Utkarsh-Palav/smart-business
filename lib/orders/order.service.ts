@@ -10,6 +10,7 @@ import type {
   CreatePublicOrderInput,
   UpdateOrderStatusInput,
 } from "@/features/orders/schemas/order.schema";
+import type { PublicOrderAccess } from "@/lib/orders/public-order-access";
 import {
   canTransitionOrderStatus,
   resolveOrderUnitPrice,
@@ -173,6 +174,52 @@ async function findExistingOrder(
 }
 
 export class OrderService {
+  async getPublicTableOrders(token: string, accesses: PublicOrderAccess[]) {
+    if (!accesses.length) return [];
+    const { db, table } = await publicTableContext(token);
+    const accessByOrderNumber = new Map(
+      accesses.map(({ orderNumber, accessKey }) => [orderNumber, accessKey]),
+    );
+    const candidates = await db.order.findMany({
+      where: {
+        tableId: table.id,
+        orderNumber: { in: [...accessByOrderNumber.keys()] },
+        idempotencyKey: { in: [...new Set(accesses.map(({ accessKey }) => accessKey))] },
+      },
+      orderBy: [{ placedAt: "desc" }, { id: "desc" }],
+      take: accesses.length,
+      select: {
+        orderNumber: true,
+        idempotencyKey: true,
+        status: true,
+        subtotalMinor: true,
+        discountMinor: true,
+        taxMinor: true,
+        totalMinor: true,
+        currency: true,
+        placedAt: true,
+        table: { select: { name: true } },
+        location: { select: { name: true } },
+        items: {
+          select: {
+            productName: true,
+            quantity: true,
+            unitPriceMinor: true,
+            totalMinor: true,
+            notes: true,
+          },
+        },
+      },
+    });
+    return candidates
+      .filter((order) => accessByOrderNumber.get(order.orderNumber) === order.idempotencyKey)
+      .map((order) => {
+        const { idempotencyKey, ...receipt } = order;
+        void idempotencyKey;
+        return receipt;
+      });
+  }
+
   async getPublicTableOrder(
     token: string,
     orderNumber: string,
