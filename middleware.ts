@@ -13,7 +13,7 @@ function matchesRoute(pathname: string, route: string) {
   return pathname === route || pathname.startsWith(`${route}/`);
 }
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const token = request.cookies.get(ACCESS_COOKIE_NAME)?.value;
   const { pathname } = request.nextUrl;
 
