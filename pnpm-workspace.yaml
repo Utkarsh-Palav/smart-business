@@ -4,3 +4,8 @@ allowBuilds:
   prisma: false
   sharp: false
   unrs-resolver: false
+
+overrides:
+  body-parser: 2.4.0
+  undici: 6.29.1
+  zod: 4.6.6
