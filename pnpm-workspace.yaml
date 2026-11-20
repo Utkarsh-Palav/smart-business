@@ -7,5 +7,6 @@ allowBuilds:
 
 overrides:
   body-parser: 2.4.0
+  effect: 3.22.1
   undici: 6.29.1
   zod: 4.6.6
